@@ -339,7 +339,7 @@ Eight phases: setup, one for each brief feature, our own feature, and a final pa
 | **4. Dietary preferences (B2)** | 4.1 Save them, and show recipes that fit first | [x] |
 | **5. Your own recipes (B1)** | 5.1 API and form (as 5.1a API and 5.1b form) | [x] |
 | **6. From your kitchen (X)** | 6.1 Rules, picker and ranked recipes | [x] |
-| **7. Final pass** | 7.1 Review, docs and demo run | [x] |
+| **7. Final pass** | 7.1 Review, docs and demo run · 7.2 Fixes from trying it on a phone | [ ] |
 
 **Watch the size of 5.1 and 6.1.** They're the largest. If either heads well past 600 hand-written lines, I stop and suggest a split: API before UI for 5.1, rules before UI for 6.1.
 
@@ -490,3 +490,6 @@ Split in two, as it came to about 900 hand-written lines: **5.1a** is the shared
 - **Lighthouse** mobile on the production build, if there's time. No target is required.
 - **README:** setup, architecture, decisions (including what we left out, §1), the Product Owner notes (`docs/product-owner-notes.md`).
 - **Demo run-through:** `pnpm db:reset`, then every §2 example in the app.
+
+#### PR 7.2: Fixes from trying it on a phone
+- **Light only in dark mode:** shadcn's `dark:` styles followed the phone's dark mode, greying fields and buttons on a light page (§5, Theme).
