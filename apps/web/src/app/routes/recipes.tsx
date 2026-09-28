@@ -51,7 +51,8 @@ export default function RecipesRoute() {
       <title>Recipes · Nosh</title>
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-2xl">Recipes</h1>
-        <Link to={paths.newRecipe} className={buttonVariants({ variant: 'outline' })}>
+        {/* Green, as the page's own action. */}
+        <Link to={paths.newRecipe} className={buttonVariants()}>
           <Plus data-icon="inline-start" />
           New recipe
         </Link>
