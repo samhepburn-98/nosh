@@ -104,7 +104,7 @@ describe('rankByMissing', () => {
       ['onion'],
     );
 
-    expect(summary(match!)).toEqual({
+    expect(summary(match)).toEqual({
       name: 'Stew',
       haveCount: 1,
       ingredientCount: 2,

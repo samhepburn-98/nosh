@@ -13,15 +13,19 @@ export function meetsPreferences(dietary: Dietary[], preferences: Dietary[]): bo
   return preferences.every((preference) => tags.has(preference));
 }
 
-/** Splits recipes into those that fit the preferences and the others, each kept in order. */
-export function groupByPreferences<Recipe extends { dietary: Dietary[] }>(
-  recipes: Recipe[],
+/**
+ * Splits items into those whose recipe fits the preferences and the others, each kept in order.
+ * `dietaryOf` finds each item's tags: a recipe's own, or those of the recipe inside a ranking.
+ */
+export function groupByPreferences<Item>(
+  items: Item[],
   preferences: Dietary[],
-): { matching: Recipe[]; others: Recipe[] } {
-  const matching: Recipe[] = [];
-  const others: Recipe[] = [];
-  for (const recipe of recipes) {
-    (meetsPreferences(recipe.dietary, preferences) ? matching : others).push(recipe);
+  dietaryOf: (item: Item) => Dietary[],
+): { matching: Item[]; others: Item[] } {
+  const matching: Item[] = [];
+  const others: Item[] = [];
+  for (const item of items) {
+    (meetsPreferences(dietaryOf(item), preferences) ? matching : others).push(item);
   }
   return { matching, others };
 }
