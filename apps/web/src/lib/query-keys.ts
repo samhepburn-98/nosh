@@ -6,4 +6,5 @@ export const queryKeys = {
   plan: ['plan'],
   shoppingList: ['shopping-list'],
   preferences: ['preferences'],
+  ingredients: ['ingredients'],
 } as const;
