@@ -18,3 +18,19 @@ export function toKey(name: string): string {
   words[last] = singularOverrides.get(words[last]) ?? pluralize.singular(words[last]);
   return words.join(' ');
 }
+
+/**
+ * The known ingredient a typed name means: an exact match ignoring case first, then one with the
+ * same singular form, so "Carrot" uses "carrot" and "Tomato" uses "tomatoes". None if neither.
+ */
+export function matchIngredient<Ingredient extends { name: string }>(
+  name: string,
+  ingredients: Ingredient[],
+): Ingredient | undefined {
+  const exact = name.trim().toLowerCase();
+  const key = toKey(name);
+  return (
+    ingredients.find((ingredient) => ingredient.name.toLowerCase() === exact) ??
+    ingredients.find((ingredient) => toKey(ingredient.name) === key)
+  );
+}
