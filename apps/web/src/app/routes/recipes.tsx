@@ -27,7 +27,10 @@ export default function RecipesRoute() {
   const search = searchParams.get('q') ?? '';
   const view = searchParams.get('view') === 'kitchen' ? 'kitchen' : 'all';
   const searchRef = useRef<HTMLInputElement>(null);
-  const { data: ingredients = [] } = useIngredients();
+  // Only the kitchen picker needs them, so they're fetched when that tab is first opened.
+  const { data: ingredients = [] } = useIngredients({
+    queryConfig: { enabled: view === 'kitchen' },
+  });
   // `opened` counts openings. It's the sheet's key, so each opening starts again from today.
   const [adding, setAdding] = useState<Adding | null>(null);
 
