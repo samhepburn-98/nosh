@@ -1,13 +1,15 @@
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 
 import type { RecipeSummary } from '@nosh/shared/recipes';
 
-import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { paths } from '@/config/paths';
-import { formatDietary, formatMealTypes, formatTag } from '@/utils/format';
+import { formatMealTypes } from '@/utils/format';
+
+import { RecipeBadges } from './recipe-badges';
 
 export function RecipeCard({ recipe }: { recipe: RecipeSummary }) {
+  const location = useLocation();
   const hasBadges = recipe.dietary.length > 0 || recipe.tags.length > 0;
 
   return (
@@ -15,9 +17,11 @@ export function RecipeCard({ recipe }: { recipe: RecipeSummary }) {
       <CardHeader>
         <CardTitle>
           <h2>
-            {/* The link's ::after covers the card, so the whole card is one tap target. */}
+            {/* The link's ::after covers the card, so the whole card is one tap target.
+                `back` lets the recipe page link back to this list with its search. */}
             <Link
               to={paths.recipe(recipe.slug)}
+              state={{ back: location.pathname + location.search }}
               className="underline-offset-4 after:absolute after:inset-0 after:rounded-xl hover:underline focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-ring"
             >
               {recipe.name}
@@ -29,18 +33,8 @@ export function RecipeCard({ recipe }: { recipe: RecipeSummary }) {
         </CardDescription>
       </CardHeader>
       {hasBadges && (
-        <CardContent className="flex flex-wrap gap-2">
-          {recipe.dietary.map((dietary) => (
-            <Badge key={dietary} variant="secondary">
-              {formatDietary(dietary)}
-            </Badge>
-          ))}
-          {/* Outline, so the client's other tags never read as dietary ones. */}
-          {recipe.tags.map((tag) => (
-            <Badge key={tag} variant="outline">
-              {formatTag(tag)}
-            </Badge>
-          ))}
+        <CardContent>
+          <RecipeBadges recipe={recipe} />
         </CardContent>
       )}
     </Card>
