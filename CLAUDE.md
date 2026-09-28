@@ -116,7 +116,7 @@ export const usePlan = ({ queryConfig }: { queryConfig?: QueryConfig<typeof getP
   - **Use shadcn's defaults.** Leave generated files in `components/ui` exactly as upstream wrote them: no variant or size changes, and pass `className` only for layout.
 - **Theme** (contrast measured, docs/plan.md §5):
   - Primary is Nosh Green `#62CC9B` **with Charcoal `#2E373E` text**. Never white text on green.
-  - `--ring` is Deep Teal. `--muted-foreground` is `#5F6B73`. `--destructive` is `#B9471F`.
+  - `--ring` is Deep Teal. `--muted-foreground` is `#5F6B73`. `--destructive` is `#A33D17`.
   - Cloud Grey only on Charcoal. Flame Coral only for icons and borders.
 - **Accessibility:**
   - Tap targets meet WCAG 2.2 AA (at least 24px). shadcn components keep their default sizes; our own markup (the navigation) is 44px. shadcn's inputs are 16px on phones, so they don't zoom.

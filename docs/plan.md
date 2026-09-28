@@ -279,7 +279,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 | secondary, accent | light green tint / Charcoal | ≥ 10:1 |
 | muted-foreground | `#5F6B73` | 5.47:1 |
 | ring | Deep Teal `#3AA58F` | 3.02:1 (non-text) |
-| destructive | darkened Flame Coral `#B9471F` | 5.27:1 |
+| destructive | darkened Flame Coral `#A33D17` | 6.49:1. Also 5.3:1 at 90% (alert text) and on its own 10% tint (the destructive button), 4.5:1 on its 20% hover tint |
 | leaf | Leaf `#D5C52D` / Charcoal | 6.84:1 |
 | input | field borders `#8A959C` | 3.06:1 (non-text) |
 | header / header-foreground / header-muted | Charcoal / white / Cloud Grey `#B7BFC0` | 12.1:1 / 6.48:1 |
