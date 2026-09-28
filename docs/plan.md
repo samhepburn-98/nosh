@@ -252,7 +252,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 ### Layout
 - **Phone first (360px).** Below `md`: a bottom tab bar (Plan · Recipes · Shopping list) and a settings button in the top bar. From `md`: all links, and Preferences, in the top bar. One `nav-items` list feeds both. Why, in §1 "Navigation".
 - **Every page uses the shell's width** (`max-w-5xl`). Wide screens get grid columns, not narrower pages.
-- **Each page says what it's for** in one short line just under its title (Plan, Recipes, New recipe, Shopping list), or in its section's description (Preferences, From your kitchen). `PageHeader` keeps the title and line together, with the page's action (Clear week, New recipe) to the right, lined up with their bottom. Form fields that need it get one hint. The brief's voice: warm, plain, short words, no guilt about money.
+- **Each page says what it's for** in one short line just under its title (Plan, Recipes, New recipe, Shopping list), or in its section's description (Preferences, From your kitchen). `PageHeader` keeps the title and line together. On phones the page's action (Clear week, New recipe) sits beside the title, with the line full width below; from `sm`, the action is on the right, lined up with the bottom of the title and line. Form fields that need it get one hint. The brief's voice: warm, plain, short words, no guilt about money.
 - **Tailwind defaults only.** No arbitrary values; colours only through theme tokens.
 - **shadcn's defaults, unchanged.** `components/ui` stays exactly as upstream wrote it, so updates stay simple. Its default sizes meet WCAG 2.2 AA's 24px target size (a default button is 32px), and its inputs use 16px text on phones, so they don't zoom. Our own markup (the top bar and tab bar) uses 44px targets. We first raised shadcn's components to 44px, but dropped that in PR 1.1: for a demo, keeping upstream as it is was worth more.
 
@@ -286,6 +286,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 | header / header-foreground / header-muted | Charcoal / white / Cloud Grey `#B7BFC0` | 12.1:1 / 6.48:1 |
 
 - Charcoal top bar with the logo. Cloud Grey only on Charcoal. Flame Coral only for icons and borders.
+- **Light only.** There's no dark theme, so the page is `color-scheme: light`, and shadcn's `dark:` styles need a `.dark` class that nothing adds. Before, they followed the phone's dark mode, greying fields and buttons on a light page.
 - **Deep Teal is only the focus ring,** although the brief calls it "secondary". It fails AA for text either way (3.02:1 with white, 4.0:1 with Charcoal), so `secondary` is a light green tint instead.
 - **Logo:** the mark and wordmark side by side, unaltered, 6px apart so they read as one logo, with the "O"-width clear space around the whole logo. The brand pack only shows them stacked (with a gap of about a tenth of the mark's height), so a horizontal lockup is our own arrangement ([Product Owner notes](product-owner-notes.md), note 8). Clear space limits it to 30px tall in a 72px bar. The favicon is the mark alone.
 - **Type:** Nunito Bold for headings (self-hosted, Latin only), system sans for body. The brief allows either Nunito Sans or system sans for body; system sans needs no download, which suits older phones on slow connections.
@@ -338,7 +339,7 @@ Eight phases: setup, one for each brief feature, our own feature, and a final pa
 | **4. Dietary preferences (B2)** | 4.1 Save them, and show recipes that fit first | [x] |
 | **5. Your own recipes (B1)** | 5.1 API and form (as 5.1a API and 5.1b form) | [x] |
 | **6. From your kitchen (X)** | 6.1 Rules, picker and ranked recipes | [x] |
-| **7. Final pass** | 7.1 Review, docs and demo run | [x] |
+| **7. Final pass** | 7.1 Review, docs and demo run · 7.2 Fixes from trying it on a phone | [ ] |
 
 **Watch the size of 5.1 and 6.1.** They're the largest. If either heads well past 600 hand-written lines, I stop and suggest a split: API before UI for 5.1, rules before UI for 6.1.
 
@@ -489,3 +490,7 @@ Split in two, as it came to about 900 hand-written lines: **5.1a** is the shared
 - **Lighthouse** mobile on the production build, if there's time. No target is required.
 - **README:** setup, architecture, decisions (including what we left out, §1), the Product Owner notes (`docs/product-owner-notes.md`).
 - **Demo run-through:** `pnpm db:reset`, then every §2 example in the app.
+
+#### PR 7.2: Fixes from trying it on a phone
+- **Page header on phones:** the action sat beside the middle of a line squeezed to half the width. It now sits beside the title, with the line full width below (§5, Layout).
+- **Light only in dark mode:** shadcn's `dark:` styles followed the phone's dark mode, greying fields and buttons on a light page (§5, Theme).

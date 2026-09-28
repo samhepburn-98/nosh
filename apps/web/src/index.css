@@ -4,6 +4,11 @@
 /* Nunito Bold for headings, Latin only. Body text is system sans (docs/plan.md §5). */
 @import '@fontsource/nunito/latin-700.css';
 
+/* The app is light only. shadcn's components carry dark: styles; without this, Tailwind applies them
+   whenever the phone is in dark mode, greying fields and buttons on a light page. They now need a
+   .dark class, which nothing adds. */
+@custom-variant dark (&:is(.dark *));
+
 @theme inline {
   --font-heading: 'Nunito', Arial, sans-serif;
   --color-ring: var(--ring);
@@ -40,6 +45,8 @@
 
 /* Nosh brand colours. Contrast ratios are against the paired colour (docs/plan.md §5). */
 :root {
+  /* So the phone's own controls (pickers, scrollbars) stay light in dark mode too. */
+  color-scheme: light;
   --background: #ffffff;
   --foreground: #2e373e; /* Nosh Charcoal, 12.1:1 */
   --card: #ffffff;
@@ -69,6 +76,12 @@
 /* Keeps the bottom tab bar clear of the home indicator on notched phones. */
 @utility pb-safe {
   padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Two columns: the first takes the space left, the second is as wide as its content. For a page's
+   title beside its action. Tailwind has no default for this. */
+@utility grid-cols-fill-fit {
+  grid-template-columns: 1fr auto;
 }
 
 @layer base {
