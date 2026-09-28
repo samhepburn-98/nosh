@@ -19,7 +19,7 @@ import { usePlan } from '../api/get-plan';
 import { useRemoveMeal } from '../api/remove-meal';
 
 /**
- * The seven days in one bordered list, today highlighted. `onAdd` opens the page's recipe picker.
+ * The seven days in one bordered list (two columns of boxes from lg), today highlighted. `onAdd` opens the page's recipe picker.
  * `mondayAddButton` is set to Monday's "Add", so the page can send focus there after clearing.
  */
 export function Week({
@@ -41,7 +41,7 @@ export function Week({
 
   if (!data && !isError) {
     return (
-      <div className="flex flex-col gap-2">
+      <div className="grid gap-2 lg:grid-cols-2 lg:gap-4">
         <p role="status" className="sr-only">
           Loading your week
         </p>
@@ -69,7 +69,9 @@ export function Week({
   const today = todayDay();
 
   return (
-    <ul className="flex flex-col divide-y rounded-xl border">
+    // One bordered list on phones. From lg, each day is its own box in two columns, so a meal's ×
+    // stays near its name.
+    <ul className="flex flex-col divide-y rounded-xl border lg:grid lg:grid-cols-2 lg:gap-4 lg:divide-y-0 lg:border-0">
       {data.days.map(({ day, meals }) => (
         <DayRow
           key={day}
@@ -116,7 +118,7 @@ function DayRow({
   return (
     <li
       className={cn(
-        'flex flex-col gap-1 p-4 first:rounded-t-xl last:rounded-b-xl',
+        'flex flex-col gap-1 p-4 first:rounded-t-xl last:rounded-b-xl lg:rounded-xl lg:border',
         isToday && 'bg-accent',
       )}
       aria-current={isToday ? 'date' : undefined}

@@ -65,8 +65,9 @@ export function PreferencesForm() {
   };
 
   return (
-    <>
-      <FieldSet>
+    // From lg, the allergy note sits beside the choices rather than stretching under them.
+    <div className="grid gap-6 lg:grid-cols-3 lg:items-start">
+      <FieldSet className="lg:col-span-2">
         {/* A heading inside the legend, so the section looks like the app's other sections and screen
             readers can jump to it. */}
         <FieldLegend>
@@ -107,6 +108,6 @@ export function PreferencesForm() {
           ingredients before you cook.
         </AlertDescription>
       </Alert>
-    </>
+    </div>
   );
 }
