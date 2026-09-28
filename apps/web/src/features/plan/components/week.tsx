@@ -145,8 +145,14 @@ function DayRow({
       <div className="flex items-center justify-between gap-2">
         <h2 className="flex items-center gap-2 text-lg">
           {name}
-          {/* "Today" in words, so the highlight isn't only a colour. */}
-          {isToday && <Badge>Today</Badge>}
+          {/* "Today" in words, so the highlight isn't only a colour. The space keeps screen
+              readers from saying "MondayToday". */}
+          {isToday && (
+            <>
+              {' '}
+              <Badge>Today</Badge>
+            </>
+          )}
         </h2>
         <Button
           ref={addButtonRef}
