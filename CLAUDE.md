@@ -8,7 +8,7 @@ A meal-planning web app for Nosh, a charity helping low-income households eat we
 
 | Command | What it does |
 |---|---|
-| `pnpm dev` | API on :3001 and web on :5174 (Vite proxies `/api`) |
+| `pnpm dev` | API on :3002 and web on :5174 (Vite proxies `/api`) |
 | `pnpm check` | lint + format check + typecheck + test. **Run before every commit** |
 | `pnpm test` / `pnpm lint` / `pnpm typecheck` | Individually |
 | `pnpm format` | Prettier, writing changes |
@@ -48,11 +48,12 @@ packages/shared   zod schemas, inferred types, constants (DIETARY, MEAL_TYPES, D
 - **Shared code:** `@nosh/shared` (`workspace:*`) exports its TS source, with no build step. zod schemas are written by hand, and types come from `z.infer`.
 
 ### API
+- **Node runs the TypeScript directly** (no build step): relative imports end in `.ts`, and there are no enums or other non-erasable syntax (`erasableSyntaxOnly`).
 - **`domain/` is pure:** no Express, Drizzle, `better-sqlite3` or `node:*` imports. All business rules live here, with unit tests.
 - **`routes/` are thin:** validate with the shared zod schema, call repositories and domain code, respond. No business rules. They never import `db/`.
 - **`repositories/`** map database rows to domain objects.
 - **`createApp(db)`** builds the Express app, so tests can pass in an in-memory database. Route tests use `testing/create-test-app.ts` (a seeded in-memory database), so they never import `db/`.
-- **The API port is `API_PORT`** (default 3001), not `PORT`, which dev runners often set for the web app.
+- **The API port is `API_PORT`** (default 3002), not `PORT`, which dev runners often set for the web app.
 - **Errors** are always `{ error: { code, message, fields? } }`. zod failures become a 400 with `fields`.
 - **SQLite:** set `PRAGMA foreign_keys = ON` and `journal_mode = WAL` on every connection.
 

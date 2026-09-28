@@ -226,7 +226,9 @@ Every error is `{ error: { code, message, fields? } }`.
 ## 5. Architecture and UI
 
 ### Stack
-TypeScript (strict, pinned `~6.0`) · pnpm workspaces · **web:** React 19, Vite, React Router (declarative), TanStack Query, Tailwind v4, shadcn/ui (Base UI, lucide), react-hook-form (New recipe only) · **API:** Node 22, Express 5, Drizzle, better-sqlite3, `pluralize` · **shared:** zod schemas and constants · **tests:** Vitest, supertest · **lint:** ESLint's recommended sets (`@eslint/js`, `typescript-eslint` recommended-type-checked, `react-hooks`, `jsx-a11y`) and `eslint-config-prettier`, with no custom rules.
+TypeScript (strict, pinned `~6.0`) · pnpm workspaces · **web:** React 19, Vite, React Router (declarative), TanStack Query, Tailwind v4, shadcn/ui (Base UI, lucide), react-hook-form (New recipe only) · **API:** Node 22 (running the TypeScript directly, so no build step), Express 5, Drizzle, better-sqlite3, `pluralize` · **shared:** zod schemas and constants · **tests:** Vitest, supertest · **lint:** ESLint's recommended sets (`@eslint/js`, `typescript-eslint` recommended-type-checked, `react-hooks`, `jsx-a11y`) and `eslint-config-prettier`, with no custom rules.
+
+**Why Node runs the TypeScript itself:** Node 22 strips types natively, so the API and `@nosh/shared` run as written, with no build step and no `tsx`. The cost is two compiler settings: relative imports end in `.ts` (`allowImportingTsExtensions`), and only syntax that can be erased is allowed, so no enums (`erasableSyntaxOnly`).
 
 **Why Drizzle, not plain SQL:** the brief asks us to build it as we would for a client. Drizzle keeps the database typed like the rest of the app, adds real migrations, and parameterises every query, for a config file, a schema file and a few generated migrations.
 
@@ -363,7 +365,7 @@ Eight phases: setup, one for each brief feature, our own feature, and a final pa
 - **Check:**
   - all 20 starter recipes pass the schema
   - the seed makes 20 recipes, 79 ingredients and 132 lines matching the JSON
-  - `curl localhost:3001/api/recipes` returns 20
+  - `curl localhost:3002/api/recipes` returns 20
   - Porridge's `tags` are `["quick"]`
 
 ### Phase 1: Recipes (B1)

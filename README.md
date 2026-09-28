@@ -12,8 +12,9 @@ You need Node 22 and pnpm 12.
 
 ```bash
 pnpm install
-pnpm dev      # web on http://localhost:5174
+pnpm dev      # web on http://localhost:5174, API on http://localhost:3002
 pnpm check    # lint, format check, typecheck and tests
+pnpm db:reset # delete the database and seed it again from data/
 ```
 
 The full README (setup, architecture and decisions) comes in the final pass.

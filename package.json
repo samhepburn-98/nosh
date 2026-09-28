@@ -14,7 +14,8 @@
     "format:check": "prettier --check .",
     "typecheck": "pnpm --recursive typecheck",
     "test": "pnpm --recursive --if-present test",
-    "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm test"
+    "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm test",
+    "db:reset": "pnpm --filter @nosh/api db:reset"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
