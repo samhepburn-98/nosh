@@ -105,12 +105,13 @@ function RecipeArticle({ recipe, actions }: { recipe: Recipe; actions: ReactNode
 
         <section className="flex flex-col gap-3 lg:col-span-2">
           <h2 className="text-lg">Method</h2>
-          {/* Numbered in circles rather than list markers. role="list" keeps it a list for Safari's
-              screen reader, which drops it once the markers are gone. */}
+          {/* In a bordered list like the ingredients, numbered in circles rather than list markers.
+              role="list" keeps it a list for Safari's screen reader, which drops it once the
+              markers are gone. */}
           {/* eslint-disable-next-line jsx-a11y/no-redundant-roles -- see above */}
-          <ol role="list" className="flex flex-col gap-4">
+          <ol role="list" className="flex flex-col divide-y rounded-xl border px-4">
             {recipe.method.map((step, index) => (
-              <li key={index} className="flex gap-3">
+              <li key={index} className="flex gap-3 py-3">
                 <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary font-heading text-sm font-bold">
                   {index + 1}
                 </span>
