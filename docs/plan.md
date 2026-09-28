@@ -95,7 +95,7 @@ F4 (delete your own recipe) was cut to keep the app small (§1). The numbering i
 - Preferences screen (the settings button in the header): vegetarian, vegan, gluten-free, dairy-free. Saved as they're ticked.
 - **Rule:** a recipe fits if it has every selected tag. Vegan counts as vegetarian and dairy-free. Tags are never guessed from ingredients, so an untagged recipe fits nothing.
 - **Every list of recipes** (Recipes page, the plan's recipe picker, F8) shows the recipes that fit first. The rest follow under "These don't quite fit your preferences". Nothing is hidden.
-- Below the search, the recipes that fit sit under "These fit your preferences", with the chosen preferences as badges and an "Update preferences" button. With no preferences there are no headings: it's one list.
+- Below the search, the recipes that fit sit under "These fit your preferences", with the chosen preferences as badges and an "Update preferences" button. If none fit (or none that fit match the search), it says so under the heading, so the preferences and the button stay in view. With no preferences there are no headings: it's one list.
 - An allergy note sits under the checkboxes: recipes go by their labels, so check the ingredients.
 
 | Preferences | Recipes that fit |

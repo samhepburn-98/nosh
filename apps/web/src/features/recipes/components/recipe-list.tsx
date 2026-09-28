@@ -102,14 +102,19 @@ export function RecipeList({
         </Empty>
       ) : (
         <>
-          {/* Headings only when the preferences split the recipes, so with none it's one list. */}
-          {data.others.length > 0 && matching.length > 0 && (
+          {/* Headings only when the preferences split the recipes, so with none it's one list.
+              The preferences stay in view even when none of the recipes fit them. */}
+          {data.others.length > 0 && (
             <div className="flex flex-col gap-2">
               <h2 className="text-lg">These fit your preferences</h2>
               {preferences}
             </div>
           )}
-          {matching.length > 0 && <RecipeGrid recipes={matching} />}
+          {matching.length > 0 ? (
+            <RecipeGrid recipes={matching} />
+          ) : (
+            <p className="text-muted-foreground">{noneFit(term)}</p>
+          )}
           {/* Recipes that don't fit are never hidden, only listed after the ones that do. */}
           {others.length > 0 && (
             <>
@@ -133,6 +138,13 @@ function RecipeGrid({ recipes }: { recipes: RecipeSummary[] }) {
       ))}
     </ul>
   );
+}
+
+/** Under "These fit your preferences" when none of them do. */
+function noneFit(term: string) {
+  return term
+    ? `None of the recipes that fit match “${term}”.`
+    : 'None of the recipes fit all of these.';
 }
 
 function matchCount(count: number, term: string) {

@@ -81,14 +81,19 @@ export function KitchenMatches({
 
   return (
     <>
-      {/* Headings only when the preferences split the recipes, so with none it's one list. */}
-      {data.others.length > 0 && data.matching.length > 0 && (
+      {/* Headings only when the preferences split the recipes, so with none it's one list.
+          The preferences stay in view even when none of the recipes fit them. */}
+      {data.others.length > 0 && (
         <div className="flex flex-col gap-2">
           <h2 className="text-lg">These fit your preferences</h2>
           {preferences}
         </div>
       )}
-      {grid(data.matching)}
+      {data.matching.length > 0 ? (
+        grid(data.matching)
+      ) : (
+        <p className="text-muted-foreground">None of the recipes fit all of these.</p>
+      )}
       {data.others.length > 0 && (
         <>
           <h2 className="mt-4 text-lg">These don't quite fit your preferences</h2>
