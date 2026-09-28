@@ -143,9 +143,10 @@ function DayRow({
       {meals.length === 0 ? (
         <p className="text-muted-foreground">Nothing planned yet.</p>
       ) : (
-        <ItemGroup className="-mx-2.5 gap-0 has-data-[size=xs]:gap-0">
+        <ItemGroup className="-mx-2.5 w-auto gap-0 has-data-[size=xs]:gap-0">
           {/* Plain, compact items with no gap: their own padding spaces them. Pulled out by that
-              padding, so the names line up with the day's name. */}
+              padding on both sides (w-auto, as ItemGroup's w-full would stop the right side), so
+              names line up with the day's name and × with the Add button. */}
           {meals.map((meal) => (
             <Item key={meal.id} role="listitem" size="xs">
               <ItemContent>
