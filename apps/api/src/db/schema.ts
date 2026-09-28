@@ -129,3 +129,10 @@ export const preferences = sqliteTable(
   },
   (t) => [check('preferences_single_row', sql`${t.id} = 1`)],
 );
+
+/** The ingredients you have, one row each, for "From your kitchen". */
+export const kitchenItems = sqliteTable('kitchen_items', {
+  ingredientId: integer()
+    .primaryKey()
+    .references(() => ingredients.id, { onDelete: 'cascade' }),
+});

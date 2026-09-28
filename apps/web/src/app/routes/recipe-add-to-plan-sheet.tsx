@@ -19,8 +19,8 @@ import { useMediaQuery } from '@/hooks/use-media-query';
 import { todayDay } from '@/utils/today';
 
 /**
- * The recipe page's "Add to plan" sheet: the plan feature's day picker, for a recipe.
- * Today is picked to start with. Lazy-loaded, so it's downloaded when first opened.
+ * "Add to plan" for one recipe, from its page or a From your kitchen result: the plan feature's
+ * day picker. Today is picked to start with. Lazy-loaded, so it's downloaded when first opened.
  */
 export default function RecipeAddToPlanSheet({
   recipe,

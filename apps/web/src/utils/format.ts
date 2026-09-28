@@ -27,3 +27,11 @@ const listFormat = new Intl.ListFormat('en-GB', { type: 'conjunction' });
 export function formatDays(days: number[]) {
   return listFormat.format(days.map(dayName));
 }
+
+// en-US, for its serial comma: "eggs, bread, and salt and pepper" stays clear when a name has "and".
+const serialListFormat = new Intl.ListFormat('en-US', { type: 'conjunction' });
+
+/** ["eggs", "bread", "salt and pepper"] → "eggs, bread, and salt and pepper". */
+export function formatSerialList(items: string[]) {
+  return serialListFormat.format(items);
+}

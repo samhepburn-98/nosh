@@ -22,6 +22,13 @@
       "when": 1790605328433,
       "tag": "0002_preferences",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1790610110110,
+      "tag": "0003_kitchen-items",
+      "breakpoints": true
     }
   ]
 }

@@ -19,6 +19,8 @@ export const useCreateRecipe = ({
       void queryClient.invalidateQueries({ queryKey: queryKeys.recipes });
       // It may have added new ingredients.
       void queryClient.invalidateQueries({ queryKey: queryKeys.ingredients });
+      // From your kitchen ranks every recipe, grouped by the preferences.
+      void queryClient.invalidateQueries({ queryKey: queryKeys.kitchenMatches });
       return onSuccess?.(...args);
     },
     ...restConfig,

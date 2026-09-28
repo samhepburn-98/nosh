@@ -26,6 +26,8 @@ export const useUpdatePreferences = ({
     onSuccess: (...args) => {
       // Every list of recipes is split by the preferences.
       void queryClient.invalidateQueries({ queryKey: queryKeys.recipes });
+      // From your kitchen ranks every recipe, grouped by the preferences.
+      void queryClient.invalidateQueries({ queryKey: queryKeys.kitchenMatches });
       return onSuccess?.(...args);
     },
     onError: (...args) => {

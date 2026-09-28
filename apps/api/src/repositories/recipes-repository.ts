@@ -97,6 +97,20 @@ export function createRecipesRepository(db: Db) {
       return rows.map(labelsFor());
     },
 
+    /** Every recipe's ingredient names, in order, by slug. */
+    listIngredientNames(): Map<string, string[]> {
+      const rows = db
+        .select({ slug: recipes.slug, name: ingredients.name })
+        .from(recipeIngredients)
+        .innerJoin(recipes, eq(recipeIngredients.recipeId, recipes.id))
+        .innerJoin(ingredients, eq(recipeIngredients.ingredientId, ingredients.id))
+        .orderBy(asc(recipeIngredients.recipeId), asc(recipeIngredients.position))
+        .all();
+      const names = new Map<string, string[]>();
+      for (const { slug, name } of rows) names.set(slug, [...(names.get(slug) ?? []), name]);
+      return names;
+    },
+
     /** One recipe's summary, or undefined if there's no recipe with that slug. */
     findSummary(slug: string): RecipeSummary | undefined {
       const row = db.select(summaryColumns).from(recipes).where(eq(recipes.slug, slug)).get();

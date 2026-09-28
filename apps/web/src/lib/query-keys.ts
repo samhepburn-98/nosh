@@ -7,4 +7,6 @@ export const queryKeys = {
   shoppingList: ['shopping-list'],
   preferences: ['preferences'],
   ingredients: ['ingredients'],
+  kitchen: ['kitchen'],
+  kitchenMatches: ['kitchen-matches'],
 } as const;

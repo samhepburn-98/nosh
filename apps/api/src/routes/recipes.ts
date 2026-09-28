@@ -17,7 +17,11 @@ export function recipesRouter(
   const router = Router();
 
   router.get('/', (_req, res) => {
-    const body: RecipeGroups = groupByPreferences(recipes.listSummaries(), preferences.get());
+    const body: RecipeGroups = groupByPreferences(
+      recipes.listSummaries(),
+      preferences.get(),
+      (recipe) => recipe.dietary,
+    );
     res.json(body);
   });
 

@@ -41,7 +41,7 @@ describe('groupByPreferences', () => {
       { name: 'Salad', dietary: ['vegetarian'] as Dietary[] },
     ];
 
-    expect(groupByPreferences(recipes, ['vegetarian'])).toEqual({
+    expect(groupByPreferences(recipes, ['vegetarian'], (recipe) => recipe.dietary)).toEqual({
       matching: [recipes[0], recipes[2]],
       others: [recipes[1]],
     });
@@ -50,12 +50,24 @@ describe('groupByPreferences', () => {
   it('puts everything in matching when there are no preferences', () => {
     const recipes = [{ name: 'Stew', dietary: [] as Dietary[] }];
 
-    expect(groupByPreferences(recipes, [])).toEqual({ matching: recipes, others: [] });
+    expect(groupByPreferences(recipes, [], (recipe) => recipe.dietary)).toEqual({
+      matching: recipes,
+      others: [],
+    });
+  });
+
+  it('reads the tags from inside each item', () => {
+    const items = [{ recipe: { dietary: ['vegan'] as Dietary[] } }, { recipe: { dietary: [] } }];
+
+    expect(groupByPreferences(items, ['vegan'], (item) => item.recipe.dietary)).toEqual({
+      matching: [items[0]],
+      others: [items[1]],
+    });
   });
 
   describe('the F5 table', () => {
     const matchingNames = (preferences: Dietary[]) =>
-      groupByPreferences(starterRecipes, preferences)
+      groupByPreferences(starterRecipes, preferences, (recipe) => recipe.dietary)
         .matching.map((recipe) => recipe.name)
         .sort();
 
