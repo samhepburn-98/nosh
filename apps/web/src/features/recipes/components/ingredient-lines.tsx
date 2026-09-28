@@ -49,7 +49,11 @@ export function IngredientLines({
 
   return (
     <FieldSet>
-      <FieldLegend>Ingredients</FieldLegend>
+      {/* A heading inside the legend, so the section looks like the app's other sections and screen
+          readers can jump to it. */}
+      <FieldLegend>
+        <h2 className="text-lg">Ingredients</h2>
+      </FieldLegend>
       <FieldDescription>
         Leave the amount blank for things like salt and pepper. Anything else, like “a pinch” or “a
         bunch”, can go in Prep.

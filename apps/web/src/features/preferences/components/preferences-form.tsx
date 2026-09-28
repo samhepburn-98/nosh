@@ -67,7 +67,11 @@ export function PreferencesForm() {
   return (
     <>
       <FieldSet>
-        <FieldLegend>Dietary preferences</FieldLegend>
+        {/* A heading inside the legend, so the section looks like the app's other sections and screen
+            readers can jump to it. */}
+        <FieldLegend>
+          <h2 className="text-lg">Dietary preferences</h2>
+        </FieldLegend>
         <FieldDescription>
           Recipes that fit every choice are shown first. The rest are still there, further down.
         </FieldDescription>

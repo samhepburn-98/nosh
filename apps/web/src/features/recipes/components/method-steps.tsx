@@ -39,7 +39,11 @@ export function MethodSteps({
 
   return (
     <FieldSet>
-      <FieldLegend>Method</FieldLegend>
+      {/* A heading inside the legend, so the section looks like the app's other sections and screen
+          readers can jump to it. */}
+      <FieldLegend>
+        <h2 className="text-lg">Method</h2>
+      </FieldLegend>
       <ol className="flex flex-col gap-6">
         {fields.map((field, index) => {
           const step = `${id}-${index}`;
