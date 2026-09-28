@@ -75,8 +75,11 @@ The brief mentions "nutritional recipes". "Quick" has no definition.
 ## 8. Logo
 - [ ] Raised
 
-- Is there an approved side-by-side lockup, and may the mark be used alone (we use it as the favicon)?
+The brand pack supplies the mark and the wordmark as separate images, and only shows them stacked, the mark above the wordmark. A stacked logo is too tall for a phone's top bar, so we've put them side by side.
+
+- **Is there a horizontal (side-by-side) version of the logo** we should use instead? If not, is our arrangement acceptable: the mark to the left of the wordmark, 6px apart, both unaltered?
+- May the mark be used alone? We use it as the favicon.
 - The "Meal planning platform" line can't be read at top-bar size. Is there a wordmark without it?
 - Clear space limits the logo to 30px tall in the top bar. Would they accept less clear space there?
 
-**Meanwhile:** the mark and wordmark sit side by side, unaltered, 30px tall with the "O"-width clear space.
+**Meanwhile:** the mark and the wordmark sit side by side, 6px apart, unaltered, 30px tall, with the "O"-width clear space around the whole logo.

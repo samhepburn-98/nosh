@@ -145,4 +145,4 @@ Things only Nosh can answer, mostly about their data. Details, and what the app 
 5. **Near-duplicate ingredients,** such as porridge oats and rolled oats.
 6. **Servings range from 1 to 6.** Should the list scale to household size?
 7. **No prices, pack sizes, nutrition or cook times.**
-8. **The logo:** its lockup, the mark alone as a favicon, and clear space in the top bar.
+8. **The logo:** is there a horizontal version, or is our side-by-side arrangement right? Also the mark alone as a favicon, and clear space in the top bar.

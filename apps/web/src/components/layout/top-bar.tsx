@@ -11,10 +11,11 @@ export function TopBar() {
   return (
     <header className="bg-header text-header-foreground">
       <div className="mx-auto flex h-18 max-w-5xl items-center justify-between px-4">
-        {/* The logo is 30px tall, leaving the "O"-width clear space around it (docs/plan.md §5). */}
+        {/* The logo is 30px tall, leaving the "O"-width clear space around it (docs/plan.md §5). The
+            mark sits close to the wordmark, so the two read as one logo. */}
         <Link
           to={paths.plan}
-          className="flex h-11 items-center gap-4.5 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+          className="flex h-11 items-center gap-1.5 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
         >
           <img src={logoMark} alt="" width={27} height={30} className="h-7.5 w-auto" />
           <img src={logoWordmark} alt="Nosh" width={81} height={30} className="h-7.5 w-auto" />
