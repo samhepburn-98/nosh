@@ -68,8 +68,12 @@ export function RecipeList({
 
   return (
     <>
-      {/* Read out as the results change. Hidden when nothing matches, as the empty state says it. */}
-      <p role="status" className={cn('text-muted-foreground', recipes.length === 0 && 'sr-only')}>
+      {/* Read out as the results change. Visually hidden with no search (so it takes no space) and
+          when nothing matches (the empty state says it). */}
+      <p
+        role="status"
+        className={cn('text-muted-foreground', (!term || recipes.length === 0) && 'sr-only')}
+      >
         {term && matchCount(recipes.length, term)}
       </p>
       {recipes.length === 0 ? (

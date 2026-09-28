@@ -1,7 +1,8 @@
+import { Search } from 'lucide-react';
 import { useId, type Ref } from 'react';
 
 import { Field, FieldLabel } from '@/components/ui/field';
-import { Input } from '@/components/ui/input';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
 
 export function RecipeSearch({
   value,
@@ -16,16 +17,25 @@ export function RecipeSearch({
 
   return (
     <Field>
-      <FieldLabel htmlFor={id}>Search by name</FieldLabel>
-      <Input
-        id={id}
-        ref={ref}
-        type="search"
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        autoComplete="off"
-        enterKeyHint="search"
-      />
+      {/* Hidden, as the icon and placeholder say what the box is for, but still read out. */}
+      <FieldLabel htmlFor={id} className="sr-only">
+        Search recipes
+      </FieldLabel>
+      <InputGroup>
+        <InputGroupInput
+          id={id}
+          ref={ref}
+          type="search"
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          placeholder="Search recipes, like “soup”"
+          autoComplete="off"
+          enterKeyHint="search"
+        />
+        <InputGroupAddon>
+          <Search aria-hidden />
+        </InputGroupAddon>
+      </InputGroup>
     </Field>
   );
 }

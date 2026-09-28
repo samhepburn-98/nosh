@@ -26,10 +26,7 @@ export default function RecipesRoute() {
     <>
       <title>Recipes · Nosh</title>
       <h1 className="text-2xl">Recipes</h1>
-      {/* The search sits in the first column of the card grid, so it lines up with the cards. */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <RecipeSearch ref={searchRef} value={search} onChange={setSearch} />
-      </div>
+      <RecipeSearch ref={searchRef} value={search} onChange={setSearch} />
       <RecipeList
         search={search}
         onClearSearch={() => {
