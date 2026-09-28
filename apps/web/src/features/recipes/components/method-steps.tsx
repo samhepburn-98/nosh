@@ -3,7 +3,14 @@ import { useEffect, useId, useRef } from 'react';
 import { useFieldArray, type UseFormReturn } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
-import { Field, FieldError, FieldLabel, FieldLegend, FieldSet } from '@/components/ui/field';
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from '@/components/ui/field';
 import { Textarea } from '@/components/ui/textarea';
 
 import type { RecipeFormOutput, RecipeFormValues } from '../utils/recipe-form';
@@ -44,6 +51,7 @@ export function MethodSteps({
       <FieldLegend>
         <h2 className="text-lg">Method</h2>
       </FieldLegend>
+      <FieldDescription>Write each step on its own, in the order you'd do them.</FieldDescription>
       <ol className="flex flex-col gap-6">
         {fields.map((field, index) => {
           const step = `${id}-${index}`;

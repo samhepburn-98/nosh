@@ -79,7 +79,10 @@ export function KitchenPicker({ ingredients }: { ingredients: Ingredient[] }) {
             </ComboboxList>
           </ComboboxContent>
         </Combobox>
-        <FieldDescription>It goes by what you have, not how much of it.</FieldDescription>
+        <FieldDescription>
+          Pick what you already have, and the recipes that need the fewest extra things come first.
+          It goes by what you have, not how much of it.
+        </FieldDescription>
       </Field>
       {picked.length > 0 && (
         <div className="flex flex-wrap items-center gap-2">

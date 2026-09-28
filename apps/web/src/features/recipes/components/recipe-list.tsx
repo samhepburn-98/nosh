@@ -121,7 +121,13 @@ export function RecipeList({
           {/* Recipes that don't fit are never hidden, only listed after the ones that do. */}
           {others.length > 0 && (
             <>
-              <h2 className="mt-4 text-lg">These don't quite fit your preferences</h2>
+              <div className="mt-4 flex flex-col gap-2">
+                <h2 className="text-lg">These don't quite fit your preferences</h2>
+                <p className="text-muted-foreground">
+                  They aren't labelled with all of your preferences, so check the ingredients before
+                  you cook.
+                </p>
+              </div>
               <RecipeGrid recipes={others} heading={cardHeading} />
             </>
           )}

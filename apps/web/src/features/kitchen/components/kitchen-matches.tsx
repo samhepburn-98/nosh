@@ -89,6 +89,9 @@ export function KitchenMatches({
 
   return (
     <>
+      {!hasPicks && (
+        <p className="text-muted-foreground">Nothing picked yet, so here's every recipe, A–Z.</p>
+      )}
       {/* Headings only when the preferences split the recipes, so with none it's one list.
           The preferences stay in view even when none of the recipes fit them. */}
       {isSplit && (
@@ -104,7 +107,13 @@ export function KitchenMatches({
       )}
       {data.others.length > 0 && (
         <>
-          <h2 className="mt-4 text-lg">These don't quite fit your preferences</h2>
+          <div className="mt-4 flex flex-col gap-2">
+            <h2 className="text-lg">These don't quite fit your preferences</h2>
+            <p className="text-muted-foreground">
+              They aren't labelled with all of your preferences, so check the ingredients before you
+              cook.
+            </p>
+          </div>
           {grid(data.others)}
         </>
       )}

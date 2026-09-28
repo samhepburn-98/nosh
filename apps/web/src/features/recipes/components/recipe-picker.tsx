@@ -145,7 +145,13 @@ function RecipeChoices({
       )}
       {others.length > 0 && (
         <>
-          <h3 className="mt-4 px-3 pb-2">These don't quite fit your preferences</h3>
+          <div className="mt-4 flex flex-col gap-1 px-3 pb-2">
+            <h3>These don't quite fit your preferences</h3>
+            <p className="text-sm text-muted-foreground">
+              They aren't labelled with all of your preferences, so check the ingredients before you
+              cook.
+            </p>
+          </div>
           {choices(others)}
         </>
       )}

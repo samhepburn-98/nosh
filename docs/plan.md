@@ -94,7 +94,7 @@ F4 (delete your own recipe) was cut to keep the app small (§1). The numbering i
 ### F5. Dietary preferences (B2)
 - Preferences screen (the settings button in the header): vegetarian, vegan, gluten-free, dairy-free. Saved as they're ticked.
 - **Rule:** a recipe fits if it has every selected tag. Vegan counts as vegetarian and dairy-free. Tags are never guessed from ingredients, so an untagged recipe fits nothing.
-- **Every list of recipes** (Recipes page, the plan's recipe picker, F8) shows the recipes that fit first. The rest follow under "These don't quite fit your preferences". Nothing is hidden.
+- **Every list of recipes** (Recipes page, the plan's recipe picker, F8) shows the recipes that fit first. The rest follow under "These don't quite fit your preferences", with a line saying why: "They aren't labelled with all of your preferences, so check the ingredients before you cook." Nothing is hidden.
 - Below the search, the recipes that fit sit under "These fit your preferences", with the chosen preferences as badges and an "Update preferences" button. If none fit (or none that fit match the search), it says so under the heading, so the preferences and the button stay in view. With no preferences there are no headings: it's one list.
 - An allergy note sits under the checkboxes: recipes go by their labels, so check the ingredients.
 
@@ -141,7 +141,7 @@ F4 (delete your own recipe) was cut to keep the app small (§1). The numbering i
 - **Everything counts,** salt and pepper and oil included. There's no staples list, because which ingredients are staples would be our guess. You tick them if you have them.
 - **Matching:** by singular form (§3), so "carrot" covers "carrots". "Pepper" isn't "red pepper" or "salt and pepper".
 - **Amounts:** the hint under the picker says it goes by what you have, not how much of it.
-- **Nothing picked:** every recipe shows A–Z, without counts.
+- **Nothing picked:** every recipe shows A–Z, without counts, under "Nothing picked yet, so here's every recipe, A–Z."
 
 Having potatoes, onion, chopped tomatoes, butter and milk gives:
 

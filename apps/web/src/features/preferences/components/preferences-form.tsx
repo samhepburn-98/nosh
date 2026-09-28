@@ -74,7 +74,8 @@ export function PreferencesForm() {
           <h2 className="text-lg">Dietary preferences</h2>
         </FieldLegend>
         <FieldDescription>
-          Recipes that fit every choice are shown first. The rest are still there, further down.
+          Recipes that fit all your choices come first, and the rest are still there below. Changes
+          save as you tick.
         </FieldDescription>
         {/* One bordered list, like the week and the shopping list. Each row is a label, so the whole
             row is the tap target, and shadcn tints it when it's ticked. */}

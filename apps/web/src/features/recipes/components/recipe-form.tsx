@@ -13,6 +13,7 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   Field,
+  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -144,6 +145,7 @@ export function RecipeForm({ onSaved }: { onSaved: (recipe: Recipe) => void }) {
             <Choices
               id={`${id}-meal-types`}
               legend="Meal types"
+              description="Tick all that fit."
               options={MEAL_TYPES}
               format={(mealType) => formatMealTypes([mealType])}
               value={field.value}
@@ -161,6 +163,7 @@ export function RecipeForm({ onSaved }: { onSaved: (recipe: Recipe) => void }) {
             <Choices
               id={`${id}-dietary`}
               legend="Dietary (optional)"
+              description="Only tick what's true for the whole recipe. It's how recipes are matched to preferences."
               options={DIETARY}
               format={formatDietary}
               value={field.value ?? []}
@@ -189,6 +192,7 @@ export function RecipeForm({ onSaved }: { onSaved: (recipe: Recipe) => void }) {
 function Choices<Value extends string>({
   id,
   legend,
+  description,
   options,
   format,
   value,
@@ -198,6 +202,7 @@ function Choices<Value extends string>({
 }: {
   id: string;
   legend: string;
+  description: string;
   options: readonly Value[];
   format: (value: Value) => string;
   value: Value[];
@@ -208,6 +213,7 @@ function Choices<Value extends string>({
   return (
     <FieldSet data-invalid={Boolean(error)}>
       <FieldLegend variant="label">{legend}</FieldLegend>
+      <FieldDescription>{description}</FieldDescription>
       <div className="flex flex-wrap gap-x-6 gap-y-3">
         {options.map((option, index) => (
           <Field key={option} orientation="horizontal" className="w-auto">
