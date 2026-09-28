@@ -175,11 +175,11 @@ Adding salt and pepper and olive oil gives: 1 Sausage and Mash, 2 Tomato Soup (h
 | Count | no unit | added |
 | Named | tin, slice, rasher, clove, thumb, ball, handful | added only with the same unit |
 
-- **Same kind combines:** 1 kg + 100 g = 1.1 kg, 500 ml + 2 tbsp = 530 ml. **A shared unit is kept:** 1 tbsp + 2 tbsp = 3 tbsp.
-- **Different kinds are never converted into each other.** They share a line: "600 g + 2". Counting chicken breasts as grams would mean guessing a weight.
+- **Same kind combines:** 1 kg + 100 g = 1.1 kg, 500 ml + 2 tbsp = 530 ml, 1 tsp + 1 tbsp = 20 ml. **A shared unit is kept:** 1 tbsp + 2 tbsp = 3 tbsp.
+- **Different kinds are never converted into each other.** They share a line: "600 g + 2". Counting chicken breasts as grams would mean guessing a weight. The order is always weight, volume, count, then named units.
 - **Display:** 1000 g or more as kg, 1000 ml or more as l. Named units plural when not 1 ("2 tins").
-- **Rounding, after adding up:** counts and named units up to whole numbers, g and ml to the nearest whole, tsp and tbsp to the nearest 0.5. Never rounded down to zero.
-- **No amount** (salt and pepper): listed with no amount. No staples group.
+- **Rounding, after adding up:** counts and named units up to whole numbers, g and ml to the nearest whole, tsp and tbsp to the nearest 0.5. Never rounded down to zero. So 0.5 + 0.5 onions is 1, not 2.
+- **No amount** (salt and pepper): listed with no amount. If another recipe does give one, the line shows that amount. No staples group.
 
 ---
 
@@ -212,7 +212,7 @@ Adding salt and pepper and olive oil gives: 1 Sausage and Mash, 2 Tomato Soup (h
 | `POST /api/plan` | `{ day, recipeSlug }`: adds a meal. 201, or 400 with a message per field | 2.1 |
 | `DELETE /api/plan/:id` | Removes one meal. 404 if it isn't there | 2.1 |
 | `DELETE /api/plan` | Clears the week | 2.1 |
-| `GET /api/shopping-list` | `{ items: [{ name, amounts, amountText, usedIn }] }`, A–Z, built from the plan | 3.2 |
+| `GET /api/shopping-list` | `{ items: [{ name, amounts, amountText, usedIn }] }`, A–Z, built from the plan. `usedIn` is the names of the planned recipes that use it, each once, A–Z | 3.2 |
 | `GET` / `PUT /api/preferences` | Reads or replaces the dietary preferences | 4.1 |
 | `GET /api/ingredients` | Known ingredients `[{ id, name }]`, A–Z, for the autocomplete | 5.1 |
 | `POST /api/recipes` | Adds your recipe. Each ingredient is `{ kind: 'existing', id }` or `{ kind: 'new', name }`. 201 with the recipe, or 400 per field | 5.1 |
@@ -257,7 +257,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 
 | Screen | Layout | PR |
 |---|---|---|
-| Plan | Seven rows in one bordered list, today highlighted. Each day: name, "Add" (icon and text), then its meals, or empty. "Clear week" at the bottom | 2.1 |
+| Plan | Seven rows in one bordered list, today highlighted. Each day: name, "Add" (icon and text), then its meals, or empty. "Clear week" at the top, opposite the title | 2.1 |
 | Add to plan | A sheet from the bottom on phones, from the right from `md` | 2.1, 2.2 |
 | Recipes | "All recipes" / "From your kitchen" tabs. On "All recipes": search, the preference line, cards in `sm:grid-cols-2 lg:grid-cols-3`. "New recipe" in the header | 1.1, 4.1, 5.1, 6.1 |
 | Recipe | Badges, "Add to plan", then ingredients (1 column) and method (2 columns) from `lg` | 1.2, 2.2, 5.1 |
