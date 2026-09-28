@@ -2,7 +2,9 @@ import request from 'supertest';
 import { describe, expect, it } from 'vitest';
 
 import { errorBodySchema } from '@nosh/shared/errors';
+import { ingredientSchema } from '@nosh/shared/ingredients';
 import { recipeGroupsSchema, recipeSchema } from '@nosh/shared/recipes';
+import { shoppingListSchema } from '@nosh/shared/shopping-list';
 
 import { createTestApp } from '../testing/create-test-app.ts';
 
@@ -45,6 +47,7 @@ describe('GET /api/recipes', () => {
       mealTypes: ['breakfast'],
       dietary: ['vegetarian'],
       tags: ['quick'],
+      isOwn: false,
     });
   });
 
@@ -115,5 +118,149 @@ describe('GET /api/recipes/:slug', () => {
     const res = await request(createTestApp()).get('/api/recipes/beans-on-toast').expect(404);
 
     expect(errorBodySchema.parse(res.body).error.code).toBe('recipe_not_found');
+  });
+});
+
+describe('POST /api/recipes', () => {
+  const leekSoup = {
+    name: 'Leek Soup',
+    serves: 4,
+    mealTypes: ['lunch'],
+    dietary: ['vegetarian'],
+    ingredients: [
+      { quantity: 2, unit: null, ingredient: { kind: 'new', name: 'leeks' }, prep: 'sliced' },
+      {
+        quantity: 500,
+        unit: 'ml',
+        ingredient: { kind: 'new', name: 'Vegetable Stock' },
+        prep: null,
+      },
+      {
+        quantity: null,
+        unit: null,
+        ingredient: { kind: 'new', name: 'salt and pepper' },
+        prep: null,
+      },
+    ],
+    method: ['Soften the leeks.', 'Add the stock and simmer for 20 minutes.'],
+  };
+
+  async function ingredientsOf(app: ReturnType<typeof createTestApp>) {
+    const res = await request(app).get('/api/ingredients').expect(200);
+    return ingredientSchema.array().parse(res.body);
+  }
+
+  it('adds the recipe and answers 201 with it in full, as your own', async () => {
+    const app = createTestApp();
+
+    const res = await request(app).post('/api/recipes').send(leekSoup).expect(201);
+
+    expect(recipeSchema.parse(res.body)).toEqual({
+      slug: 'leek-soup',
+      name: 'Leek Soup',
+      serves: 4,
+      mealTypes: ['lunch'],
+      dietary: ['vegetarian'],
+      tags: [],
+      isOwn: true,
+      ingredients: [
+        { amount: '2', name: 'leeks', prep: 'sliced' },
+        { amount: '500 ml', name: 'vegetable stock', prep: null },
+        { amount: null, name: 'salt and pepper', prep: null },
+      ],
+      method: ['Soften the leeks.', 'Add the stock and simmer for 20 minutes.'],
+      plannedOn: [],
+    });
+    await request(app).get('/api/recipes/leek-soup').expect(200);
+    const { matching } = await recipeGroupsOf(app);
+    expect(matching.find((recipe) => recipe.slug === 'leek-soup')?.isOwn).toBe(true);
+  });
+
+  it('adds a new ingredient once, and links names it already knows', async () => {
+    const app = createTestApp();
+    await request(app)
+      .post('/api/recipes')
+      .send({
+        ...leekSoup,
+        ingredients: [
+          ...leekSoup.ingredients,
+          { quantity: 1, unit: null, ingredient: { kind: 'new', name: 'Leeks' }, prep: null },
+        ],
+      })
+      .expect(201);
+
+    const names = (await ingredientsOf(app)).map((ingredient) => ingredient.name);
+    // 79 starter ingredients, plus "leeks". "Vegetable Stock" and "salt and pepper" are known.
+    expect(names).toHaveLength(80);
+    expect(names).toContain('leeks');
+    expect(names).not.toContain('Vegetable Stock');
+  });
+
+  it('links "Carrot" to "carrot", so it adds up with Shepherd\'s Pie\'s carrots', async () => {
+    const app = createTestApp();
+    const res = await request(app)
+      .post('/api/recipes')
+      .send({
+        ...leekSoup,
+        name: 'Carrot Mash',
+        ingredients: [
+          { quantity: 3, unit: null, ingredient: { kind: 'new', name: 'Carrot' }, prep: null },
+        ],
+      })
+      .expect(201);
+    for (const recipeSlug of [recipeSchema.parse(res.body).slug, 'shepherds-pie']) {
+      await request(app).post('/api/plan').send({ day: 1, recipeSlug }).expect(201);
+    }
+
+    const list = shoppingListSchema.parse((await request(app).get('/api/shopping-list')).body);
+    expect(list.items.find((item) => item.name === 'carrots')).toMatchObject({
+      amountText: '5',
+      usedIn: ['Carrot Mash', "Shepherd's Pie"],
+    });
+  });
+
+  it('gives a second "Tomato Soup" the slug tomato-soup-2', async () => {
+    const res = await request(createTestApp())
+      .post('/api/recipes')
+      .send({ ...leekSoup, name: 'Tomato Soup' })
+      .expect(201);
+
+    expect(recipeSchema.parse(res.body).slug).toBe('tomato-soup-2');
+  });
+
+  it('answers an empty form with a message per field, and saves nothing', async () => {
+    const app = createTestApp();
+
+    const res = await request(app).post('/api/recipes').send({}).expect(400);
+
+    expect(Object.keys(errorBodySchema.parse(res.body).error.fields ?? {})).toEqual([
+      'name',
+      'serves',
+      'mealTypes',
+      'ingredients',
+      'method',
+    ]);
+    expect((await recipeGroupsOf(app)).matching).toHaveLength(20);
+  });
+
+  it('refuses an ingredient id it does not know, and saves nothing', async () => {
+    const app = createTestApp();
+
+    const res = await request(app)
+      .post('/api/recipes')
+      .send({
+        ...leekSoup,
+        ingredients: [
+          leekSoup.ingredients[0],
+          { quantity: 1, unit: null, ingredient: { kind: 'existing', id: 9999 }, prep: null },
+        ],
+      })
+      .expect(400);
+
+    expect(errorBodySchema.parse(res.body).error.fields).toEqual({
+      'ingredients.1.ingredient': "We can't find that ingredient.",
+    });
+    expect((await recipeGroupsOf(app)).matching).toHaveLength(20);
+    expect(await ingredientsOf(app)).toHaveLength(79);
   });
 });

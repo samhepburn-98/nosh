@@ -2,7 +2,7 @@ import { asc, eq, sql } from 'drizzle-orm';
 
 import { DIETARY, type Dietary } from '@nosh/shared/dietary';
 import { MEAL_TYPES, type MealType } from '@nosh/shared/meal-types';
-import type { RecipeSummary } from '@nosh/shared/recipes';
+import type { NewRecipe, RecipeSummary } from '@nosh/shared/recipes';
 import type { Unit } from '@nosh/shared/units';
 
 import type { Db } from '../db/client.ts';
@@ -17,6 +17,8 @@ import {
   recipeTags,
   tags,
 } from '../db/schema.ts';
+import { matchIngredient } from '../domain/ingredients.ts';
+import { uniqueSlug } from '../domain/slugs.ts';
 
 /** An ingredient line as stored. The route turns quantity and unit into the amount people read. */
 export type StoredIngredientLine = {
@@ -37,6 +39,7 @@ const summaryColumns = {
   slug: recipes.slug,
   name: recipes.name,
   serves: recipes.serves,
+  isBuiltin: recipes.isBuiltin,
 };
 
 export function createRecipesRepository(db: Db) {
@@ -64,8 +67,19 @@ export function createRecipesRepository(db: Db) {
     const tagsByRecipe = groupByRecipe(tagRows, 'name');
 
     /** Dietary tags and meal types are in display order, tags A–Z. */
-    return ({ id, ...recipe }: { id: number; slug: string; name: string; serves: number }) => ({
+    return ({
+      id,
+      isBuiltin,
+      ...recipe
+    }: {
+      id: number;
+      slug: string;
+      name: string;
+      serves: number;
+      isBuiltin: boolean;
+    }) => ({
       ...recipe,
+      isOwn: !isBuiltin,
       mealTypes: inOrder(mealTypesByRecipe.get(id), MEAL_TYPES),
       dietary: inOrder(dietaryByRecipe.get(id), DIETARY),
       tags: (tagsByRecipe.get(id) ?? []).sort(),
@@ -87,6 +101,73 @@ export function createRecipesRepository(db: Db) {
     findSummary(slug: string): RecipeSummary | undefined {
       const row = db.select(summaryColumns).from(recipes).where(eq(recipes.slug, slug)).get();
       return row && labelsFor(row.id)(row);
+    },
+
+    /**
+     * Adds the user's recipe in one transaction, and returns its slug. A new ingredient name uses
+     * a known ingredient with the same singular form if there is one (so "Carrot" uses "carrot"),
+     * and is added otherwise. Ids of known ingredients must exist.
+     */
+    create(recipe: NewRecipe): string {
+      return db.transaction((tx) => {
+        const taken = new Set(
+          tx
+            .select({ slug: recipes.slug })
+            .from(recipes)
+            .all()
+            .map((row) => row.slug),
+        );
+        const slug = uniqueSlug(recipe.name, taken);
+        const recipeId = tx
+          .insert(recipes)
+          // The form doesn't ask for a cuisine, and nothing shows one.
+          .values({ slug, name: recipe.name, cuisine: '', serves: recipe.serves, isBuiltin: false })
+          .returning({ id: recipes.id })
+          .get().id;
+
+        // Grows as new names are added, so the same new name twice is added once.
+        const known = tx
+          .select({ id: ingredients.id, name: ingredients.name })
+          .from(ingredients)
+          .all();
+        const ingredientId = (ingredient: NewRecipe['ingredients'][number]['ingredient']) => {
+          if (ingredient.kind === 'existing') return ingredient.id;
+          const match = matchIngredient(ingredient.name, known);
+          if (match) return match.id;
+          const added = tx
+            .insert(ingredients)
+            .values({ name: ingredient.name })
+            .returning({ id: ingredients.id, name: ingredients.name })
+            .get();
+          known.push(added);
+          return added.id;
+        };
+
+        tx.insert(recipeSteps)
+          .values(recipe.method.map((text, position) => ({ recipeId, position, text })))
+          .run();
+        tx.insert(recipeIngredients)
+          .values(
+            recipe.ingredients.map((line, position) => ({
+              recipeId,
+              position,
+              ingredientId: ingredientId(line.ingredient),
+              quantity: line.quantity,
+              unit: line.unit,
+              prep: line.prep,
+            })),
+          )
+          .run();
+        tx.insert(recipeMealTypes)
+          .values(recipe.mealTypes.map((mealType) => ({ recipeId, mealType })))
+          .run();
+        if (recipe.dietary.length > 0) {
+          tx.insert(recipeDietary)
+            .values(recipe.dietary.map((dietary) => ({ recipeId, dietary })))
+            .run();
+        }
+        return slug;
+      });
     },
 
     /** One recipe in full, with its ingredient lines and method in order. */

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { starterIngredientNames } from '../testing/starter-recipes.ts';
-import { toKey } from './ingredients.ts';
+import { matchIngredient, toKey } from './ingredients.ts';
 
 describe('toKey', () => {
   it('lowercases and trims', () => {
@@ -46,5 +46,31 @@ describe('toKey', () => {
       ['apple', 'apples'],
       ['carrot', 'carrots'],
     ]);
+  });
+});
+
+describe('matchIngredient', () => {
+  const known = [
+    { id: 1, name: 'carrot' },
+    { id: 2, name: 'carrots' },
+    { id: 3, name: 'tomatoes' },
+    { id: 4, name: 'red pepper' },
+  ];
+
+  it('matches a name exactly, ignoring case and spaces', () => {
+    expect(matchIngredient('  Carrot ', known)).toEqual({ id: 1, name: 'carrot' });
+  });
+
+  it('prefers an exact match to one with the same singular form', () => {
+    expect(matchIngredient('Carrots', known)).toEqual({ id: 2, name: 'carrots' });
+  });
+
+  it('then matches the same singular form', () => {
+    expect(matchIngredient('Tomato', known)).toEqual({ id: 3, name: 'tomatoes' });
+  });
+
+  it('matches nothing when only part of the name is the same', () => {
+    expect(matchIngredient('pepper', known)).toBeUndefined();
+    expect(matchIngredient('red peppers', known)).toEqual({ id: 4, name: 'red pepper' });
   });
 });
