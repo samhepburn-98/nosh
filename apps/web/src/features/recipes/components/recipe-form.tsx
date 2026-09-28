@@ -13,6 +13,7 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   Field,
+  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -64,6 +65,8 @@ export function RecipeForm({ onSaved }: { onSaved: (recipe: Recipe) => void }) {
           toast.error("We couldn't save your recipe. Please try again.");
           return;
         }
+        // Said as well as marked on the fields, in case one isn't on screen or has nowhere to show.
+        toast.error(error.message);
         Object.entries(error.fields).forEach(([path, message], index) => {
           form.setError(
             toFormPath(path) as FieldPath<RecipeFormValues>,
@@ -87,7 +90,12 @@ export function RecipeForm({ onSaved }: { onSaved: (recipe: Recipe) => void }) {
       <FieldGroup className="gap-8">
         <Field data-invalid={Boolean(errors.name)}>
           <FieldLabel htmlFor={`${id}-name`}>Name</FieldLabel>
-          <Input id={`${id}-name`} aria-invalid={Boolean(errors.name)} {...form.register('name')} />
+          <Input
+            id={`${id}-name`}
+            placeholder="Like “Veggie chilli”"
+            aria-invalid={Boolean(errors.name)}
+            {...form.register('name')}
+          />
           <FieldError errors={[errors.name]} />
         </Field>
 
@@ -142,6 +150,7 @@ export function RecipeForm({ onSaved }: { onSaved: (recipe: Recipe) => void }) {
             <Choices
               id={`${id}-meal-types`}
               legend="Meal types"
+              description="Tick all that fit."
               options={MEAL_TYPES}
               format={(mealType) => formatMealTypes([mealType])}
               value={field.value}
@@ -159,6 +168,7 @@ export function RecipeForm({ onSaved }: { onSaved: (recipe: Recipe) => void }) {
             <Choices
               id={`${id}-dietary`}
               legend="Dietary (optional)"
+              description="Only tick what's true for the whole recipe. It's how recipes are matched to preferences."
               options={DIETARY}
               format={formatDietary}
               value={field.value ?? []}
@@ -187,6 +197,7 @@ export function RecipeForm({ onSaved }: { onSaved: (recipe: Recipe) => void }) {
 function Choices<Value extends string>({
   id,
   legend,
+  description,
   options,
   format,
   value,
@@ -196,6 +207,7 @@ function Choices<Value extends string>({
 }: {
   id: string;
   legend: string;
+  description: string;
   options: readonly Value[];
   format: (value: Value) => string;
   value: Value[];
@@ -206,6 +218,7 @@ function Choices<Value extends string>({
   return (
     <FieldSet data-invalid={Boolean(error)}>
       <FieldLegend variant="label">{legend}</FieldLegend>
+      <FieldDescription>{description}</FieldDescription>
       <div className="flex flex-wrap gap-x-6 gap-y-3">
         {options.map((option, index) => (
           <Field key={option} orientation="horizontal" className="w-auto">

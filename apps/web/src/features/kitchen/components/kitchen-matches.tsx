@@ -69,11 +69,19 @@ export function KitchenMatches({
     );
   }
 
+  // Split by the preferences, the cards sit under a heading for each group.
+  const isSplit = data.others.length > 0;
+
   const grid = (matches: KitchenMatch[]) => (
     <ul className={gridClassName}>
       {matches.map((match) => (
         <li key={match.recipe.slug}>
-          <MatchCard match={match} hasPicks={hasPicks} onAddToPlan={onAddToPlan} />
+          <MatchCard
+            match={match}
+            heading={isSplit ? 'h3' : 'h2'}
+            hasPicks={hasPicks}
+            onAddToPlan={onAddToPlan}
+          />
         </li>
       ))}
     </ul>
@@ -81,17 +89,31 @@ export function KitchenMatches({
 
   return (
     <>
-      {/* Headings only when the preferences split the recipes, so with none it's one list. */}
-      {data.others.length > 0 && data.matching.length > 0 && (
+      {!hasPicks && (
+        <p className="text-muted-foreground">Nothing picked yet, so here's every recipe, A–Z.</p>
+      )}
+      {/* Headings only when the preferences split the recipes, so with none it's one list.
+          The preferences stay in view even when none of the recipes fit them. */}
+      {isSplit && (
         <div className="flex flex-col gap-2">
           <h2 className="text-lg">These fit your preferences</h2>
           {preferences}
         </div>
       )}
-      {grid(data.matching)}
+      {data.matching.length > 0 ? (
+        grid(data.matching)
+      ) : (
+        <p className="text-muted-foreground">None of the recipes fit all of these.</p>
+      )}
       {data.others.length > 0 && (
         <>
-          <h2 className="mt-4 text-lg">These don't quite fit your preferences</h2>
+          <div className="mt-4 flex flex-col gap-2">
+            <h2 className="text-lg">These don't quite fit your preferences</h2>
+            <p className="text-muted-foreground">
+              They aren't labelled with all of your preferences, so check the ingredients before you
+              cook.
+            </p>
+          </div>
           {grid(data.others)}
         </>
       )}
@@ -101,10 +123,12 @@ export function KitchenMatches({
 
 function MatchCard({
   match: { recipe, haveCount, ingredientCount, toBuy },
+  heading: Heading,
   hasPicks,
   onAddToPlan,
 }: {
   match: KitchenMatch;
+  heading: 'h2' | 'h3';
   hasPicks: boolean;
   onAddToPlan: (recipe: RecipeSummary) => void;
 }) {
@@ -114,7 +138,7 @@ function MatchCard({
     <Card className="h-full">
       <CardHeader>
         <CardTitle>
-          <h3>
+          <Heading>
             <Link
               to={paths.recipe(recipe.slug)}
               state={{ back: location.pathname + location.search }}
@@ -122,7 +146,7 @@ function MatchCard({
             >
               {recipe.name}
             </Link>
-          </h3>
+          </Heading>
         </CardTitle>
         <CardDescription>
           {hasPicks

@@ -54,7 +54,12 @@ export function KitchenPicker({ ingredients }: { ingredients: Ingredient[] }) {
           multiple
           items={ingredients}
           value={picked}
-          onValueChange={(next: Ingredient[]) => save(next)}
+          onValueChange={(next: Ingredient[], { reason }) => {
+            // Base UI clears every pick on Escape once the list is closed. That's too easy to do
+            // by accident, as picks are saved straight away, so Escape only closes the list.
+            if (reason === 'escape-key') return;
+            save(next);
+          }}
           itemToStringLabel={(ingredient: Ingredient) => ingredient.name}
           isItemEqualToValue={(a: Ingredient, b: Ingredient) => a.id === b.id}
         >
@@ -74,7 +79,10 @@ export function KitchenPicker({ ingredients }: { ingredients: Ingredient[] }) {
             </ComboboxList>
           </ComboboxContent>
         </Combobox>
-        <FieldDescription>It goes by what you have, not how much of it.</FieldDescription>
+        <FieldDescription>
+          Pick what you already have, and the recipes that need the fewest extra things come first.
+          It goes by what you have, not how much of it.
+        </FieldDescription>
       </Field>
       {picked.length > 0 && (
         <div className="flex flex-wrap items-center gap-2">

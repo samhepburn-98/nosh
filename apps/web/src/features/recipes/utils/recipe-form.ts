@@ -13,9 +13,12 @@ export const recipeFormSchema = newRecipeSchema.extend({
 export type RecipeFormValues = z.input<typeof recipeFormSchema>;
 export type RecipeFormOutput = z.output<typeof recipeFormSchema>;
 
-/** A new ingredient row. Its ingredient is left out until one is chosen or typed. */
+/**
+ * A new ingredient row: an amount of 1, as most lines have one, and no unit. Its ingredient is left
+ * out until one is chosen or typed.
+ */
 export const emptyIngredientLine = {
-  quantity: null,
+  quantity: 1,
   unit: null,
   prep: '',
 } as RecipeFormValues['ingredients'][number];

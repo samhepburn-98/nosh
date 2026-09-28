@@ -263,4 +263,18 @@ describe('POST /api/recipes', () => {
     expect((await recipeGroupsOf(app)).matching).toHaveLength(20);
     expect(await ingredientsOf(app)).toHaveLength(79);
   });
+
+  it('refuses a body too big to read with a 413, not a server error', async () => {
+    const app = createTestApp();
+    // Over express.json()'s 100 kB limit.
+    const method = Array.from({ length: 250 }, () => 'Stir. '.repeat(80));
+
+    const res = await request(app)
+      .post('/api/recipes')
+      .send({ ...leekSoup, method })
+      .expect(413);
+
+    expect(errorBodySchema.parse(res.body).error.code).toBe('invalid_request');
+    expect((await recipeGroupsOf(app)).matching).toHaveLength(20);
+  });
 });

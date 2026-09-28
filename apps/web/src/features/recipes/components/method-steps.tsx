@@ -3,7 +3,14 @@ import { useEffect, useId, useRef } from 'react';
 import { useFieldArray, type UseFormReturn } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
-import { Field, FieldError, FieldLabel, FieldLegend, FieldSet } from '@/components/ui/field';
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from '@/components/ui/field';
 import { Textarea } from '@/components/ui/textarea';
 
 import type { RecipeFormOutput, RecipeFormValues } from '../utils/recipe-form';
@@ -39,64 +46,72 @@ export function MethodSteps({
 
   return (
     <FieldSet>
-      <FieldLegend>Method</FieldLegend>
-      <ol className="flex flex-col gap-6">
+      {/* A heading inside the legend, so the section looks like the app's other sections and screen
+          readers can jump to it. */}
+      <FieldLegend>
+        <h2 className="text-lg">Method</h2>
+      </FieldLegend>
+      <FieldDescription>Write each step on its own, in the order you'd do them.</FieldDescription>
+      {/* One bordered list, like the ingredients, so the steps read as one method. */}
+      <ol className="flex flex-col divide-y rounded-xl border">
         {fields.map((field, index) => {
           const step = `${id}-${index}`;
           const error = errors?.[index]?.text;
           return (
-            <li key={field.id}>
+            // The buttons sit outside the Field, so a step's error colours its text box, not them.
+            <li key={field.id} className="flex flex-col gap-3 p-4">
               <Field data-invalid={Boolean(error)}>
                 <FieldLabel htmlFor={`${step}-text`}>Step {index + 1}</FieldLabel>
                 <Textarea
                   id={`${step}-text`}
+                  placeholder="Like “Fry the onion for 5 minutes, until soft.”"
                   aria-invalid={Boolean(error)}
                   {...form.register(`method.${index}.text`)}
                 />
                 <FieldError errors={[error]} />
-                <div className="flex flex-wrap gap-2">
-                  <Button
-                    id={`${step}-up`}
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    aria-label={`Move step ${index + 1} up`}
-                    disabled={index === 0}
-                    onClick={() => moveStep(index, 'up')}
-                  >
-                    <ArrowUp data-icon="inline-start" />
-                    Up
-                  </Button>
-                  <Button
-                    id={`${step}-down`}
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    aria-label={`Move step ${index + 1} down`}
-                    disabled={index === fields.length - 1}
-                    onClick={() => moveStep(index, 'down')}
-                  >
-                    <ArrowDown data-icon="inline-start" />
-                    Down
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    aria-label={`Remove step ${index + 1}`}
-                    // A recipe needs at least one step, so the last one stays.
-                    disabled={fields.length === 1}
-                    onClick={() => {
-                      remove(index);
-                      // The step that takes its place, or the one before if it was last.
-                      focusNext.current = `${id}-${Math.min(index, fields.length - 2)}-text`;
-                    }}
-                  >
-                    <Trash2 data-icon="inline-start" />
-                    Remove
-                  </Button>
-                </div>
               </Field>
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  id={`${step}-up`}
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  aria-label={`Move step ${index + 1} up`}
+                  disabled={index === 0}
+                  onClick={() => moveStep(index, 'up')}
+                >
+                  <ArrowUp data-icon="inline-start" />
+                  Up
+                </Button>
+                <Button
+                  id={`${step}-down`}
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  aria-label={`Move step ${index + 1} down`}
+                  disabled={index === fields.length - 1}
+                  onClick={() => moveStep(index, 'down')}
+                >
+                  <ArrowDown data-icon="inline-start" />
+                  Down
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  aria-label={`Remove step ${index + 1}`}
+                  // A recipe needs at least one step, so the last one stays.
+                  disabled={fields.length === 1}
+                  onClick={() => {
+                    remove(index);
+                    // The step that takes its place, or the one before if it was last.
+                    focusNext.current = `${id}-${Math.min(index, fields.length - 2)}-text`;
+                  }}
+                >
+                  <Trash2 data-icon="inline-start" />
+                  Remove
+                </Button>
+              </div>
             </li>
           );
         })}

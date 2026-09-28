@@ -49,9 +49,13 @@ export function IngredientLines({
 
   return (
     <FieldSet>
-      <FieldLegend>Ingredients</FieldLegend>
+      {/* A heading inside the legend, so the section looks like the app's other sections and screen
+          readers can jump to it. */}
+      <FieldLegend>
+        <h2 className="text-lg">Ingredients</h2>
+      </FieldLegend>
       <FieldDescription>
-        Leave the amount blank for things like salt and pepper. Anything else, like “a pinch” or “a
+        Clear the amount for things like salt and pepper. Anything else, like “a pinch” or “a
         bunch”, can go in Prep.
       </FieldDescription>
       <ul className="flex flex-col divide-y rounded-xl border">
@@ -75,7 +79,7 @@ export function IngredientLines({
                   step="any"
                   aria-invalid={Boolean(quantityError)}
                   {...form.register(`ingredients.${index}.quantity`, {
-                    // Blank is no amount. The empty default arrives as null, which Number() would make 0.
+                    // Blank is no amount. It can also arrive as null, which Number() would make 0.
                     setValueAs: (value: string | null) =>
                       value === '' || value === null ? null : Number(value),
                   })}

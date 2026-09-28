@@ -1,5 +1,6 @@
 import { lazy, Suspense, useRef, useState } from 'react';
 
+import { PageHeader } from '@/components/layout/page-header';
 import { ClearWeek } from '@/features/plan/components/clear-week';
 import { Week } from '@/features/plan/components/week';
 
@@ -14,10 +15,11 @@ export function PlanRoute() {
   return (
     <>
       <title>Plan · Nosh</title>
-      <div className="flex items-center justify-between gap-4">
-        <h1 className="text-2xl">Your week</h1>
-        <ClearWeek finalFocus={mondayAddButton} />
-      </div>
+      <PageHeader
+        title="Your week"
+        description="Add meals to any day, and we'll make your shopping list from them."
+        action={<ClearWeek finalFocus={mondayAddButton} />}
+      />
       <Week
         mondayAddButton={mondayAddButton}
         onAdd={(chosenDay) => {

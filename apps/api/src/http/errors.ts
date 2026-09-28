@@ -31,15 +31,28 @@ export const handleErrors: ErrorRequestHandler = (err, _req, res, next) => {
     res.status(400).json(invalidInput(toFieldErrors(err)));
     return;
   }
-  if (isBadJson(err)) {
-    res.status(400).json(errorBody('invalid_json', "We couldn't read that request."));
+  if (isBodyError(err)) {
+    const code = err.type === 'entity.parse.failed' ? 'invalid_json' : 'invalid_request';
+    res.status(err.status).json(errorBody(code, "We couldn't read that request."));
     return;
   }
   console.error(err);
   res.status(500).json(errorBody('internal_error', 'Something went wrong. Please try again.'));
 };
 
-/** express.json() throws a SyntaxError of this type for a body that isn't valid JSON. */
-function isBadJson(err: unknown) {
-  return err instanceof SyntaxError && 'type' in err && err.type === 'entity.parse.failed';
+/**
+ * express.json() fails with a 4xx error and a `type` for a body it can't read: 400 for bad JSON
+ * (entity.parse.failed), 413 for one over its 100 kB limit, 415 for an unknown charset.
+ */
+function isBodyError(err: unknown): err is { status: number; type: string } {
+  return (
+    typeof err === 'object' &&
+    err !== null &&
+    'type' in err &&
+    typeof err.type === 'string' &&
+    'status' in err &&
+    typeof err.status === 'number' &&
+    err.status >= 400 &&
+    err.status < 500
+  );
 }

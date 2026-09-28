@@ -75,10 +75,6 @@ export function ShoppingList() {
 
   return (
     <>
-      <p className="text-muted-foreground">
-        {data.items.length} {data.items.length === 1 ? 'thing' : 'things'} for your week's meals,
-        A–Z.
-      </p>
       {/* The bottom line of each column would sit on the list's own border, so the wrapper clips
           the last pixel. */}
       <div className="overflow-hidden rounded-xl border">

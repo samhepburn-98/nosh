@@ -41,7 +41,7 @@ The brief suggests 2 to 3 hours, so these were planned and then cut. Each is a s
 |---|---|
 | Delete your own recipe | Lets people undo their own mistakes |
 | "Your recipes only" switch | Makes your own recipes easy to find among the starter ones |
-| A download budget and Lighthouse targets | Pages are still lazy-loaded (§5). Lighthouse is checked in the final pass if there's time |
+| A download budget and Lighthouse targets | Pages are still lazy-loaded (§5). Lighthouse was run in the final pass: results in the README |
 
 ### Ground rules from the brief
 - **Single user**, no logins. Runs locally: a client UI and a separate API, with SQLite.
@@ -73,15 +73,15 @@ The examples come from the supplied recipe data, and they are the acceptance tes
 
 | Field | Rule |
 |---|---|
-| Name | 1–80 characters |
+| Name | 1–80 characters, placeholder "Like “Veggie chilli”" |
 | Serves | 1–12, starting at 1, with − and + buttons either side (it can also be typed) |
 | Meal types | at least one |
 | Dietary tags | optional |
-| Ingredient rows | amount (number or blank), unit (dropdown, default "No unit (e.g. 2 onions)"), ingredient (autocomplete), prep (optional, hint: "Anything else, like 'a pinch' or 'a bunch', can go here.") |
-| Method steps | at least one, none empty, moved with up and down buttons |
+| Ingredient rows | amount (starts at 1; cleared for no amount, like salt and pepper), unit (dropdown, default "No unit (e.g. 2 onions)"), ingredient (autocomplete), prep (optional, hint: "Anything else, like 'a pinch' or 'a bunch', can go here.") |
+| Method steps | at least one, none empty, moved with up and down buttons, placeholder "Like “Fry the onion for 5 minutes, until soft.”" |
 
 - **Ingredient autocomplete:** typing suggests known ingredients ("carr" finds "carrot" and "carrots"). Picking one links to it.
-  - If the typed name isn't exactly a known ingredient, the last option is `Add "xyz" as a new ingredient`. It shows even when there are partial matches, so "chilli" can be added although "chilli flakes" exists.
+  - If the typed name isn't exactly a known ingredient, the last option is `Add "xyz" as a new ingredient`. It shows even when there are partial matches, so "chilli" can be added although "chilli powder" exists.
   - Leaving the field with a name typed but not picked picks it anyway.
   - The API links a new name to an existing ingredient with the same singular form (§3), so "Carrot" uses "carrot".
 - **Errors** show on each bad field. The browser checks against the shared schema, and the API checks again (400 with a message per field). Nothing is saved.
@@ -94,8 +94,8 @@ F4 (delete your own recipe) was cut to keep the app small (§1). The numbering i
 ### F5. Dietary preferences (B2)
 - Preferences screen (the settings button in the header): vegetarian, vegan, gluten-free, dairy-free. Saved as they're ticked.
 - **Rule:** a recipe fits if it has every selected tag. Vegan counts as vegetarian and dairy-free. Tags are never guessed from ingredients, so an untagged recipe fits nothing.
-- **Every list of recipes** (Recipes page, the plan's recipe picker, F8) shows the recipes that fit first. The rest follow under "These don't quite fit your preferences". Nothing is hidden.
-- Below the search, the recipes that fit sit under "These fit your preferences", with the chosen preferences as badges and an "Update preferences" button. With no preferences there are no headings: it's one list.
+- **Every list of recipes** (Recipes page, the plan's recipe picker, F8) shows the recipes that fit first. The rest follow under "These don't quite fit your preferences", with a line saying why: "They aren't labelled with all of your preferences, so check the ingredients before you cook." Nothing is hidden.
+- Below the search, the recipes that fit sit under "These fit your preferences", with the chosen preferences as badges and an "Update preferences" button. If none fit (or none that fit match the search), it says so under the heading, so the preferences and the button stay in view. With no preferences there are no headings: it's one list.
 - An allergy note sits under the checkboxes: recipes go by their labels, so check the ingredients.
 
 | Preferences | Recipes that fit |
@@ -141,7 +141,7 @@ F4 (delete your own recipe) was cut to keep the app small (§1). The numbering i
 - **Everything counts,** salt and pepper and oil included. There's no staples list, because which ingredients are staples would be our guess. You tick them if you have them.
 - **Matching:** by singular form (§3), so "carrot" covers "carrots". "Pepper" isn't "red pepper" or "salt and pepper".
 - **Amounts:** the hint under the picker says it goes by what you have, not how much of it.
-- **Nothing picked:** every recipe shows A–Z, without counts.
+- **Nothing picked:** every recipe shows A–Z, without counts, under "Nothing picked yet, so here's every recipe, A–Z."
 
 Having potatoes, onion, chopped tomatoes, butter and milk gives:
 
@@ -252,21 +252,22 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 ### Layout
 - **Phone first (360px).** Below `md`: a bottom tab bar (Plan · Recipes · Shopping list) and a settings button in the top bar. From `md`: all links, and Preferences, in the top bar. One `nav-items` list feeds both. Why, in §1 "Navigation".
 - **Every page uses the shell's width** (`max-w-5xl`). Wide screens get grid columns, not narrower pages.
+- **Each page says what it's for** in one short line just under its title (Plan, Recipes, New recipe, Shopping list), or in its section's description (Preferences, From your kitchen). `PageHeader` keeps the title and line together, with the page's action (Clear week, New recipe) to the right, lined up with their bottom. Form fields that need it get one hint. The brief's voice: warm, plain, short words, no guilt about money.
 - **Tailwind defaults only.** No arbitrary values; colours only through theme tokens.
 - **shadcn's defaults, unchanged.** `components/ui` stays exactly as upstream wrote it, so updates stay simple. Its default sizes meet WCAG 2.2 AA's 24px target size (a default button is 32px), and its inputs use 16px text on phones, so they don't zoom. Our own markup (the top bar and tab bar) uses 44px targets. We first raised shadcn's components to 44px, but dropped that in PR 1.1: for a demo, keeping upstream as it is was worth more.
 
 | Screen | Layout | PR |
 |---|---|---|
-| Plan | Seven rows in one bordered list, today highlighted. Each day: name, "Add" (icon and text), then its meals, or empty. "Clear week" at the top, opposite the title | 2.1 |
+| Plan | Seven rows in one bordered list, today highlighted. Each day: name, "Add" (icon and text), then its meals, or empty. "Clear week" at the top, opposite the title. From `lg`, each day is its own box, in two columns, so a meal's × stays near its name | 2.1, 7.1 |
 | Add to plan | A sheet from the bottom on phones, from the right from `md` | 2.1, 2.2 |
 | Recipes | "All recipes" / "From your kitchen" tabs. On "All recipes": search, the preference line, cards in `sm:grid-cols-2 lg:grid-cols-3`. "New recipe" in the header | 1.1, 4.1, 5.1, 6.1 |
-| Recipe | Badges, "Add to plan", then ingredients (1 column) and method (2 columns) from `lg` | 1.2, 2.2, 5.1 |
+| Recipe | Name, meal types, serves and badges, then "Add to plan" (full width on phones) and the days it's planned for. From `lg`, the details on the left and the action on the right. Then ingredients in one bordered list (1 column, sticky from `lg`) and the method as numbered steps in the same kind of list (2 columns from `lg`) | 1.2, 2.2, 5.1, 7.1 |
 | Shopping list | One bordered list, one line per ingredient: name left (first letter capitalised), amount bold right. From `lg`, two columns running A–Z down then on | 3.2 |
-| Preferences | The four choices in one bordered list, like the week, each row one tap target, a ticked row tinted and ticked. Allergy note underneath. The Add to plan day picker uses the same list | 4.1 |
-| New recipe | One column. Ingredient rows read like the line they make (amount and unit, ingredient, prep); one line per row from `lg`. Numbered steps with move and remove buttons | 5.1 |
+| Preferences | The four choices in one bordered list, like the week, each row one tap target, a ticked row tinted and ticked. Allergy note underneath, or beside the list from `lg`. The Add to plan day picker uses the same list | 4.1, 7.1 |
+| New recipe | One column. Ingredient rows read like the line they make (amount and unit, ingredient, prep); one line per row from `lg`. Numbered steps with move and remove buttons, in one bordered list like the ingredients | 5.1, 7.1 |
 | From your kitchen (Recipes tab) | Picker with chips below it and "Clear all", then result cards | 6.1 |
 
-**Badges:** dietary tags use `secondary` (light green), the client's other tags use `outline`, "Your recipe" uses the default badge with a chef's hat icon. It was to use Leaf, but shadcn's badge has no Leaf variant, and components stay as upstream wrote them.
+**Badges:** dietary tags use `secondary` (light green), the client's other tags use `outline`, "Your recipe" uses Leaf with Charcoal text (6.84:1) and a chef's hat icon, so it doesn't look like the green buttons. shadcn's badge has no Leaf variant, so it's the one place `className` sets a colour (`bg-leaf text-leaf-foreground`). Flame Coral isn't used: it's 2.8:1 on white, too faint even for icons ([Product Owner notes](product-owner-notes.md), note 9).
 
 **Components:** `Sheet`, not `Drawer` (no extra dependency). `NativeSelect` for units (the phone's own picker). `IngredientCombobox` in the recipe form. The kitchen picker uses shadcn's `Combobox` in multiple mode directly, as it only picks known ingredients and has no "Add" option. Kitchen chips sit below the field as buttons, because shadcn's in-field chips are about 21px, under the 24px AA minimum.
 
@@ -279,19 +280,19 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 | secondary, accent | light green tint / Charcoal | ≥ 10:1 |
 | muted-foreground | `#5F6B73` | 5.47:1 |
 | ring | Deep Teal `#3AA58F` | 3.02:1 (non-text) |
-| destructive | darkened Flame Coral `#B9471F` | 5.27:1 |
+| destructive | darkened Flame Coral `#A33D17` | 6.49:1. Also 5.3:1 at 90% (alert text) and on its own 10% tint (the destructive button), 4.5:1 on its 20% hover tint |
 | leaf | Leaf `#D5C52D` / Charcoal | 6.84:1 |
 | input | field borders `#8A959C` | 3.06:1 (non-text) |
 | header / header-foreground / header-muted | Charcoal / white / Cloud Grey `#B7BFC0` | 12.1:1 / 6.48:1 |
 
 - Charcoal top bar with the logo. Cloud Grey only on Charcoal. Flame Coral only for icons and borders.
 - **Deep Teal is only the focus ring,** although the brief calls it "secondary". It fails AA for text either way (3.02:1 with white, 4.0:1 with Charcoal), so `secondary` is a light green tint instead.
-- **Logo:** the mark and wordmark side by side, unaltered, with the "O"-width clear space. That limits it to 30px tall in a 72px bar. The favicon is the mark alone.
+- **Logo:** the mark and wordmark side by side, unaltered, 6px apart so they read as one logo, with the "O"-width clear space around the whole logo. The brand pack only shows them stacked (with a gap of about a tenth of the mark's height), so a horizontal lockup is our own arrangement ([Product Owner notes](product-owner-notes.md), note 8). Clear space limits it to 30px tall in a 72px bar. The favicon is the mark alone.
 - **Type:** Nunito Bold for headings (self-hosted, Latin only), system sans for body. The brief allows either Nunito Sans or system sans for body; system sans needs no download, which suits older phones on slow connections.
 
 ### Performance
 - Only the Plan page is in the first download. Every other page, and the Plan page's sheets and dialogs, load when first opened (`React.lazy` and `Suspense` in the router).
-- No download budget. Lighthouse mobile is checked in the final pass if there's time.
+- No download budget. Lighthouse mobile was run on the production build in the final pass: performance 91 to 97. Results are in the README.
 
 ---
 
@@ -326,18 +327,18 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 
 ## 7. Phases
 
-Eight phases: setup, one for each brief feature, our own feature, and a final pass. Eleven PRs plus the final pass, each with several small commits, reviewed and merged one at a time (§6).
+Eight phases: setup, one for each brief feature, our own feature, and a final pass. Thirteen PRs (2.1 and 5.1 were each split in two) plus the final pass, each with several small commits, reviewed and merged one at a time (§6).
 
 | Phase | PRs | Done |
 |---|---|---|
-| **0. Setup** | 0.1 Repository and app shell · 0.2 API and database | [ ] |
-| **1. Recipes (B1)** | 1.1 Recipe list and search · 1.2 Recipe page | [ ] |
-| **2. Plan the week (B3)** | 2.1 The week: add, remove, clear (as 2.1a API and 2.1b screen) · 2.2 Add to plan from a recipe | [ ] |
-| **3. Shopping list (B4)** | 3.1 Rules · 3.2 The list | [ ] |
-| **4. Dietary preferences (B2)** | 4.1 Save them, and show recipes that fit first | [ ] |
-| **5. Your own recipes (B1)** | 5.1 API and form (as 5.1a API and 5.1b form) | [ ] |
-| **6. From your kitchen (X)** | 6.1 Rules, picker and ranked recipes | [ ] |
-| **7. Final pass** | 7.1 Review, docs and demo run | [ ] |
+| **0. Setup** | 0.1 Repository and app shell · 0.2 API and database | [x] |
+| **1. Recipes (B1)** | 1.1 Recipe list and search · 1.2 Recipe page | [x] |
+| **2. Plan the week (B3)** | 2.1 The week: add, remove, clear (as 2.1a API and 2.1b screen) · 2.2 Add to plan from a recipe | [x] |
+| **3. Shopping list (B4)** | 3.1 Rules · 3.2 The list | [x] |
+| **4. Dietary preferences (B2)** | 4.1 Save them, and show recipes that fit first | [x] |
+| **5. Your own recipes (B1)** | 5.1 API and form (as 5.1a API and 5.1b form) | [x] |
+| **6. From your kitchen (X)** | 6.1 Rules, picker and ranked recipes | [x] |
+| **7. Final pass** | 7.1 Review, docs and demo run | [x] |
 
 **Watch the size of 5.1 and 6.1.** They're the largest. If either heads well past 600 hand-written lines, I stop and suggest a split: API before UI for 5.1, rules before UI for 6.1.
 

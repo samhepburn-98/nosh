@@ -54,7 +54,7 @@
   --muted-foreground: #5f6b73; /* 5.47:1 on white */
   --accent: #eef9f3;
   --accent-foreground: #2e373e;
-  --destructive: #b9471f; /* darkened Flame Coral, 5.27:1 */
+  --destructive: #a33d17; /* darkened Flame Coral, 6.49:1. Dark enough for shadcn to use at 90% and on its own 10-20% tints */
   --border: #dde2e5;
   --input: #8a959c; /* 3.06:1 on white, so field edges can be seen */
   --ring: #3aa58f; /* Deep Teal, 3.02:1 (non-text) */

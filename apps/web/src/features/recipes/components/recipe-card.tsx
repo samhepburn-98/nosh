@@ -8,7 +8,14 @@ import { formatMealTypes } from '@/utils/format';
 
 import { RecipeBadges } from './recipe-badges';
 
-export function RecipeCard({ recipe }: { recipe: RecipeSummary }) {
+/** `heading` is h3 when the card sits under a group's heading, such as "These fit your preferences". */
+export function RecipeCard({
+  recipe,
+  heading: Heading = 'h2',
+}: {
+  recipe: RecipeSummary;
+  heading?: 'h2' | 'h3';
+}) {
   const location = useLocation();
   const hasBadges = recipe.isOwn || recipe.dietary.length > 0 || recipe.tags.length > 0;
 
@@ -16,7 +23,7 @@ export function RecipeCard({ recipe }: { recipe: RecipeSummary }) {
     <Card className="relative h-full">
       <CardHeader>
         <CardTitle>
-          <h2>
+          <Heading>
             {/* The link's ::after covers the card, so the whole card is one tap target.
                 `back` lets the recipe page link back to this list with its search. */}
             <Link
@@ -26,7 +33,7 @@ export function RecipeCard({ recipe }: { recipe: RecipeSummary }) {
             >
               {recipe.name}
             </Link>
-          </h2>
+          </Heading>
         </CardTitle>
         <CardDescription>
           {formatMealTypes(recipe.mealTypes)} · Serves {recipe.serves}

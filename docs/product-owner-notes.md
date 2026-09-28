@@ -75,8 +75,31 @@ The brief mentions "nutritional recipes". "Quick" has no definition.
 ## 8. Logo
 - [ ] Raised
 
-- Is there an approved side-by-side lockup, and may the mark be used alone (we use it as the favicon)?
+The brand pack supplies the mark and the wordmark as separate images, and only shows them stacked, the mark above the wordmark. A stacked logo is too tall for a phone's top bar, so we've put them side by side.
+
+- **Is there a horizontal (side-by-side) version of the logo** we should use instead? If not, is our arrangement acceptable: the mark to the left of the wordmark, 6px apart, both unaltered?
+- May the mark be used alone? We use it as the favicon.
 - The "Meal planning platform" line can't be read at top-bar size. Is there a wordmark without it?
 - Clear space limits the logo to 30px tall in the top bar. Would they accept less clear space there?
 
-**Meanwhile:** the mark and wordmark sit side by side, unaltered, 30px tall with the "O"-width clear space.
+**Meanwhile:** the mark and the wordmark sit side by side, 6px apart, unaltered, 30px tall, with the "O"-width clear space around the whole logo.
+
+## 9. Brand colours that fail accessibility
+- [ ] Raised
+
+The brief asks for WCAG AA. Most of the brand colours are too light to meet it on white, and some aren't usable at all. Measured contrast:
+
+| Colour | On white | With Charcoal text | How we use it |
+|---|---|---|---|
+| Nosh Green `#62CC9B` | 1.98:1 | 6.14:1 | Buttons, badges and highlights, always with Charcoal text. **White text on green fails** (1.98:1) |
+| Deep Teal `#3AA58F` | 3.02:1 | 4.02:1 | Only the focus ring. It fails AA for text either way, so it isn't the "secondary" colour the brand pack names; a light green tint is |
+| Flame Coral `#F3764B` | 2.8:1 | 4.33:1 | **Not used.** Too faint for text or icons on white (3:1 for icons). Errors use a darker red we took from it, `#A33D17` (6.49:1), which isn't a brand colour |
+| Leaf `#D5C52D` | 1.77:1 | 6.84:1 | Only the "Your recipe" badge, as a background with Charcoal text |
+| Cloud Grey `#B7BFC0` | 1.87:1 | 6.48:1 | Only as muted text on the Charcoal top bar, as the brand pack says |
+
+**Meanwhile:** every brand colour is only used where it passes AA. Coral isn't used at all, and errors use the darker red.
+
+**Ask:**
+- Does the brand have darker, accessible versions of these colours (for text, icons and errors)?
+- Is our darker red, `#A33D17`, acceptable for errors and warnings?
+- Is it acceptable that buttons use Charcoal text on Nosh Green, never white?

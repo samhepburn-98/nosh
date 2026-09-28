@@ -126,17 +126,32 @@ function RecipeChoices({
     // Plain items, no gap: their own padding spaces them. Pulled out by that padding, so the names
     // line up with the search box.
     <div className="-mx-3 flex min-h-0 flex-col overflow-y-auto">
-      {/* Headings only when the preferences split the recipes, so with none it's one list. */}
-      {isSplit && matching.length > 0 && (
+      {/* Headings only when the preferences split the recipes, so with none it's one list.
+          The preferences stay in view even when none of the recipes fit them. */}
+      {isSplit && (
         <div className="flex flex-col gap-2 px-3 pb-2">
           <h3>These fit your preferences</h3>
           {preferences}
         </div>
       )}
-      {choices(matching)}
+      {matching.length > 0 ? (
+        choices(matching)
+      ) : (
+        <p className="px-3 text-muted-foreground">
+          {search
+            ? `None of the recipes that fit match “${search}”.`
+            : 'None of the recipes fit all of these.'}
+        </p>
+      )}
       {others.length > 0 && (
         <>
-          <h3 className="mt-4 px-3 pb-2">These don't quite fit your preferences</h3>
+          <div className="mt-4 flex flex-col gap-1 px-3 pb-2">
+            <h3>These don't quite fit your preferences</h3>
+            <p className="text-sm text-muted-foreground">
+              They aren't labelled with all of your preferences, so check the ingredients before you
+              cook.
+            </p>
+          </div>
           {choices(others)}
         </>
       )}

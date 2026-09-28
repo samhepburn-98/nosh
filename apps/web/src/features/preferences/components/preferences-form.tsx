@@ -65,11 +65,17 @@ export function PreferencesForm() {
   };
 
   return (
-    <>
-      <FieldSet>
-        <FieldLegend>Dietary preferences</FieldLegend>
+    // From lg, the allergy note sits beside the choices rather than stretching under them.
+    <div className="grid gap-6 lg:grid-cols-3 lg:items-start">
+      <FieldSet className="lg:col-span-2">
+        {/* A heading inside the legend, so the section looks like the app's other sections and screen
+            readers can jump to it. */}
+        <FieldLegend>
+          <h2 className="text-lg">Dietary preferences</h2>
+        </FieldLegend>
         <FieldDescription>
-          Recipes that fit every choice are shown first. The rest are still there, further down.
+          Recipes that fit all your choices come first, and the rest are still there below. Changes
+          save as you tick.
         </FieldDescription>
         {/* One bordered list, like the week and the shopping list. Each row is a label, so the whole
             row is the tap target, and shadcn tints it when it's ticked. */}
@@ -103,6 +109,6 @@ export function PreferencesForm() {
           ingredients before you cook.
         </AlertDescription>
       </Alert>
-    </>
+    </div>
   );
 }
