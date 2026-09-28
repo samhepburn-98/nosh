@@ -189,7 +189,7 @@ Adding salt and pepper and olive oil gives: 1 Sausage and Mash, 2 Tomato Soup (h
 
 | Table | Holds | PR |
 |---|---|---|
-| `recipes` | slug (unique), name, cuisine, serves, `is_builtin` | 0.2 |
+| `recipes` | slug (unique), name, cuisine (empty for your own recipes: the form doesn't ask, and nothing shows it), serves, `is_builtin` | 0.2 |
 | `recipe_steps` | the method, in order | 0.2 |
 | `ingredients` | one row per name, unique ignoring case | 0.2 |
 | `recipe_ingredients` | a recipe's lines: ingredient, quantity (or null), unit (or null), prep | 0.2 |
@@ -335,7 +335,7 @@ Eight phases: setup, one for each brief feature, our own feature, and a final pa
 | **2. Plan the week (B3)** | 2.1 The week: add, remove, clear (as 2.1a API and 2.1b screen) · 2.2 Add to plan from a recipe | [ ] |
 | **3. Shopping list (B4)** | 3.1 Rules · 3.2 The list | [ ] |
 | **4. Dietary preferences (B2)** | 4.1 Save them, and show recipes that fit first | [ ] |
-| **5. Your own recipes (B1)** | 5.1 API and form | [ ] |
+| **5. Your own recipes (B1)** | 5.1 API and form (as 5.1a API and 5.1b form) | [ ] |
 | **6. From your kitchen (X)** | 6.1 Rules, picker and ranked recipes | [ ] |
 | **7. Final pass** | 7.1 Review, docs and demo run | [ ] |
 
@@ -439,6 +439,8 @@ Eight phases: setup, one for each brief feature, our own feature, and a final pa
 ### Phase 5: Your own recipes (B1)
 
 #### PR 5.1: Add your own recipe
+Split in two, as it came to about 900 hand-written lines: **5.1a** is the shared schemas, domain and API, and **5.1b** is the form and the "Your recipe" badge.
+
 - **You can:** fill in a form to add your recipe. It's marked "Your recipe", and counts in the shopping list and in F8.
 - **Shared:** the recipe input schema (with tests for bad input), the ingredient schema, `isOwn` on summaries.
 - **Domain,** tests first:
