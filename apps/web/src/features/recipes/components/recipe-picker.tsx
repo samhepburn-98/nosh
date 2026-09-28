@@ -83,11 +83,12 @@ function RecipeChoices({
   }
 
   return (
-    <ul className="flex min-h-0 flex-col gap-2 overflow-y-auto">
+    // Plain items, no gap: their own padding spaces them. Pulled out by that padding, so the names
+    // line up with the search box.
+    <ul className="-mx-3 flex min-h-0 flex-col overflow-y-auto">
       {recipes.map((recipe) => (
         <li key={recipe.slug}>
           <Item
-            variant="outline"
             render={<button type="button" disabled={disabled} onClick={() => onPick(recipe)} />}
           >
             <ItemContent>

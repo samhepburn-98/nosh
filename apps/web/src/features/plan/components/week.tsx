@@ -137,7 +137,7 @@ function DayRow({
   return (
     <li
       className={cn(
-        'flex flex-col gap-3 p-4 first:rounded-t-xl last:rounded-b-xl',
+        'flex flex-col gap-1 p-4 first:rounded-t-xl last:rounded-b-xl',
         isToday && 'bg-accent',
       )}
       aria-current={isToday ? 'date' : undefined}
@@ -168,9 +168,11 @@ function DayRow({
       {meals.length === 0 ? (
         <p className="text-muted-foreground">Nothing planned yet.</p>
       ) : (
-        <ItemGroup className="gap-2">
+        <ItemGroup className="-mx-2.5 gap-0 has-data-[size=xs]:gap-0">
+          {/* Plain, compact items with no gap: their own padding spaces them. Pulled out by that
+              padding, so the names line up with the day's name. */}
           {meals.map((meal) => (
-            <Item key={meal.id} role="listitem" variant="outline" size="sm">
+            <Item key={meal.id} role="listitem" size="xs">
               <ItemContent>
                 {/* Names wrap rather than being cut short on small phones. */}
                 <ItemTitle className="line-clamp-none">
@@ -186,7 +188,7 @@ function DayRow({
               <ItemActions>
                 <Button
                   variant="ghost"
-                  size="icon"
+                  size="icon-sm"
                   aria-label={`Remove ${meal.recipe.name} from ${name}`}
                   onClick={() => onRemove(meal)}
                 >
