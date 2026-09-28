@@ -1,5 +1,9 @@
+import { Plus } from 'lucide-react';
 import { useRef } from 'react';
-import { useSearchParams } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
+
+import { buttonVariants } from '@/components/ui/button';
+import { paths } from '@/config/paths';
 
 import { PreferencesSummary } from '@/features/preferences/components/preferences-summary';
 import { RecipeList } from '@/features/recipes/components/recipe-list';
@@ -26,7 +30,13 @@ export default function RecipesRoute() {
   return (
     <>
       <title>Recipes · Nosh</title>
-      <h1 className="text-2xl">Recipes</h1>
+      <div className="flex items-center justify-between gap-4">
+        <h1 className="text-2xl">Recipes</h1>
+        <Link to={paths.newRecipe} className={buttonVariants({ variant: 'outline' })}>
+          <Plus data-icon="inline-start" />
+          New recipe
+        </Link>
+      </div>
       <RecipeSearch ref={searchRef} value={search} onChange={setSearch} />
       <RecipeList
         search={search}

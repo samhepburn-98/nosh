@@ -10,7 +10,7 @@ import { RecipeBadges } from './recipe-badges';
 
 export function RecipeCard({ recipe }: { recipe: RecipeSummary }) {
   const location = useLocation();
-  const hasBadges = recipe.dietary.length > 0 || recipe.tags.length > 0;
+  const hasBadges = recipe.isOwn || recipe.dietary.length > 0 || recipe.tags.length > 0;
 
   return (
     <Card className="relative h-full">
