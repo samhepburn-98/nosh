@@ -1,6 +1,6 @@
 # Project Nosh: plan
 
-A meal-planning web app for Nosh, a charity helping low-income households eat well on a budget. The client brief is in `docs/brief/` (`brief.md` is a readable transcript).
+A meal-planning web app for Nosh, a charity helping low-income households eat well on a budget. The client brief is in [`brief/`](brief/) ([`brief.md`](brief/brief.md) is a readable transcript).
 
 ---
 
@@ -31,7 +31,7 @@ None of these is asked for. Each is small, and each has a reason we can give the
 |---|---|
 | Ingredient autocomplete in the recipe form (F3) | Keeps ingredient names consistent, so the shopping list adds them up. F8 reuses it |
 | The client's recipe tags as badges (F1) | "Quick", "Batch cook" and so on are in the client's data, and useful to their audience |
-| Allergy note on Preferences (F5) | Filtering goes by the client's tags, and some look wrong (§8) |
+| Allergy note on Preferences (F5) | Filtering goes by the client's tags, and some look wrong ([Product Owner notes](product-owner-notes.md), note 1) |
 
 ### Left out to keep it small
 
@@ -251,7 +251,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 - **Phone first (360px).** Below `md`: a bottom tab bar (Plan · Recipes · Shopping list) and a settings button in the top bar. From `md`: all links, and Preferences, in the top bar. One `nav-items` list feeds both. Why, in §1 "Navigation".
 - **Every page uses the shell's width** (`max-w-5xl`). Wide screens get grid columns, not narrower pages.
 - **Tailwind defaults only.** No arbitrary values; colours only through theme tokens.
-- **44px tap targets, 16px inputs.** shadcn's `Button`, `Input`, `NativeSelect`, `Tabs`, `Switch` and combobox options are raised to match (agreed variant changes). Otherwise `components/ui` stays as upstream wrote it.
+- **44px tap targets, 16px inputs.** shadcn's `Button`, `Input`, `NativeSelect`, `Tabs`, `Switch` and combobox options are raised to match (agreed variant changes). `Button` loses its sizes below 44px (`xs`, `sm`, `icon-xs`, `icon-sm`), so they can't be used by mistake. Otherwise `components/ui` stays as upstream wrote it.
 
 | Screen | Layout | PR |
 |---|---|---|
@@ -279,10 +279,13 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 | ring | Deep Teal `#3AA58F` | 3.02:1 (non-text) |
 | destructive | darkened Flame Coral `#B9471F` | 5.27:1 |
 | leaf | Leaf `#D5C52D` / Charcoal | 6.84:1 |
+| input | field borders `#8A959C` | 3.06:1 (non-text) |
+| header / header-foreground / header-muted | Charcoal / white / Cloud Grey `#B7BFC0` | 12.1:1 / 6.48:1 |
 
 - Charcoal top bar with the logo. Cloud Grey only on Charcoal. Flame Coral only for icons and borders.
+- **Deep Teal is only the focus ring,** although the brief calls it "secondary". It fails AA for text either way (3.02:1 with white, 4.0:1 with Charcoal), so `secondary` is a light green tint instead.
 - **Logo:** the mark and wordmark side by side, unaltered, with the "O"-width clear space. That limits it to 30px tall in a 72px bar. The favicon is the mark alone.
-- **Type:** Nunito Bold for headings (self-hosted, Latin only), system sans for body.
+- **Type:** Nunito Bold for headings (self-hosted, Latin only), system sans for body. The brief allows either Nunito Sans or system sans for body; system sans needs no download, which suits older phones on slow connections.
 
 ### Performance
 - Only the Plan page is in the first download. Every other page, and the Plan page's sheets and dialogs, load when first opened (`React.lazy` and `Suspense` in the router).
@@ -312,6 +315,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 **Guardrails**
 - **Nothing is added before it's used:** constants, schemas, tables, endpoints, components, dependencies.
 - **Anything not in the brief is flagged** before it's built, with the reason, so you can decide.
+- **Questions for the client go in [`docs/product-owner-notes.md`](product-owner-notes.md)** in the PR where we find them, to raise at the end.
 - **`pnpm check` passes** before every commit. Each visible change is checked at 360px and 1280px.
 - **New screens are planned with the `frontend-design` skill** first.
 - **This plan is updated in the same PR** when a decision changes it.
@@ -345,7 +349,7 @@ Eight phases: setup, one for each brief feature, our own feature, and a final pa
   - the logo, optimised under 15 KB
   - routes with placeholder pages, lazy-loaded: Plan (`/`), Recipes, Shopping list, Preferences, Not found
   - top bar and bottom tab bar, with the current page marked by more than colour
-- **Prettier ignores** `data/` (the client's JSON is never reformatted) and Markdown.
+- **Prettier ignores** `data/` (the client's JSON is never reformatted), Markdown, and `components/ui` (shadcn's files stay as upstream wrote them, so updates diff cleanly).
 - **Check:**
   - `pnpm install` and `pnpm check` run clean. The JSON is byte-identical to the supplied file.
   - At 360px the tab bar switches pages and covers nothing. At 1280px the links are in the top bar. An unknown URL shows Not found.
@@ -477,25 +481,5 @@ Eight phases: setup, one for each brief feature, our own feature, and a final pa
 #### PR 7.1: Review, docs and demo run
 - **`/code-review`** on the whole app. Fix what it finds, one `fix:` commit each.
 - **Lighthouse** mobile on the production build, if there's time. No target is required.
-- **README:** setup, architecture, decisions (including what we left out, §1), the Product Owner notes (§8).
+- **README:** setup, architecture, decisions (including what we left out, §1), the Product Owner notes (`docs/product-owner-notes.md`).
 - **Demo run-through:** `pnpm db:reset`, then every §2 example in the app.
-
----
-
-## 8. Notes for the Product Owner
-
-1. **Dietary tags look incomplete or wrong.**
-   - Tomato Soup is vegan but not tagged dairy-free (our vegan rule covers it).
-   - Fish and Chips and the Full English are dairy-free in practice but untagged.
-   - **Shepherd's Pie is tagged gluten-free, but beef stock cubes usually contain wheat.**
-   - We recommend an allergen or "may contain" field.
-2. **Content gaps.** Vegans have 2 recipes and no breakfast. Gluten-free and dairy-free users have no breakfast.
-3. **The same ingredient in different units:** chicken breast (g and a count), coconut milk (tin and ml), salad leaves (handful and g), milk (ml and tbsp). Standardise at the source.
-4. **Ingredients only in the method:** "a little oil", "500ml water", "seasoned flour".
-5. **Near-duplicates:** porridge oats / rolled oats, oil / olive oil / sesame oil, potatoes / baking potatoes. Which are interchangeable when shopping?
-6. **Servings range from 1 to 6.** The list buys each recipe as written. Should it scale to household size?
-7. **No prices, pack sizes, nutrition or cook times.** The brief mentions "nutritional recipes". "Quick" has no definition; the app shows it as written, without promising a time.
-8. **Logo.**
-   - Is there an approved side-by-side lockup, and may the mark be used alone?
-   - The "Meal planning platform" line can't be read at top-bar size. Is there a wordmark without it?
-   - Clear space limits the logo to 30px tall in the top bar. Would they accept less clear space there?

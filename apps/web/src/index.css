@@ -1,0 +1,89 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+/* Nunito Bold for headings, Latin only. Body text is system sans (docs/plan.md §5). */
+@import '@fontsource/nunito/latin-700.css';
+
+@theme inline {
+  --font-heading: 'Nunito', Arial, sans-serif;
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --color-leaf: var(--leaf);
+  --color-leaf-foreground: var(--leaf-foreground);
+  --color-header: var(--header);
+  --color-header-foreground: var(--header-foreground);
+  --color-header-muted: var(--header-muted);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* Nosh brand colours. Contrast ratios are against the paired colour (docs/plan.md §5). */
+:root {
+  --background: #ffffff;
+  --foreground: #2e373e; /* Nosh Charcoal, 12.1:1 */
+  --card: #ffffff;
+  --card-foreground: #2e373e;
+  --popover: #ffffff;
+  --popover-foreground: #2e373e;
+  --primary: #62cc9b; /* Nosh Green. Charcoal text only, 6.14:1 (white is 1.98:1) */
+  --primary-foreground: #2e373e;
+  --secondary: #e3f5ec; /* light green tint, 10.7:1 with Charcoal */
+  --secondary-foreground: #2e373e;
+  --muted: #f2f4f5;
+  --muted-foreground: #5f6b73; /* 5.47:1 on white */
+  --accent: #eef9f3;
+  --accent-foreground: #2e373e;
+  --destructive: #b9471f; /* darkened Flame Coral, 5.27:1 */
+  --border: #dde2e5;
+  --input: #8a959c; /* 3.06:1 on white, so field edges can be seen */
+  --ring: #3aa58f; /* Deep Teal, 3.02:1 (non-text) */
+  --radius: 0.625rem;
+  --leaf: #d5c52d; /* Leaf. Charcoal text only, 6.84:1 */
+  --leaf-foreground: #2e373e;
+  --header: #2e373e; /* Charcoal top bar */
+  --header-foreground: #ffffff; /* 12.1:1 */
+  --header-muted: #b7bfc0; /* Cloud Grey, only on Charcoal, 6.48:1 */
+}
+
+/* Keeps the bottom tab bar clear of the home indicator on notched phones. */
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-heading font-bold;
+  }
+}
