@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { useSearchParams } from 'react-router';
 
+import { PreferencesSummary } from '@/features/preferences/components/preferences-summary';
 import { RecipeList } from '@/features/recipes/components/recipe-list';
 import { RecipeSearch } from '@/features/recipes/components/recipe-search';
 
@@ -26,6 +27,7 @@ export default function RecipesRoute() {
     <>
       <title>Recipes · Nosh</title>
       <h1 className="text-2xl">Recipes</h1>
+      <PreferencesSummary />
       <RecipeSearch ref={searchRef} value={search} onChange={setSearch} />
       <RecipeList
         search={search}

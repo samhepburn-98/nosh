@@ -27,3 +27,8 @@ const listFormat = new Intl.ListFormat('en-GB', { type: 'conjunction' });
 export function formatDays(days: number[]) {
   return listFormat.format(days.map(dayName));
 }
+
+/** ["vegetarian", "gluten-free"] → "vegetarian and gluten-free", for the middle of a sentence. */
+export function formatDietaryList(dietary: Dietary[]) {
+  return listFormat.format(dietary);
+}
