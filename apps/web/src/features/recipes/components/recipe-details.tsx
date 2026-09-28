@@ -5,6 +5,7 @@ import type { Recipe } from '@nosh/shared/recipes';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ApiError } from '@/lib/api-client';
 import { formatDays, formatMealTypes } from '@/utils/format';
@@ -63,28 +64,37 @@ function RecipeArticle({ recipe, actions }: { recipe: Recipe; actions: ReactNode
   return (
     <article className="flex flex-col gap-6">
       <title>{`${recipe.name} · Nosh`}</title>
-      <header className="flex flex-col gap-2">
-        <h1 className="text-2xl">{recipe.name}</h1>
-        <p className="text-muted-foreground">
-          {formatMealTypes(recipe.mealTypes)} · Serves {recipe.serves}
-        </p>
-        <RecipeBadges recipe={recipe} />
-        {recipe.plannedOn.length > 0 && (
-          <p className="flex items-center gap-2">
-            <CalendarCheck aria-hidden className="size-4 shrink-0" />
-            Planned for {formatDays(recipe.plannedOn)}
+      {/* Stacked on phones. From lg, the details on the left, and the actions and when it's planned
+          on the right, so the header uses the page's width. */}
+      <header className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between lg:gap-8">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-2xl">{recipe.name}</h1>
+          <p className="text-muted-foreground">
+            {formatMealTypes(recipe.mealTypes)} · Serves {recipe.serves}
           </p>
-        )}
-        {actions}
+          <RecipeBadges recipe={recipe} />
+        </div>
+        <div className="flex flex-col gap-2 lg:items-end">
+          {actions}
+          {recipe.plannedOn.length > 0 && (
+            <p className="flex items-center gap-2">
+              <CalendarCheck aria-hidden className="size-4 shrink-0" />
+              Planned for {formatDays(recipe.plannedOn)}
+            </p>
+          )}
+        </div>
       </header>
+      <Separator />
 
-      {/* One column on phones. From lg, ingredients take one column and the method two. */}
-      <div className="grid gap-8 lg:grid-cols-3">
-        <section className="flex flex-col gap-3">
-          <h2 className="text-xl">Ingredients</h2>
-          <ul className="flex flex-col divide-y">
+      {/* One column on phones. From lg, the ingredients take one column and stay in view while the
+          method, in the other two, scrolls. Both start at the same line. */}
+      <div className="grid gap-8 lg:grid-cols-3 lg:items-start">
+        <section className="flex flex-col gap-3 lg:sticky lg:top-6">
+          <h2 className="text-lg">Ingredients</h2>
+          {/* One bordered list, like the shopping list. */}
+          <ul className="flex flex-col divide-y rounded-xl border px-4">
             {recipe.ingredients.map((line, index) => (
-              <li key={index} className="py-2">
+              <li key={index} className="py-3">
                 {line.amount && <span className="font-semibold">{line.amount} </span>}
                 {line.name}
                 {line.prep && <span className="text-muted-foreground">, {line.prep}</span>}
@@ -94,11 +104,17 @@ function RecipeArticle({ recipe, actions }: { recipe: Recipe; actions: ReactNode
         </section>
 
         <section className="flex flex-col gap-3 lg:col-span-2">
-          <h2 className="text-xl">Method</h2>
-          <ol className="flex list-decimal flex-col gap-4 pl-6 marker:font-bold">
+          <h2 className="text-lg">Method</h2>
+          {/* Numbered in circles rather than list markers. role="list" keeps it a list for Safari's
+              screen reader, which drops it once the markers are gone. */}
+          {/* eslint-disable-next-line jsx-a11y/no-redundant-roles -- see above */}
+          <ol role="list" className="flex flex-col gap-4">
             {recipe.method.map((step, index) => (
-              <li key={index} className="pl-1">
-                {step}
+              <li key={index} className="flex gap-3">
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary font-heading text-sm font-bold">
+                  {index + 1}
+                </span>
+                <p className="pt-0.5">{step}</p>
               </li>
             ))}
           </ol>

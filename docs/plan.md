@@ -260,7 +260,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 | Plan | Seven rows in one bordered list, today highlighted. Each day: name, "Add" (icon and text), then its meals, or empty. "Clear week" at the top, opposite the title | 2.1 |
 | Add to plan | A sheet from the bottom on phones, from the right from `md` | 2.1, 2.2 |
 | Recipes | "All recipes" / "From your kitchen" tabs. On "All recipes": search, the preference line, cards in `sm:grid-cols-2 lg:grid-cols-3`. "New recipe" in the header | 1.1, 4.1, 5.1, 6.1 |
-| Recipe | Badges, "Add to plan", then ingredients (1 column) and method (2 columns) from `lg` | 1.2, 2.2, 5.1 |
+| Recipe | Name, meal types, serves and badges, then "Add to plan" (full width on phones) and the days it's planned for. From `lg`, the details on the left and the action on the right. Then ingredients in one bordered list (1 column, sticky from `lg`) and the method as numbered steps (2 columns from `lg`) | 1.2, 2.2, 5.1, 7.1 |
 | Shopping list | One bordered list, one line per ingredient: name left (first letter capitalised), amount bold right. From `lg`, two columns running A–Z down then on | 3.2 |
 | Preferences | The four choices in one bordered list, like the week, each row one tap target, a ticked row tinted and ticked. Allergy note underneath. The Add to plan day picker uses the same list | 4.1 |
 | New recipe | One column. Ingredient rows read like the line they make (amount and unit, ingredient, prep); one line per row from `lg`. Numbered steps with move and remove buttons | 5.1 |

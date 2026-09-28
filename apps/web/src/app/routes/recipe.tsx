@@ -36,7 +36,9 @@ export default function RecipeRoute() {
         notFound={<NotFoundRoute />}
         actions={(recipe) => (
           <Button
-            className="self-start"
+            size="lg"
+            // Full width on phones, where it's the page's main action and easy to reach.
+            className="w-full lg:w-auto"
             onClick={() =>
               setAdding((previous) => ({ recipe, open: true, opened: (previous?.opened ?? 0) + 1 }))
             }
