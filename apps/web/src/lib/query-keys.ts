@@ -5,4 +5,5 @@ export const queryKeys = {
   recipe: (slug: string) => ['recipes', slug],
   plan: ['plan'],
   shoppingList: ['shopping-list'],
+  preferences: ['preferences'],
 } as const;

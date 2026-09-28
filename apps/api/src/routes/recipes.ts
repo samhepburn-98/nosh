@@ -1,16 +1,19 @@
 import { Router } from 'express';
 
-import type { Recipe } from '@nosh/shared/recipes';
+import type { Recipe, RecipeGroups } from '@nosh/shared/recipes';
 
+import { groupByPreferences } from '../domain/preferences.ts';
 import { formatAmount } from '../domain/units.ts';
 import { errorBody } from '../http/errors.ts';
+import type { PreferencesRepository } from '../repositories/preferences-repository.ts';
 import type { RecipesRepository } from '../repositories/recipes-repository.ts';
 
-export function recipesRouter(recipes: RecipesRepository) {
+export function recipesRouter(recipes: RecipesRepository, preferences: PreferencesRepository) {
   const router = Router();
 
   router.get('/', (_req, res) => {
-    res.json(recipes.listSummaries());
+    const body: RecipeGroups = groupByPreferences(recipes.listSummaries(), preferences.get());
+    res.json(body);
   });
 
   router.get('/:slug', (req, res) => {

@@ -95,7 +95,7 @@ F4 (delete your own recipe) was cut to keep the app small (§1). The numbering i
 - Preferences screen (the settings button in the header): vegetarian, vegan, gluten-free, dairy-free. Saved as they're ticked.
 - **Rule:** a recipe fits if it has every selected tag. Vegan counts as vegetarian and dairy-free. Tags are never guessed from ingredients, so an untagged recipe fits nothing.
 - **Every list of recipes** (Recipes page, the plan's recipe picker, F8) shows the recipes that fit first. The rest follow under "These don't quite fit your preferences". Nothing is hidden.
-- A line above each list says "Showing dairy-free recipes · Change". With no preferences, there's no line and no second heading.
+- Below the search, the recipes that fit sit under "These fit your preferences", with the chosen preferences as badges and an "Update preferences" button. With no preferences there are no headings: it's one list.
 - An allergy note sits under the checkboxes: recipes go by their labels, so check the ingredients.
 
 | Preferences | Recipes that fit |
@@ -262,7 +262,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 | Recipes | "All recipes" / "From your kitchen" tabs. On "All recipes": search, the preference line, cards in `sm:grid-cols-2 lg:grid-cols-3`. "New recipe" in the header | 1.1, 4.1, 5.1, 6.1 |
 | Recipe | Badges, "Add to plan", then ingredients (1 column) and method (2 columns) from `lg` | 1.2, 2.2, 5.1 |
 | Shopping list | One bordered list, one line per ingredient: name left (first letter capitalised), amount bold right. From `lg`, two columns running A–Z down then on | 3.2 |
-| Preferences | The four choices in one bordered list, each row one tap target, a ticked row tinted and ticked. Allergy note underneath | 4.1 |
+| Preferences | The four choices in one bordered list, like the week, each row one tap target, a ticked row tinted and ticked. Allergy note underneath. The Add to plan day picker uses the same list | 4.1 |
 | New recipe | One column. Ingredient rows read like the line they make (amount and unit, ingredient, prep); one line per row from `lg`. Numbered steps with move and remove buttons | 5.1 |
 | From your kitchen (Recipes tab) | Picker with chips below it and "Clear all", then result cards | 6.1 |
 
@@ -433,7 +433,7 @@ Eight phases: setup, one for each brief feature, our own feature, and a final pa
   - `GET /api/recipes` returns `{ matching, others }`
 - **Web:**
   - `features/preferences`: four checkboxes, saved as they're ticked (shown straight away, put back if saving fails), the vegan description, the allergy note
-  - the Recipes list and the plan's recipe picker show the rest under "These don't quite fit your preferences". The "Showing dairy-free recipes · Change" line. Saving preferences refreshes the recipes
+  - the Recipes list and the plan's recipe picker show the recipes that fit under "These fit your preferences" (with the preferences as badges and "Update preferences"), and the rest under "These don't quite fit your preferences". Saving preferences refreshes the recipes
 - **Check:** ticks survive a reload. Every row of the F5 table.
 
 ### Phase 5: Your own recipes (B1)

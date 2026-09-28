@@ -10,6 +10,7 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet';
 import { useAddMeal } from '@/features/plan/api/add-meal';
+import { PreferencesSummary } from '@/features/preferences/components/preferences-summary';
 import { RecipePicker } from '@/features/recipes/components/recipe-picker';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
@@ -47,6 +48,7 @@ export default function PlanAddMealSheet({
         </SheetHeader>
         <div className="flex min-h-0 flex-1 flex-col px-4 pb-4">
           <RecipePicker
+            preferences={<PreferencesSummary />}
             disabled={addMeal.isPending}
             onPick={(recipe) => addMeal.mutate({ day, recipeSlug: recipe.slug })}
           />

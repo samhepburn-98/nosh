@@ -1,12 +1,13 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
 
-import type { RecipeSummary } from '@nosh/shared/recipes';
+import type { RecipeGroups } from '@nosh/shared/recipes';
 
 import { api } from '@/lib/api-client';
 import { queryKeys } from '@/lib/query-keys';
 import type { QueryConfig } from '@/lib/react-query';
 
-export const getRecipes = (): Promise<RecipeSummary[]> => api.get('/recipes');
+/** Every recipe, split into those that fit the saved preferences and the others. */
+export const getRecipes = (): Promise<RecipeGroups> => api.get('/recipes');
 
 export const getRecipesQueryOptions = () =>
   queryOptions({ queryKey: queryKeys.recipes, queryFn: getRecipes });

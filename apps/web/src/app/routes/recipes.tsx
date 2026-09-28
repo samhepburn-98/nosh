@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { useSearchParams } from 'react-router';
 
+import { PreferencesSummary } from '@/features/preferences/components/preferences-summary';
 import { RecipeList } from '@/features/recipes/components/recipe-list';
 import { RecipeSearch } from '@/features/recipes/components/recipe-search';
 
@@ -29,6 +30,7 @@ export default function RecipesRoute() {
       <RecipeSearch ref={searchRef} value={search} onChange={setSearch} />
       <RecipeList
         search={search}
+        preferences={<PreferencesSummary />}
         onClearSearch={() => {
           setSearch('');
           searchRef.current?.focus();
