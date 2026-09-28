@@ -332,7 +332,7 @@ Eight phases: setup, one for each brief feature, our own feature, and a final pa
 |---|---|---|
 | **0. Setup** | 0.1 Repository and app shell · 0.2 API and database | [ ] |
 | **1. Recipes (B1)** | 1.1 Recipe list and search · 1.2 Recipe page | [ ] |
-| **2. Plan the week (B3)** | 2.1 The week: add, remove, clear · 2.2 Add to plan from a recipe | [ ] |
+| **2. Plan the week (B3)** | 2.1 The week: add, remove, clear (as 2.1a API and 2.1b screen) · 2.2 Add to plan from a recipe | [ ] |
 | **3. Shopping list (B4)** | 3.1 Rules · 3.2 The list | [ ] |
 | **4. Dietary preferences (B2)** | 4.1 Save them, and show recipes that fit first | [ ] |
 | **5. Your own recipes (B1)** | 5.1 API and form | [ ] |
@@ -387,6 +387,7 @@ Eight phases: setup, one for each brief feature, our own feature, and a final pa
 ### Phase 2: Plan the week (B3)
 
 #### PR 2.1: The week: add, remove, clear
+- **Split in two,** as it came to 779 hand-written lines: **2.1a** the API (`groupByDay`, the plan schemas, `plan_entries` and the four endpoints) and **2.1b** the screen (the recipe picker, the week, the sheet and the dialog), opened on top of 2.1a.
 - **You can:** see the week, add a recipe to a day, remove a meal, and clear the week.
 - **Data:** `plan_entries`.
 - **API:**

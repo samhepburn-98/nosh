@@ -81,6 +81,12 @@ export function createRecipesRepository(db: Db) {
       return rows.map(labelsFor());
     },
 
+    /** One recipe's summary, or undefined if there's no recipe with that slug. */
+    findSummary(slug: string): RecipeSummary | undefined {
+      const row = db.select(summaryColumns).from(recipes).where(eq(recipes.slug, slug)).get();
+      return row && labelsFor(row.id)(row);
+    },
+
     /** One recipe in full, with its ingredient lines and method in order. */
     findBySlug(slug: string): StoredRecipe | undefined {
       const row = db.select(summaryColumns).from(recipes).where(eq(recipes.slug, slug)).get();

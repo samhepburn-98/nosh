@@ -8,6 +8,13 @@
       "when": 1790595915266,
       "tag": "0000_recipe-tables",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1790598424551,
+      "tag": "0001_plan-entries",
+      "breakpoints": true
     }
   ]
 }
