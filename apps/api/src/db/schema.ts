@@ -1,5 +1,6 @@
 import { sql } from 'drizzle-orm';
 import {
+  check,
   index,
   integer,
   primaryKey,
@@ -104,4 +105,17 @@ export const recipeTags = sqliteTable(
       .references(() => tags.id),
   },
   (t) => [primaryKey({ columns: [t.recipeId, t.tagId] })],
+);
+
+/** The week's plan: one row per meal, a recipe on a day from 1 (Monday) to 7 (Sunday). */
+export const planEntries = sqliteTable(
+  'plan_entries',
+  {
+    id: integer().primaryKey(),
+    day: integer().notNull(),
+    recipeId: integer()
+      .notNull()
+      .references(() => recipes.id, { onDelete: 'cascade' }),
+  },
+  (t) => [check('plan_entries_day', sql`${t.day} between 1 and 7`)],
 );
