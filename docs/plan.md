@@ -164,7 +164,7 @@ Adding salt and pepper and olive oil gives: 1 Sausage and Mash, 2 Tomato Soup (h
 2. Make the last word singular with `pluralize`, plus overrides for words it gets wrong (cookies, brownies, quiches).
 3. Only exact matches merge: "pepper" ≠ "red pepper" ≠ "salt and pepper", "rice" ≠ "basmati rice".
 
-**Lines use the name as stored,** never changed to suit the amount: "onion 4", "red pepper 2", "lemon 1". Changing a name could make it wrong. When a line merges different spellings, it uses the plural one, which is also a stored name: carrot + carrots gives "carrots 3". Across the starter data, only apple/apples and carrot/carrots share a singular form (a guard test).
+**Lines use the name as stored,** never changed to suit the amount: "onion 4", "red pepper 2", "lemon 1". Changing a name could make it wrong. When a line merges different spellings, it uses the plural one, which is also a stored name: carrot + carrots gives "carrots 3". The shopping list shows each name with a capital first letter ("Chopped tomatoes"), on screen only. Across the starter data, only apple/apples and carrot/carrots share a singular form (a guard test).
 
 **Units**
 
@@ -261,7 +261,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 | Add to plan | A sheet from the bottom on phones, from the right from `md` | 2.1, 2.2 |
 | Recipes | "All recipes" / "From your kitchen" tabs. On "All recipes": search, the preference line, cards in `sm:grid-cols-2 lg:grid-cols-3`. "New recipe" in the header | 1.1, 4.1, 5.1, 6.1 |
 | Recipe | Badges, "Add to plan", then ingredients (1 column) and method (2 columns) from `lg` | 1.2, 2.2, 5.1 |
-| Shopping list | One bordered list, one line per ingredient: name left, amount bold right. From `lg`, two columns running A–Z down then on | 3.2 |
+| Shopping list | One bordered list, one line per ingredient: name left (first letter capitalised), amount bold right. From `lg`, two columns running A–Z down then on | 3.2 |
 | Preferences | The four choices in one bordered list, each row one tap target, a ticked row tinted and ticked. Allergy note underneath | 4.1 |
 | New recipe | One column. Ingredient rows read like the line they make (amount and unit, ingredient, prep); one line per row from `lg`. Numbered steps with move and remove buttons | 5.1 |
 | From your kitchen (Recipes tab) | Picker with chips below it and "Clear all", then result cards | 6.1 |

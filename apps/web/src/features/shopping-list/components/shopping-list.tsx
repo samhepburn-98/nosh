@@ -88,7 +88,8 @@ export function ShoppingList() {
               key={item.name}
               className="flex break-inside-avoid items-baseline justify-between gap-4 border-b py-3"
             >
-              <span>{item.name}</span>
+              {/* Capitalised on screen only: the name itself stays as stored. */}
+              <span className="first-letter:uppercase">{item.name}</span>
               {item.amountText && <span className="shrink-0 font-bold">{item.amountText}</span>}
             </li>
           ))}
