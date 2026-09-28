@@ -49,7 +49,8 @@ export function MethodSteps({
           const step = `${id}-${index}`;
           const error = errors?.[index]?.text;
           return (
-            <li key={field.id}>
+            // The buttons sit outside the Field, so a step's error colours its text box, not them.
+            <li key={field.id} className="flex flex-col gap-3">
               <Field data-invalid={Boolean(error)}>
                 <FieldLabel htmlFor={`${step}-text`}>Step {index + 1}</FieldLabel>
                 <Textarea
@@ -58,49 +59,49 @@ export function MethodSteps({
                   {...form.register(`method.${index}.text`)}
                 />
                 <FieldError errors={[error]} />
-                <div className="flex flex-wrap gap-2">
-                  <Button
-                    id={`${step}-up`}
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    aria-label={`Move step ${index + 1} up`}
-                    disabled={index === 0}
-                    onClick={() => moveStep(index, 'up')}
-                  >
-                    <ArrowUp data-icon="inline-start" />
-                    Up
-                  </Button>
-                  <Button
-                    id={`${step}-down`}
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    aria-label={`Move step ${index + 1} down`}
-                    disabled={index === fields.length - 1}
-                    onClick={() => moveStep(index, 'down')}
-                  >
-                    <ArrowDown data-icon="inline-start" />
-                    Down
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    aria-label={`Remove step ${index + 1}`}
-                    // A recipe needs at least one step, so the last one stays.
-                    disabled={fields.length === 1}
-                    onClick={() => {
-                      remove(index);
-                      // The step that takes its place, or the one before if it was last.
-                      focusNext.current = `${id}-${Math.min(index, fields.length - 2)}-text`;
-                    }}
-                  >
-                    <Trash2 data-icon="inline-start" />
-                    Remove
-                  </Button>
-                </div>
               </Field>
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  id={`${step}-up`}
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  aria-label={`Move step ${index + 1} up`}
+                  disabled={index === 0}
+                  onClick={() => moveStep(index, 'up')}
+                >
+                  <ArrowUp data-icon="inline-start" />
+                  Up
+                </Button>
+                <Button
+                  id={`${step}-down`}
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  aria-label={`Move step ${index + 1} down`}
+                  disabled={index === fields.length - 1}
+                  onClick={() => moveStep(index, 'down')}
+                >
+                  <ArrowDown data-icon="inline-start" />
+                  Down
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  aria-label={`Remove step ${index + 1}`}
+                  // A recipe needs at least one step, so the last one stays.
+                  disabled={fields.length === 1}
+                  onClick={() => {
+                    remove(index);
+                    // The step that takes its place, or the one before if it was last.
+                    focusNext.current = `${id}-${Math.min(index, fields.length - 2)}-text`;
+                  }}
+                >
+                  <Trash2 data-icon="inline-start" />
+                  Remove
+                </Button>
+              </div>
             </li>
           );
         })}
