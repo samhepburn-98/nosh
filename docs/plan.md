@@ -262,7 +262,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 | Recipes | "All recipes" / "From your kitchen" tabs. On "All recipes": search, the preference line, cards in `sm:grid-cols-2 lg:grid-cols-3`. "New recipe" in the header | 1.1, 4.1, 5.1, 6.1 |
 | Recipe | Badges, "Add to plan", then ingredients (1 column) and method (2 columns) from `lg` | 1.2, 2.2, 5.1 |
 | Shopping list | One bordered list, one line per ingredient: name left (first letter capitalised), amount bold right. From `lg`, two columns running A–Z down then on | 3.2 |
-| Preferences | The four choices as shadcn's choice cards (as in the day picker), each one tap target, a ticked one tinted and ticked. Allergy note underneath | 4.1 |
+| Preferences | The four choices in one bordered list, like the week, each row one tap target, a ticked row tinted and ticked. Allergy note underneath. The Add to plan day picker uses the same list | 4.1 |
 | New recipe | One column. Ingredient rows read like the line they make (amount and unit, ingredient, prep); one line per row from `lg`. Numbered steps with move and remove buttons | 5.1 |
 | From your kitchen (Recipes tab) | Picker with chips below it and "Clear all", then result cards | 6.1 |
 
