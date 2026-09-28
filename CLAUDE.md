@@ -8,7 +8,7 @@ A meal-planning web app for Nosh, a charity helping low-income households eat we
 
 | Command | What it does |
 |---|---|
-| `pnpm dev` | API on :3001 and web on :5173 (Vite proxies `/api`) |
+| `pnpm dev` | API on :3001 and web on :5174 (Vite proxies `/api`) |
 | `pnpm check` | lint + format check + typecheck + test. **Run before every commit** |
 | `pnpm test` / `pnpm lint` / `pnpm typecheck` | Individually |
 | `pnpm format` | Prettier, writing changes |

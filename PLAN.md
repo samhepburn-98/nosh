@@ -251,7 +251,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 - **Phone first (360px).** Below `md`: a bottom tab bar (Plan · Recipes · Shopping list) and a settings button in the top bar. From `md`: all links, and Preferences, in the top bar. One `nav-items` list feeds both. Why, in §1 "Navigation".
 - **Every page uses the shell's width** (`max-w-5xl`). Wide screens get grid columns, not narrower pages.
 - **Tailwind defaults only.** No arbitrary values; colours only through theme tokens.
-- **44px tap targets, 16px inputs.** shadcn's `Button`, `Input`, `NativeSelect`, `Tabs`, `Switch` and combobox options are raised to match (agreed variant changes). Otherwise `components/ui` stays as upstream wrote it.
+- **44px tap targets, 16px inputs.** shadcn's `Button`, `Input`, `NativeSelect`, `Tabs`, `Switch` and combobox options are raised to match (agreed variant changes). `Button` loses its sizes below 44px (`xs`, `sm`, `icon-xs`, `icon-sm`), so they can't be used by mistake. Otherwise `components/ui` stays as upstream wrote it.
 
 | Screen | Layout | PR |
 |---|---|---|
@@ -279,10 +279,13 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 | ring | Deep Teal `#3AA58F` | 3.02:1 (non-text) |
 | destructive | darkened Flame Coral `#B9471F` | 5.27:1 |
 | leaf | Leaf `#D5C52D` / Charcoal | 6.84:1 |
+| input | field borders `#8A959C` | 3.06:1 (non-text) |
+| header / header-foreground / header-muted | Charcoal / white / Cloud Grey `#B7BFC0` | 12.1:1 / 6.48:1 |
 
 - Charcoal top bar with the logo. Cloud Grey only on Charcoal. Flame Coral only for icons and borders.
+- **Deep Teal is only the focus ring,** although the brief calls it "secondary". It fails AA for text either way (3.02:1 with white, 4.0:1 with Charcoal), so `secondary` is a light green tint instead.
 - **Logo:** the mark and wordmark side by side, unaltered, with the "O"-width clear space. That limits it to 30px tall in a 72px bar. The favicon is the mark alone.
-- **Type:** Nunito Bold for headings (self-hosted, Latin only), system sans for body.
+- **Type:** Nunito Bold for headings (self-hosted, Latin only), system sans for body. The brief allows either Nunito Sans or system sans for body; system sans needs no download, which suits older phones on slow connections.
 
 ### Performance
 - Only the Plan page is in the first download. Every other page, and the Plan page's sheets and dialogs, load when first opened (`React.lazy` and `Suspense` in the router).
@@ -345,7 +348,7 @@ Eight phases: setup, one for each brief feature, our own feature, and a final pa
   - the logo, optimised under 15 KB
   - routes with placeholder pages, lazy-loaded: Plan (`/`), Recipes, Shopping list, Preferences, Not found
   - top bar and bottom tab bar, with the current page marked by more than colour
-- **Prettier ignores** `data/` (the client's JSON is never reformatted) and Markdown.
+- **Prettier ignores** `data/` (the client's JSON is never reformatted), Markdown, and `components/ui` (shadcn's files stay as upstream wrote them, so updates diff cleanly).
 - **Check:**
   - `pnpm install` and `pnpm check` run clean. The JSON is byte-identical to the supplied file.
   - At 360px the tab bar switches pages and covers nothing. At 1280px the links are in the top bar. An unknown URL shows Not found.
