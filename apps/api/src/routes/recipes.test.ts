@@ -45,6 +45,7 @@ describe('GET /api/recipes', () => {
       mealTypes: ['breakfast'],
       dietary: ['vegetarian'],
       tags: ['quick'],
+      isOwn: false,
     });
   });
 

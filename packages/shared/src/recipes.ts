@@ -14,6 +14,8 @@ export const recipeSummarySchema = z.object({
   dietary: z.array(dietarySchema),
   /** The client's other labels, such as "quick" and "batch-cook". */
   tags: z.array(z.string()),
+  /** Added by the user, not one of the starter recipes. */
+  isOwn: z.boolean(),
 });
 export type RecipeSummary = z.infer<typeof recipeSummarySchema>;
 

@@ -37,6 +37,7 @@ const summaryColumns = {
   slug: recipes.slug,
   name: recipes.name,
   serves: recipes.serves,
+  isBuiltin: recipes.isBuiltin,
 };
 
 export function createRecipesRepository(db: Db) {
@@ -64,8 +65,19 @@ export function createRecipesRepository(db: Db) {
     const tagsByRecipe = groupByRecipe(tagRows, 'name');
 
     /** Dietary tags and meal types are in display order, tags A–Z. */
-    return ({ id, ...recipe }: { id: number; slug: string; name: string; serves: number }) => ({
+    return ({
+      id,
+      isBuiltin,
+      ...recipe
+    }: {
+      id: number;
+      slug: string;
+      name: string;
+      serves: number;
+      isBuiltin: boolean;
+    }) => ({
       ...recipe,
+      isOwn: !isBuiltin,
       mealTypes: inOrder(mealTypesByRecipe.get(id), MEAL_TYPES),
       dietary: inOrder(dietaryByRecipe.get(id), DIETARY),
       tags: (tagsByRecipe.get(id) ?? []).sort(),
