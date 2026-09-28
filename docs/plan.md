@@ -266,7 +266,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 | New recipe | One column. Ingredient rows read like the line they make (amount and unit, ingredient, prep); one line per row from `lg`. Numbered steps with move and remove buttons | 5.1 |
 | From your kitchen (Recipes tab) | Picker with chips below it and "Clear all", then result cards | 6.1 |
 
-**Badges:** dietary tags use `secondary` (light green), the client's other tags use `outline`, "Your recipe" uses `leaf`.
+**Badges:** dietary tags use `secondary` (light green), the client's other tags use `outline`, "Your recipe" uses the default badge with a chef's hat icon. It was to use Leaf, but shadcn's badge has no Leaf variant, and components stay as upstream wrote them.
 
 **Components:** `Sheet`, not `Drawer` (no extra dependency). `NativeSelect` for units (the phone's own picker). One `IngredientCombobox`, single mode in the form, multiple in the kitchen. Kitchen chips sit below the field as buttons, because shadcn's in-field chips are about 21px, under the 24px AA minimum.
 
@@ -456,7 +456,7 @@ Split in two, as it came to about 900 hand-written lines: **5.1a** is the shared
   - steps with move up, move down and remove, where focus follows the moved step
   - API errors shown on their fields
   - "Recipe saved", then the new recipe opens
-  - the "Your recipe" badge (Leaf) on cards and the recipe page
+  - the "Your recipe" badge (default, with an icon) on cards and the recipe page
 - **Review closely:** the combobox (the "Add" option, and leaving the field keeps what was typed).
 - **Check:**
   - "Carrot" links to "carrot", so a new recipe's carrots add up with Shepherd's Pie's on the shopping list
