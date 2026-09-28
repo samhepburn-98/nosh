@@ -76,6 +76,8 @@ export function Week({
           day={day}
           meals={meals}
           isToday={day === today}
+          // Its × is disabled while it's being removed, so a second tap can't ask again and fail.
+          removingId={removeMeal.isPending ? removeMeal.variables : undefined}
           addButtonRef={(button) => {
             if (button) addButtons.current.set(day, button);
             if (day === 1) mondayAddButton.current = button;
@@ -96,6 +98,7 @@ function DayRow({
   day,
   meals,
   isToday,
+  removingId,
   addButtonRef,
   onAdd,
   onRemove,
@@ -103,6 +106,7 @@ function DayRow({
   day: number;
   meals: PlannedMeal[];
   isToday: boolean;
+  removingId: number | undefined;
   addButtonRef: (button: HTMLButtonElement | null) => void;
   onAdd: () => void;
   onRemove: (meal: PlannedMeal) => void;
@@ -166,6 +170,7 @@ function DayRow({
                   variant="ghost"
                   size="icon-sm"
                   aria-label={`Remove ${meal.recipe.name} from ${name}`}
+                  disabled={meal.id === removingId}
                   onClick={() => onRemove(meal)}
                 >
                   <X />
