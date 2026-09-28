@@ -41,7 +41,7 @@ The brief suggests 2 to 3 hours, so these were planned and then cut. Each is a s
 |---|---|
 | Delete your own recipe | Lets people undo their own mistakes |
 | "Your recipes only" switch | Makes your own recipes easy to find among the starter ones |
-| A download budget and Lighthouse targets | Pages are still lazy-loaded (§5). Lighthouse is checked in the final pass if there's time |
+| A download budget and Lighthouse targets | Pages are still lazy-loaded (§5). Lighthouse was run in the final pass: results in the README |
 
 ### Ground rules from the brief
 - **Single user**, no logins. Runs locally: a client UI and a separate API, with SQLite.
@@ -81,7 +81,7 @@ The examples come from the supplied recipe data, and they are the acceptance tes
 | Method steps | at least one, none empty, moved with up and down buttons |
 
 - **Ingredient autocomplete:** typing suggests known ingredients ("carr" finds "carrot" and "carrots"). Picking one links to it.
-  - If the typed name isn't exactly a known ingredient, the last option is `Add "xyz" as a new ingredient`. It shows even when there are partial matches, so "chilli" can be added although "chilli flakes" exists.
+  - If the typed name isn't exactly a known ingredient, the last option is `Add "xyz" as a new ingredient`. It shows even when there are partial matches, so "chilli" can be added although "chilli powder" exists.
   - Leaving the field with a name typed but not picked picks it anyway.
   - The API links a new name to an existing ingredient with the same singular form (§3), so "Carrot" uses "carrot".
 - **Errors** show on each bad field. The browser checks against the shared schema, and the API checks again (400 with a message per field). Nothing is saved.
@@ -291,7 +291,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 
 ### Performance
 - Only the Plan page is in the first download. Every other page, and the Plan page's sheets and dialogs, load when first opened (`React.lazy` and `Suspense` in the router).
-- No download budget. Lighthouse mobile is checked in the final pass if there's time.
+- No download budget. Lighthouse mobile was run on the production build in the final pass: performance 91 to 97. Results are in the README.
 
 ---
 
@@ -326,18 +326,18 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 
 ## 7. Phases
 
-Eight phases: setup, one for each brief feature, our own feature, and a final pass. Eleven PRs plus the final pass, each with several small commits, reviewed and merged one at a time (§6).
+Eight phases: setup, one for each brief feature, our own feature, and a final pass. Thirteen PRs (2.1 and 5.1 were each split in two) plus the final pass, each with several small commits, reviewed and merged one at a time (§6).
 
 | Phase | PRs | Done |
 |---|---|---|
-| **0. Setup** | 0.1 Repository and app shell · 0.2 API and database | [ ] |
-| **1. Recipes (B1)** | 1.1 Recipe list and search · 1.2 Recipe page | [ ] |
-| **2. Plan the week (B3)** | 2.1 The week: add, remove, clear (as 2.1a API and 2.1b screen) · 2.2 Add to plan from a recipe | [ ] |
-| **3. Shopping list (B4)** | 3.1 Rules · 3.2 The list | [ ] |
-| **4. Dietary preferences (B2)** | 4.1 Save them, and show recipes that fit first | [ ] |
-| **5. Your own recipes (B1)** | 5.1 API and form (as 5.1a API and 5.1b form) | [ ] |
-| **6. From your kitchen (X)** | 6.1 Rules, picker and ranked recipes | [ ] |
-| **7. Final pass** | 7.1 Review, docs and demo run | [ ] |
+| **0. Setup** | 0.1 Repository and app shell · 0.2 API and database | [x] |
+| **1. Recipes (B1)** | 1.1 Recipe list and search · 1.2 Recipe page | [x] |
+| **2. Plan the week (B3)** | 2.1 The week: add, remove, clear (as 2.1a API and 2.1b screen) · 2.2 Add to plan from a recipe | [x] |
+| **3. Shopping list (B4)** | 3.1 Rules · 3.2 The list | [x] |
+| **4. Dietary preferences (B2)** | 4.1 Save them, and show recipes that fit first | [x] |
+| **5. Your own recipes (B1)** | 5.1 API and form (as 5.1a API and 5.1b form) | [x] |
+| **6. From your kitchen (X)** | 6.1 Rules, picker and ranked recipes | [x] |
+| **7. Final pass** | 7.1 Review, docs and demo run | [x] |
 
 **Watch the size of 5.1 and 6.1.** They're the largest. If either heads well past 600 hand-written lines, I stop and suggest a split: API before UI for 5.1, rules before UI for 6.1.
 
