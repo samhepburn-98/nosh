@@ -31,7 +31,7 @@ None of these is asked for. Each is small, and each has a reason we can give the
 |---|---|
 | Ingredient autocomplete in the recipe form (F3) | Keeps ingredient names consistent, so the shopping list adds them up. F8 reuses it |
 | The client's recipe tags as badges (F1) | "Quick", "Batch cook" and so on are in the client's data, and useful to their audience |
-| Allergy note on Preferences (F5) | Filtering goes by the client's tags, and some look wrong (§8) |
+| Allergy note on Preferences (F5) | Filtering goes by the client's tags, and some look wrong ([Product Owner notes](docs/product-owner-notes.md), note 1) |
 
 ### Left out to keep it small
 
@@ -315,6 +315,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 **Guardrails**
 - **Nothing is added before it's used:** constants, schemas, tables, endpoints, components, dependencies.
 - **Anything not in the brief is flagged** before it's built, with the reason, so you can decide.
+- **Questions for the client go in [`docs/product-owner-notes.md`](docs/product-owner-notes.md)** in the PR where we find them, to raise at the end.
 - **`pnpm check` passes** before every commit. Each visible change is checked at 360px and 1280px.
 - **New screens are planned with the `frontend-design` skill** first.
 - **This plan is updated in the same PR** when a decision changes it.
@@ -480,25 +481,5 @@ Eight phases: setup, one for each brief feature, our own feature, and a final pa
 #### PR 7.1: Review, docs and demo run
 - **`/code-review`** on the whole app. Fix what it finds, one `fix:` commit each.
 - **Lighthouse** mobile on the production build, if there's time. No target is required.
-- **README:** setup, architecture, decisions (including what we left out, §1), the Product Owner notes (§8).
+- **README:** setup, architecture, decisions (including what we left out, §1), the Product Owner notes (`docs/product-owner-notes.md`).
 - **Demo run-through:** `pnpm db:reset`, then every §2 example in the app.
-
----
-
-## 8. Notes for the Product Owner
-
-1. **Dietary tags look incomplete or wrong.**
-   - Tomato Soup is vegan but not tagged dairy-free (our vegan rule covers it).
-   - Fish and Chips and the Full English are dairy-free in practice but untagged.
-   - **Shepherd's Pie is tagged gluten-free, but beef stock cubes usually contain wheat.**
-   - We recommend an allergen or "may contain" field.
-2. **Content gaps.** Vegans have 2 recipes and no breakfast. Gluten-free and dairy-free users have no breakfast.
-3. **The same ingredient in different units:** chicken breast (g and a count), coconut milk (tin and ml), salad leaves (handful and g), milk (ml and tbsp). Standardise at the source.
-4. **Ingredients only in the method:** "a little oil", "500ml water", "seasoned flour".
-5. **Near-duplicates:** porridge oats / rolled oats, oil / olive oil / sesame oil, potatoes / baking potatoes. Which are interchangeable when shopping?
-6. **Servings range from 1 to 6.** The list buys each recipe as written. Should it scale to household size?
-7. **No prices, pack sizes, nutrition or cook times.** The brief mentions "nutritional recipes". "Quick" has no definition; the app shows it as written, without promising a time.
-8. **Logo.**
-   - Is there an approved side-by-side lockup, and may the mark be used alone?
-   - The "Meal planning platform" line can't be read at top-bar size. Is there a wordmark without it?
-   - Clear space limits the logo to 30px tall in the top bar. Would they accept less clear space there?

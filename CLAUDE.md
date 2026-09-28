@@ -24,6 +24,7 @@ A meal-planning web app for Nosh, a charity helping low-income households eat we
   - **Never merge until the user says so.** It's squash-merged, so the PR title is a Conventional Commit.
   - Keep PRs reviewable in one sitting (roughly 300–600 hand-written lines). If a PR grows past that, stop and suggest a split.
   - Flag anything not in the brief before building it.
+  - Found a question only the client can answer (their data, brand or scope)? Add it to `docs/product-owner-notes.md` in the same PR.
   - When a decision changes the plan, update PLAN.md in the same PR.
 - **Nothing is added before it's used.** Constants, schemas, tables, endpoints, components and dependencies arrive in the PR that first uses them.
 - **Show each visible change.** Run the app and check it at 360px and 1280px before opening the PR.
