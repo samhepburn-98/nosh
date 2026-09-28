@@ -137,7 +137,7 @@ F4 (delete your own recipe) was cut to keep the app small (§1). The numbering i
   3. then name A–Z
   4. recipes you have nothing for go last, so a short recipe with nothing in common can't top the list
 - **Grouped by preferences** as in F5.
-- **Each result:** "You have 4 of 6 · buy 2 more", what to buy with a serial comma ("eggs, bread, and salt and pepper"), and "Add to plan". Each button is read out with its recipe: "Add to plan: Sausage and Mash".
+- **Each result:** "You have 4 of 6 · buy 2 more" ("You have all 5" or "Buy all 4" at either end), what to buy with a serial comma ("eggs, bread, and salt and pepper"), and "Add to plan". Each button is read out with its recipe: "Add to plan: Sausage and Mash".
 - **Everything counts,** salt and pepper and oil included. There's no staples list, because which ingredients are staples would be our guess. You tick them if you have them.
 - **Matching:** by singular form (§3), so "carrot" covers "carrots". "Pepper" isn't "red pepper" or "salt and pepper".
 - **Amounts:** the hint under the picker says it goes by what you have, not how much of it.
@@ -268,7 +268,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 
 **Badges:** dietary tags use `secondary` (light green), the client's other tags use `outline`, "Your recipe" uses the default badge with a chef's hat icon. It was to use Leaf, but shadcn's badge has no Leaf variant, and components stay as upstream wrote them.
 
-**Components:** `Sheet`, not `Drawer` (no extra dependency). `NativeSelect` for units (the phone's own picker). One `IngredientCombobox`, single mode in the form, multiple in the kitchen. Kitchen chips sit below the field as buttons, because shadcn's in-field chips are about 21px, under the 24px AA minimum.
+**Components:** `Sheet`, not `Drawer` (no extra dependency). `NativeSelect` for units (the phone's own picker). `IngredientCombobox` in the recipe form. The kitchen picker uses shadcn's `Combobox` in multiple mode directly, as it only picks known ingredients and has no "Add" option. Kitchen chips sit below the field as buttons, because shadcn's in-field chips are about 21px, under the 24px AA minimum.
 
 ### Theme (contrast measured)
 
@@ -473,7 +473,7 @@ Split in two, as it came to about 900 hand-written lines: **5.1a** is the shared
   - `GET` and `PUT /api/kitchen`. 400 for an unknown ingredient
   - `GET /api/kitchen/matches`: ranks every recipe and groups by preferences
 - **Web:**
-  - `IngredientCombobox` gains multiple mode: chip buttons below the field, A–Z, and focus moves to the next chip when one is removed
+  - the kitchen picker (shadcn's `Combobox` in multiple mode): chip buttons below the field, A–Z, and focus moves to the next chip when one is removed
   - `features/kitchen`: the picker, saved as it changes, with "Clear all"
   - the Recipes page gains its two tabs, "All recipes" and "From your kitchen" (`?view=kitchen`), combined in the Recipes route. Check "From your kitchen" fits beside "All recipes" at 360px
   - result cards: "You have 4 of 6 · buy 2 more", what to buy, "Add to plan" (named for its recipe). Nothing picked shows A–Z without counts
