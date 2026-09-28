@@ -365,7 +365,7 @@ Eight phases: setup, one for each brief feature, our own feature, and a final pa
 - **Check:**
   - all 20 starter recipes pass the schema
   - the seed makes 20 recipes, 79 ingredients and 132 lines matching the JSON
-  - `curl localhost:3001/api/recipes` returns 20
+  - `curl localhost:3002/api/recipes` returns 20
   - Porridge's `tags` are `["quick"]`
 
 ### Phase 1: Recipes (B1)
