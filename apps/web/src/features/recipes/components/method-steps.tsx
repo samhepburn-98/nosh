@@ -52,17 +52,19 @@ export function MethodSteps({
         <h2 className="text-lg">Method</h2>
       </FieldLegend>
       <FieldDescription>Write each step on its own, in the order you'd do them.</FieldDescription>
-      <ol className="flex flex-col gap-6">
+      {/* One bordered list, like the ingredients, so the steps read as one method. */}
+      <ol className="flex flex-col divide-y rounded-xl border">
         {fields.map((field, index) => {
           const step = `${id}-${index}`;
           const error = errors?.[index]?.text;
           return (
             // The buttons sit outside the Field, so a step's error colours its text box, not them.
-            <li key={field.id} className="flex flex-col gap-3">
+            <li key={field.id} className="flex flex-col gap-3 p-4">
               <Field data-invalid={Boolean(error)}>
                 <FieldLabel htmlFor={`${step}-text`}>Step {index + 1}</FieldLabel>
                 <Textarea
                   id={`${step}-text`}
+                  placeholder="Like “Fry the onion for 5 minutes, until soft.”"
                   aria-invalid={Boolean(error)}
                   {...form.register(`method.${index}.text`)}
                 />

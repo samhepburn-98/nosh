@@ -90,7 +90,12 @@ export function RecipeForm({ onSaved }: { onSaved: (recipe: Recipe) => void }) {
       <FieldGroup className="gap-8">
         <Field data-invalid={Boolean(errors.name)}>
           <FieldLabel htmlFor={`${id}-name`}>Name</FieldLabel>
-          <Input id={`${id}-name`} aria-invalid={Boolean(errors.name)} {...form.register('name')} />
+          <Input
+            id={`${id}-name`}
+            placeholder="Like “Veggie chilli”"
+            aria-invalid={Boolean(errors.name)}
+            {...form.register('name')}
+          />
           <FieldError errors={[errors.name]} />
         </Field>
 

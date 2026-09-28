@@ -73,12 +73,12 @@ The examples come from the supplied recipe data, and they are the acceptance tes
 
 | Field | Rule |
 |---|---|
-| Name | 1–80 characters |
+| Name | 1–80 characters, placeholder "Like “Veggie chilli”" |
 | Serves | 1–12, starting at 1, with − and + buttons either side (it can also be typed) |
 | Meal types | at least one |
 | Dietary tags | optional |
-| Ingredient rows | amount (number or blank), unit (dropdown, default "No unit (e.g. 2 onions)"), ingredient (autocomplete), prep (optional, hint: "Anything else, like 'a pinch' or 'a bunch', can go here.") |
-| Method steps | at least one, none empty, moved with up and down buttons |
+| Ingredient rows | amount (starts at 1; cleared for no amount, like salt and pepper), unit (dropdown, default "No unit (e.g. 2 onions)"), ingredient (autocomplete), prep (optional, hint: "Anything else, like 'a pinch' or 'a bunch', can go here.") |
+| Method steps | at least one, none empty, moved with up and down buttons, placeholder "Like “Fry the onion for 5 minutes, until soft.”" |
 
 - **Ingredient autocomplete:** typing suggests known ingredients ("carr" finds "carrot" and "carrots"). Picking one links to it.
   - If the typed name isn't exactly a known ingredient, the last option is `Add "xyz" as a new ingredient`. It shows even when there are partial matches, so "chilli" can be added although "chilli powder" exists.
@@ -264,7 +264,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 | Recipe | Name, meal types, serves and badges, then "Add to plan" (full width on phones) and the days it's planned for. From `lg`, the details on the left and the action on the right. Then ingredients in one bordered list (1 column, sticky from `lg`) and the method as numbered steps in the same kind of list (2 columns from `lg`) | 1.2, 2.2, 5.1, 7.1 |
 | Shopping list | One bordered list, one line per ingredient: name left (first letter capitalised), amount bold right. From `lg`, two columns running A–Z down then on | 3.2 |
 | Preferences | The four choices in one bordered list, like the week, each row one tap target, a ticked row tinted and ticked. Allergy note underneath, or beside the list from `lg`. The Add to plan day picker uses the same list | 4.1, 7.1 |
-| New recipe | One column. Ingredient rows read like the line they make (amount and unit, ingredient, prep); one line per row from `lg`. Numbered steps with move and remove buttons | 5.1 |
+| New recipe | One column. Ingredient rows read like the line they make (amount and unit, ingredient, prep); one line per row from `lg`. Numbered steps with move and remove buttons, in one bordered list like the ingredients | 5.1, 7.1 |
 | From your kitchen (Recipes tab) | Picker with chips below it and "Clear all", then result cards | 6.1 |
 
 **Badges:** dietary tags use `secondary` (light green), the client's other tags use `outline`, "Your recipe" uses Leaf with Charcoal text (6.84:1) and a chef's hat icon, so it doesn't look like the green buttons. shadcn's badge has no Leaf variant, so it's the one place `className` sets a colour (`bg-leaf text-leaf-foreground`). Flame Coral isn't used: it's 2.8:1 on white, too faint even for icons ([Product Owner notes](product-owner-notes.md), note 9).
