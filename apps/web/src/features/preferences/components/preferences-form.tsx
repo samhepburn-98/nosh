@@ -8,10 +8,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
-  Field,
   FieldContent,
   FieldDescription,
-  FieldGroup,
   FieldLabel,
   FieldLegend,
   FieldSet,
@@ -23,7 +21,7 @@ import { formatDietary } from '@/utils/format';
 import { usePreferences } from '../api/get-preferences';
 import { useUpdatePreferences } from '../api/update-preferences';
 
-/** The four dietary preferences, each a whole-row tap target, saved as they're ticked. */
+/** The four dietary preferences in one list, each row a tap target, saved as they're ticked. */
 export function PreferencesForm() {
   const id = useId();
   const { data, isError, refetch } = usePreferences();
@@ -73,10 +71,12 @@ export function PreferencesForm() {
         <FieldDescription>
           Recipes that fit every choice are shown first. The rest are still there, further down.
         </FieldDescription>
-        <FieldGroup data-slot="checkbox-group">
+        {/* One bordered list, like the week and the shopping list. Each row is a label, so the whole
+            row is the tap target, and shadcn tints it when it's ticked. */}
+        <ul className="flex flex-col divide-y overflow-hidden rounded-xl border">
           {DIETARY.map((value) => (
-            <FieldLabel key={value} htmlFor={`${id}-${value}`}>
-              <Field orientation="horizontal">
+            <li key={value}>
+              <FieldLabel htmlFor={`${id}-${value}`} className="w-full items-start gap-3 p-4">
                 <Checkbox
                   id={`${id}-${value}`}
                   checked={data.dietary.includes(value)}
@@ -90,10 +90,10 @@ export function PreferencesForm() {
                     </FieldDescription>
                   )}
                 </FieldContent>
-              </Field>
-            </FieldLabel>
+              </FieldLabel>
+            </li>
           ))}
-        </FieldGroup>
+        </ul>
       </FieldSet>
       <Alert>
         <Info />
