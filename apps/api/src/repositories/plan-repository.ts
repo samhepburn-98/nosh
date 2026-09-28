@@ -1,7 +1,8 @@
 import { asc, eq } from 'drizzle-orm';
 
 import type { Db } from '../db/client.ts';
-import { planEntries, recipes } from '../db/schema.ts';
+import { ingredients, planEntries, recipeIngredients, recipes } from '../db/schema.ts';
+import type { PlannedRecipe } from '../domain/shopping-list.ts';
 
 export function createPlanRepository(db: Db) {
   return {
@@ -13,6 +14,35 @@ export function createPlanRepository(db: Db) {
         .innerJoin(recipes, eq(planEntries.recipeId, recipes.id))
         .orderBy(asc(planEntries.id))
         .all();
+    },
+
+    /**
+     * Each planned meal's recipe with its ingredient lines, in the order the meals were added.
+     * A recipe planned twice is given twice, so the shopping list buys it twice.
+     */
+    listRecipes(): PlannedRecipe[] {
+      const rows = db
+        .select({
+          mealId: planEntries.id,
+          recipeName: recipes.name,
+          name: ingredients.name,
+          quantity: recipeIngredients.quantity,
+          unit: recipeIngredients.unit,
+        })
+        .from(planEntries)
+        .innerJoin(recipes, eq(planEntries.recipeId, recipes.id))
+        .innerJoin(recipeIngredients, eq(recipeIngredients.recipeId, recipes.id))
+        .innerJoin(ingredients, eq(recipeIngredients.ingredientId, ingredients.id))
+        .orderBy(asc(planEntries.id), asc(recipeIngredients.position))
+        .all();
+
+      const meals = new Map<number, PlannedRecipe>();
+      for (const { mealId, recipeName, ...line } of rows) {
+        const meal = meals.get(mealId) ?? { name: recipeName, ingredients: [] };
+        meal.ingredients.push(line);
+        meals.set(mealId, meal);
+      }
+      return [...meals.values()];
     },
 
     /** Adds a recipe to a day and returns the new meal's id. The recipe must exist. */

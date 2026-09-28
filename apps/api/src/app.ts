@@ -6,6 +6,7 @@ import { createPlanRepository } from './repositories/plan-repository.ts';
 import { createRecipesRepository } from './repositories/recipes-repository.ts';
 import { planRouter } from './routes/plan.ts';
 import { recipesRouter } from './routes/recipes.ts';
+import { shoppingListRouter } from './routes/shopping-list.ts';
 
 /** Builds the API over a database, so tests can pass in their own. */
 export function createApp(db: Db) {
@@ -18,6 +19,7 @@ export function createApp(db: Db) {
 
   app.use('/api/recipes', recipesRouter(recipes));
   app.use('/api/plan', planRouter(plan, recipes));
+  app.use('/api/shopping-list', shoppingListRouter(plan));
 
   app.use(notFound);
   app.use(handleErrors);

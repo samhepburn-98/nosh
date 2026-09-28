@@ -19,6 +19,7 @@ export const useAddMeal = ({
       void queryClient.invalidateQueries({ queryKey: queryKeys.plan });
       // Recipe pages say which days they're planned for.
       void queryClient.invalidateQueries({ queryKey: queryKeys.recipes });
+      void queryClient.invalidateQueries({ queryKey: queryKeys.shoppingList });
       return onSuccess?.(...args);
     },
     ...restConfig,

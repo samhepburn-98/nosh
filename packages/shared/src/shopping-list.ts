@@ -14,3 +14,9 @@ export const shoppingListItemSchema = z.object({
   usedIn: z.array(z.string()),
 });
 export type ShoppingListItem = z.infer<typeof shoppingListItemSchema>;
+
+/** Everything the week's meals need, A–Z. */
+export const shoppingListSchema = z.object({
+  items: z.array(shoppingListItemSchema),
+});
+export type ShoppingList = z.infer<typeof shoppingListSchema>;

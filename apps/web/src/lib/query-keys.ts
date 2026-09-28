@@ -4,4 +4,5 @@ export const queryKeys = {
   // Under `recipes`, so refreshing the recipes also refreshes every recipe page.
   recipe: (slug: string) => ['recipes', slug],
   plan: ['plan'],
+  shoppingList: ['shopping-list'],
 } as const;
