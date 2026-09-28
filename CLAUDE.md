@@ -48,6 +48,7 @@ packages/shared   zod schemas, inferred types, constants (DIETARY, MEAL_TYPES, D
 - **Shared code:** `@nosh/shared` (`workspace:*`) exports its TS source, with no build step. zod schemas are written by hand, and types come from `z.infer`.
 
 ### API
+- **Node runs the TypeScript directly** (no build step): relative imports end in `.ts`, and there are no enums or other non-erasable syntax (`erasableSyntaxOnly`).
 - **`domain/` is pure:** no Express, Drizzle, `better-sqlite3` or `node:*` imports. All business rules live here, with unit tests.
 - **`routes/` are thin:** validate with the shared zod schema, call repositories and domain code, respond. No business rules. They never import `db/`.
 - **`repositories/`** map database rows to domain objects.
