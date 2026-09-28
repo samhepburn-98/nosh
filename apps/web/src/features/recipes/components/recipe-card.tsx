@@ -14,7 +14,7 @@ export function RecipeCard({ recipe }: { recipe: RecipeSummary }) {
     <Card className="relative h-full">
       <CardHeader>
         <CardTitle>
-          <h2 className="text-lg">
+          <h2>
             {/* The link's ::after covers the card, so the whole card is one tap target. */}
             <Link
               to={paths.recipe(recipe.slug)}
