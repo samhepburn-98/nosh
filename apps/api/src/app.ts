@@ -23,7 +23,7 @@ export function createApp(db: Db) {
   app.disable('x-powered-by');
   app.use(express.json());
 
-  app.use('/api/recipes', recipesRouter(recipes, preferences));
+  app.use('/api/recipes', recipesRouter(recipes, preferences, ingredients));
   app.use('/api/ingredients', ingredientsRouter(ingredients));
   app.use('/api/plan', planRouter(plan, recipes));
   app.use('/api/shopping-list', shoppingListRouter(plan));
