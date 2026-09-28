@@ -1,3 +1,12 @@
 packages:
   - apps/*
   - packages/*
+
+# pnpm blocks install scripts, and asks about any package that has one.
+allowBuilds:
+  # Ships prebuilt binaries for every platform, so nothing needs building. pnpm would otherwise
+  # run node-gyp because the package includes a binding.gyp.
+  better-sqlite3: false
+  # Pulled in by drizzle-kit. Its install script only checks its platform binary, which pnpm
+  # already installs as an optional dependency.
+  esbuild: false

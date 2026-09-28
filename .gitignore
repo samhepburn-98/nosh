@@ -4,3 +4,6 @@ dist/
 .DS_Store
 .env*
 !.env.example
+
+# The API's SQLite database. `pnpm db:reset` recreates it.
+.data/
