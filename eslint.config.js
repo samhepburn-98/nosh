@@ -7,7 +7,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 // Every web feature folder. Add a new one here, so the import rules below cover it.
-const webFeatures = ['recipes'];
+const webFeatures = ['plan', 'recipes'];
 
 const noAppImports = { group: ['@/app/*'], message: 'Only app/ combines features.' };
 

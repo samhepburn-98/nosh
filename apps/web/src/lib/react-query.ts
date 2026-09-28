@@ -1,4 +1,4 @@
-import type { DefaultOptions } from '@tanstack/react-query';
+import type { DefaultOptions, UseMutationOptions } from '@tanstack/react-query';
 
 import { ApiError } from './api-client';
 
@@ -16,3 +16,7 @@ export type QueryConfig<T extends (...args: never[]) => unknown> = Omit<
   ReturnType<T>,
   'queryKey' | 'queryFn'
 >;
+
+/** Options a mutation's `use…` hook accepts. Its own `onSuccess` runs after the invalidation. */
+export type MutationConfig<MutationFn extends (...args: never[]) => Promise<unknown>> =
+  UseMutationOptions<Awaited<ReturnType<MutationFn>>, Error, Parameters<MutationFn>[0]>;
