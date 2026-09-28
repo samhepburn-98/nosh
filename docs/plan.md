@@ -286,6 +286,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 | header / header-foreground / header-muted | Charcoal / white / Cloud Grey `#B7BFC0` | 12.1:1 / 6.48:1 |
 
 - Charcoal top bar with the logo. Cloud Grey only on Charcoal. Flame Coral only for icons and borders.
+- **Light only.** There's no dark theme, so the page is `color-scheme: light`, and shadcn's `dark:` styles need a `.dark` class that nothing adds. Before, they followed the phone's dark mode, greying fields and buttons on a light page.
 - **Deep Teal is only the focus ring,** although the brief calls it "secondary". It fails AA for text either way (3.02:1 with white, 4.0:1 with Charcoal), so `secondary` is a light green tint instead.
 - **Logo:** the mark and wordmark side by side, unaltered, 6px apart so they read as one logo, with the "O"-width clear space around the whole logo. The brand pack only shows them stacked (with a gap of about a tenth of the mark's height), so a horizontal lockup is our own arrangement ([Product Owner notes](product-owner-notes.md), note 8). Clear space limits it to 30px tall in a 72px bar. The favicon is the mark alone.
 - **Type:** Nunito Bold for headings (self-hosted, Latin only), system sans for body. The brief allows either Nunito Sans or system sans for body; system sans needs no download, which suits older phones on slow connections.
