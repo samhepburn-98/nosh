@@ -6,7 +6,7 @@ import { defineConfig, globalIgnores } from 'eslint/config';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
-// ESLint's recommended sets only, with no custom rules (PLAN.md §5).
+// ESLint's recommended sets only, with no custom rules (docs/plan.md §5).
 export default defineConfig([
   globalIgnores(['**/dist', 'data', 'apps/web/src/components/ui']),
   js.configs.recommended,

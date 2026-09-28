@@ -11,7 +11,7 @@ export function TopBar() {
   return (
     <header className="bg-header text-header-foreground">
       <div className="mx-auto flex h-18 max-w-5xl items-center justify-between px-4">
-        {/* The logo is 30px tall, leaving the "O"-width clear space around it (PLAN.md §5). */}
+        {/* The logo is 30px tall, leaving the "O"-width clear space around it (docs/plan.md §5). */}
         <Link
           to={paths.plan}
           className="flex h-11 items-center gap-4.5 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"

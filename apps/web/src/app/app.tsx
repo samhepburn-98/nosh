@@ -6,7 +6,7 @@ import { paths } from '@/config/paths';
 
 import { PlanRoute } from './routes/plan';
 
-// Only the Plan page is in the first download. The rest load when first opened (PLAN.md §5).
+// Only the Plan page is in the first download. The rest load when first opened (docs/plan.md §5).
 const RecipesRoute = lazy(() => import('./routes/recipes'));
 const ShoppingListRoute = lazy(() => import('./routes/shopping-list'));
 const PreferencesRoute = lazy(() => import('./routes/preferences'));

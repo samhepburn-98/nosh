@@ -2,7 +2,7 @@
 
 A meal-planning web app for Nosh, a charity helping low-income households eat well on a budget. Users mostly have older, smaller phones and do one weekly shop.
 
-**`PLAN.md` is the spec.** Read the relevant section before building anything. §1 lists what the brief asks for and what we added. Features F1–F8 (§2) give the expected outputs, and those examples are the acceptance tests. The phases, each a few small PRs, are in §7. The original client brief is in `docs/brief/`; `brief.md` is a readable transcript.
+**`docs/plan.md` is the spec.** Read the relevant section before building anything. §1 lists what the brief asks for and what we added. Features F1–F8 (§2) give the expected outputs, and those examples are the acceptance tests. The phases, each a few small PRs, are in §7. The original client brief is in `docs/brief/`; `brief.md` is a readable transcript.
 
 ## Commands
 
@@ -16,7 +16,7 @@ A meal-planning web app for Nosh, a charity helping low-income households eat we
 
 ## Workflow
 
-- **Follow PLAN.md §6, "How we work".** In short:
+- **Follow docs/plan.md §6, "How we work".** In short:
   - Phases follow the brief's features, and each ships as a few small PRs. One PR at a time, and only start one when asked.
   - Build it on a branch `<type>/<pr>-<name>` (e.g. `feat/1.2-recipe-search`), open the PR, and **stop**. The PR lists what you can now do, endpoints added or changed and what each does, tables, screens and components, what to review closely, and how to try it.
   - When the user asks a question, answer it and don't change code. Change code when asked.
@@ -25,7 +25,7 @@ A meal-planning web app for Nosh, a charity helping low-income households eat we
   - Keep PRs reviewable in one sitting (roughly 300–600 hand-written lines). If a PR grows past that, stop and suggest a split.
   - Flag anything not in the brief before building it.
   - Found a question only the client can answer (their data, brand or scope)? Add it to `docs/product-owner-notes.md` in the same PR.
-  - When a decision changes the plan, update PLAN.md in the same PR.
+  - When a decision changes the plan, update docs/plan.md in the same PR.
 - **Nothing is added before it's used.** Constants, schemas, tables, endpoints, components and dependencies arrive in the PR that first uses them.
 - **Show each visible change.** Run the app and check it at 360px and 1280px before opening the PR.
 - **Conventional Commits always:** `feat(web): …`, `feat(api): …`, `fix(web): …`, `chore: …`, `docs: …`, `test(domain): …`. Keep commits small, with one concern each.
@@ -65,7 +65,7 @@ packages/shared   zod schemas, inferred types, constants (DIETARY, MEAL_TYPES, D
   - a fetcher
   - `…QueryOptions` (for queries)
   - a `use…` hook that accepts `queryConfig` or `mutationConfig`
-- **All query keys live in `lib/query-keys.ts`.** Mutations invalidate by these keys, per the table in PLAN.md §5.
+- **All query keys live in `lib/query-keys.ts`.** Mutations invalidate by these keys, per the table in docs/plan.md §5.
 - **`lib/api-client.ts`** is a thin `fetch` wrapper that throws `ApiError`. No axios.
 
 ```ts
@@ -75,7 +75,7 @@ export const usePlan = ({ queryConfig }: { queryConfig?: QueryConfig<typeof getP
   useQuery({ ...getPlanQueryOptions(), ...queryConfig });
 ```
 
-## Domain rules (PLAN.md §3)
+## Domain rules (docs/plan.md §3)
 
 - **Ingredients are imported exactly as written,** one record per distinct name. Never rename, merge or correct client data when storing it.
 - **The shopping list and matching group ingredients by singular form**, worked out at calculation time and never stored:
@@ -113,7 +113,7 @@ export const usePlan = ({ queryConfig }: { queryConfig?: QueryConfig<typeof getP
   - Use `gap-*`, never `space-y-*`.
   - Every `Sheet` and `AlertDialog` has a title.
   - Leave generated files in `components/ui` as upstream wrote them, except the agreed variant changes.
-- **Theme** (contrast measured, PLAN.md §5):
+- **Theme** (contrast measured, docs/plan.md §5):
   - Primary is Nosh Green `#62CC9B` **with Charcoal `#2E373E` text**. Never white text on green.
   - `--ring` is Deep Teal. `--muted-foreground` is `#5F6B73`. `--destructive` is `#B9471F`.
   - Cloud Grey only on Charcoal. Flame Coral only for icons and borders.

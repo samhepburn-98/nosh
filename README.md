@@ -3,7 +3,7 @@
 A meal-planning web app for Nosh, a charity helping low-income households eat well on a budget.
 
 - The client's brief: [`docs/brief/brief.md`](docs/brief/brief.md)
-- What we're building, and how: [`PLAN.md`](PLAN.md)
+- What we're building, and how: [`docs/plan.md`](docs/plan.md)
 - Questions for the Product Owner: [`docs/product-owner-notes.md`](docs/product-owner-notes.md)
 
 ## Run it

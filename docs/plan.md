@@ -1,6 +1,6 @@
 # Project Nosh: plan
 
-A meal-planning web app for Nosh, a charity helping low-income households eat well on a budget. The client brief is in `docs/brief/` (`brief.md` is a readable transcript).
+A meal-planning web app for Nosh, a charity helping low-income households eat well on a budget. The client brief is in [`brief/`](brief/) ([`brief.md`](brief/brief.md) is a readable transcript).
 
 ---
 
@@ -31,7 +31,7 @@ None of these is asked for. Each is small, and each has a reason we can give the
 |---|---|
 | Ingredient autocomplete in the recipe form (F3) | Keeps ingredient names consistent, so the shopping list adds them up. F8 reuses it |
 | The client's recipe tags as badges (F1) | "Quick", "Batch cook" and so on are in the client's data, and useful to their audience |
-| Allergy note on Preferences (F5) | Filtering goes by the client's tags, and some look wrong ([Product Owner notes](docs/product-owner-notes.md), note 1) |
+| Allergy note on Preferences (F5) | Filtering goes by the client's tags, and some look wrong ([Product Owner notes](product-owner-notes.md), note 1) |
 
 ### Left out to keep it small
 
@@ -315,7 +315,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 **Guardrails**
 - **Nothing is added before it's used:** constants, schemas, tables, endpoints, components, dependencies.
 - **Anything not in the brief is flagged** before it's built, with the reason, so you can decide.
-- **Questions for the client go in [`docs/product-owner-notes.md`](docs/product-owner-notes.md)** in the PR where we find them, to raise at the end.
+- **Questions for the client go in [`docs/product-owner-notes.md`](product-owner-notes.md)** in the PR where we find them, to raise at the end.
 - **`pnpm check` passes** before every commit. Each visible change is checked at 360px and 1280px.
 - **New screens are planned with the `frontend-design` skill** first.
 - **This plan is updated in the same PR** when a decision changes it.
