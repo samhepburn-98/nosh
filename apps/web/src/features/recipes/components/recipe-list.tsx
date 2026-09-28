@@ -75,6 +75,9 @@ export function RecipeList({
   const matching = filterByName(data.matching, search);
   const others = filterByName(data.others, search);
   const count = matching.length + others.length;
+  // Split by the preferences, the cards sit under a heading for each group.
+  const isSplit = data.others.length > 0;
+  const cardHeading = isSplit ? 'h3' : 'h2';
 
   return (
     <>
@@ -104,14 +107,14 @@ export function RecipeList({
         <>
           {/* Headings only when the preferences split the recipes, so with none it's one list.
               The preferences stay in view even when none of the recipes fit them. */}
-          {data.others.length > 0 && (
+          {isSplit && (
             <div className="flex flex-col gap-2">
               <h2 className="text-lg">These fit your preferences</h2>
               {preferences}
             </div>
           )}
           {matching.length > 0 ? (
-            <RecipeGrid recipes={matching} />
+            <RecipeGrid recipes={matching} heading={cardHeading} />
           ) : (
             <p className="text-muted-foreground">{noneFit(term)}</p>
           )}
@@ -119,7 +122,7 @@ export function RecipeList({
           {others.length > 0 && (
             <>
               <h2 className="mt-4 text-lg">These don't quite fit your preferences</h2>
-              <RecipeGrid recipes={others} />
+              <RecipeGrid recipes={others} heading={cardHeading} />
             </>
           )}
         </>
@@ -128,12 +131,12 @@ export function RecipeList({
   );
 }
 
-function RecipeGrid({ recipes }: { recipes: RecipeSummary[] }) {
+function RecipeGrid({ recipes, heading }: { recipes: RecipeSummary[]; heading: 'h2' | 'h3' }) {
   return (
     <ul className={gridClassName}>
       {recipes.map((recipe) => (
         <li key={recipe.slug}>
-          <RecipeCard recipe={recipe} />
+          <RecipeCard recipe={recipe} heading={heading} />
         </li>
       ))}
     </ul>

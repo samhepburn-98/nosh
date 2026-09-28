@@ -69,11 +69,19 @@ export function KitchenMatches({
     );
   }
 
+  // Split by the preferences, the cards sit under a heading for each group.
+  const isSplit = data.others.length > 0;
+
   const grid = (matches: KitchenMatch[]) => (
     <ul className={gridClassName}>
       {matches.map((match) => (
         <li key={match.recipe.slug}>
-          <MatchCard match={match} hasPicks={hasPicks} onAddToPlan={onAddToPlan} />
+          <MatchCard
+            match={match}
+            heading={isSplit ? 'h3' : 'h2'}
+            hasPicks={hasPicks}
+            onAddToPlan={onAddToPlan}
+          />
         </li>
       ))}
     </ul>
@@ -83,7 +91,7 @@ export function KitchenMatches({
     <>
       {/* Headings only when the preferences split the recipes, so with none it's one list.
           The preferences stay in view even when none of the recipes fit them. */}
-      {data.others.length > 0 && (
+      {isSplit && (
         <div className="flex flex-col gap-2">
           <h2 className="text-lg">These fit your preferences</h2>
           {preferences}
@@ -106,10 +114,12 @@ export function KitchenMatches({
 
 function MatchCard({
   match: { recipe, haveCount, ingredientCount, toBuy },
+  heading: Heading,
   hasPicks,
   onAddToPlan,
 }: {
   match: KitchenMatch;
+  heading: 'h2' | 'h3';
   hasPicks: boolean;
   onAddToPlan: (recipe: RecipeSummary) => void;
 }) {
@@ -119,7 +129,7 @@ function MatchCard({
     <Card className="h-full">
       <CardHeader>
         <CardTitle>
-          <h3>
+          <Heading>
             <Link
               to={paths.recipe(recipe.slug)}
               state={{ back: location.pathname + location.search }}
@@ -127,7 +137,7 @@ function MatchCard({
             >
               {recipe.name}
             </Link>
-          </h3>
+          </Heading>
         </CardTitle>
         <CardDescription>
           {hasPicks
