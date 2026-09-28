@@ -10,7 +10,7 @@ import {
   uniqueIndex,
 } from 'drizzle-orm/sqlite-core';
 
-import { DIETARY } from '@nosh/shared/dietary';
+import { DIETARY, type Dietary } from '@nosh/shared/dietary';
 import { MEAL_TYPES } from '@nosh/shared/meal-types';
 import { UNITS, type Unit } from '@nosh/shared/units';
 
@@ -118,4 +118,14 @@ export const planEntries = sqliteTable(
       .references(() => recipes.id, { onDelete: 'cascade' }),
   },
   (t) => [check('plan_entries_day', sql`${t.day} between 1 and 7`)],
+);
+
+/** A single row (id 1): the dietary preferences, in display order. */
+export const preferences = sqliteTable(
+  'preferences',
+  {
+    id: integer().primaryKey(),
+    dietary: text({ mode: 'json' }).$type<Dietary[]>().notNull(),
+  },
+  (t) => [check('preferences_single_row', sql`${t.id} = 1`)],
 );
