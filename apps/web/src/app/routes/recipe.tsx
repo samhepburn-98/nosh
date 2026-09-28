@@ -1,16 +1,25 @@
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, CalendarPlus } from 'lucide-react';
+import { lazy, Suspense, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router';
 
-import { buttonVariants } from '@/components/ui/button';
+import type { Recipe } from '@nosh/shared/recipes';
+
+import { Button, buttonVariants } from '@/components/ui/button';
 import { paths } from '@/config/paths';
 import { RecipeDetails } from '@/features/recipes/components/recipe-details';
 import { cn } from '@/lib/utils';
 
 import NotFoundRoute from './not-found';
 
+const RecipeAddToPlanSheet = lazy(() => import('./recipe-add-to-plan-sheet'));
+
+type Adding = { recipe: Pick<Recipe, 'slug' | 'name'>; open: boolean; opened: number };
+
 export default function RecipeRoute() {
   const { slug = '' } = useParams();
   const location = useLocation();
+  // `opened` counts openings. It's the sheet's key, so each opening starts again from today.
+  const [adding, setAdding] = useState<Adding | null>(null);
 
   return (
     <>
@@ -22,7 +31,31 @@ export default function RecipeRoute() {
         <ArrowLeft data-icon="inline-start" />
         Back
       </Link>
-      <RecipeDetails slug={slug} notFound={<NotFoundRoute />} />
+      <RecipeDetails
+        slug={slug}
+        notFound={<NotFoundRoute />}
+        actions={(recipe) => (
+          <Button
+            className="self-start"
+            onClick={() =>
+              setAdding((previous) => ({ recipe, open: true, opened: (previous?.opened ?? 0) + 1 }))
+            }
+          >
+            <CalendarPlus data-icon="inline-start" />
+            Add to plan
+          </Button>
+        )}
+      />
+      {adding && (
+        <Suspense fallback={null}>
+          <RecipeAddToPlanSheet
+            key={adding.opened}
+            recipe={adding.recipe}
+            open={adding.open}
+            onOpenChange={(open) => setAdding((previous) => previous && { ...previous, open })}
+          />
+        </Suspense>
+      )}
     </>
   );
 }
