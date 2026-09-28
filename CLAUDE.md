@@ -110,7 +110,7 @@ export const usePlan = ({ queryConfig }: { queryConfig?: QueryConfig<typeof getP
 - **shadcn (Base UI, lucide):**
   - Use an existing component before writing custom markup: `Empty`, `Skeleton`, `Badge`, `Alert`, `Separator`, `sonner`.
   - Forms use `FieldGroup` / `Field` / `FieldSet`, with `data-invalid` + `aria-invalid`.
-  - `className` is for layout only.
+  - `className` is for layout only. One exception: the "Your recipe" badge sets `bg-leaf text-leaf-foreground`, as shadcn's badge has no Leaf variant.
   - Use `gap-*`, never `space-y-*`.
   - Every `Sheet` and `AlertDialog` has a title.
   - **Use shadcn's defaults.** Leave generated files in `components/ui` exactly as upstream wrote them: no variant or size changes, and pass `className` only for layout.

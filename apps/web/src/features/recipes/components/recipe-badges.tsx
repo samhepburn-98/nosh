@@ -6,8 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { formatDietary, formatTag } from '@/utils/format';
 
 /**
- * "Your recipe" for the user's own, then dietary tags (light green), then the client's other tags
- * (outline, so they never read as dietary).
+ * "Your recipe" (Leaf) for the user's own, then dietary tags (light green), then the client's other
+ * tags (outline, so they never read as dietary).
  */
 export function RecipeBadges({
   recipe,
@@ -19,7 +19,9 @@ export function RecipeBadges({
   return (
     <div className="flex flex-wrap gap-2">
       {recipe.isOwn && (
-        <Badge>
+        // Leaf, so it doesn't look like the green buttons. shadcn's badge has no Leaf variant, so
+        // this is the one place className sets colour (CLAUDE.md).
+        <Badge className="bg-leaf text-leaf-foreground">
           <ChefHat data-icon="inline-start" />
           Your recipe
         </Badge>

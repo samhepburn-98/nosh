@@ -105,7 +105,6 @@ The brief suggests 2 to 3 hours, so these were planned and then cut. Each is a s
 
 - **The unit dropdown uses 14px text,** so iPhones zoom in when it's tapped. It's shadcn's `NativeSelect` as supplied. Fixing it means changing that component, or using a different one.
 - **Inactive tab labels are 3.49:1,** under AA's 4.5:1. That's shadcn's `Tabs` as supplied, on the Recipes page.
-- **The "Your recipe" badge is the same green as the "Add to plan" button** beneath it, so it can read as a button.
 - **New ingredient names are stored as typed,** so "Leeks" keeps its capital next to the client's lowercase names. The shopping list capitalises every name on screen, so it shows only on recipe pages and in the ingredient pickers.
 - **A–Z can differ for names with accents.** All recipes sorts in SQLite, and From your kitchen sorts in JavaScript. None of the starter recipes is affected.
 - **The web app has no automated tests.** Its behaviour was checked by hand at 360px and 1280px in every PR, and every §2 example was run through on a fresh database in the final pass.
@@ -146,3 +145,4 @@ Things only Nosh can answer, mostly about their data. Details, and what the app 
 6. **Servings range from 1 to 6.** Should the list scale to household size?
 7. **No prices, pack sizes, nutrition or cook times.**
 8. **The logo:** is there a horizontal version, or is our side-by-side arrangement right? Also the mark alone as a favicon, and clear space in the top bar.
+9. **Brand colours that fail accessibility:** Nosh Green needs Charcoal text, and Deep Teal, Flame Coral, Leaf and Cloud Grey are all under AA on white. Are there accessible versions?

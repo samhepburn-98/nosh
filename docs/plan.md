@@ -266,7 +266,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 | New recipe | One column. Ingredient rows read like the line they make (amount and unit, ingredient, prep); one line per row from `lg`. Numbered steps with move and remove buttons | 5.1 |
 | From your kitchen (Recipes tab) | Picker with chips below it and "Clear all", then result cards | 6.1 |
 
-**Badges:** dietary tags use `secondary` (light green), the client's other tags use `outline`, "Your recipe" uses the default badge with a chef's hat icon. It was to use Leaf, but shadcn's badge has no Leaf variant, and components stay as upstream wrote them.
+**Badges:** dietary tags use `secondary` (light green), the client's other tags use `outline`, "Your recipe" uses Leaf with Charcoal text (6.84:1) and a chef's hat icon, so it doesn't look like the green buttons. shadcn's badge has no Leaf variant, so it's the one place `className` sets a colour (`bg-leaf text-leaf-foreground`). Flame Coral isn't used: it's 2.8:1 on white, too faint even for icons ([Product Owner notes](product-owner-notes.md), note 9).
 
 **Components:** `Sheet`, not `Drawer` (no extra dependency). `NativeSelect` for units (the phone's own picker). `IngredientCombobox` in the recipe form. The kitchen picker uses shadcn's `Combobox` in multiple mode directly, as it only picks known ingredients and has no "Add" option. Kitchen chips sit below the field as buttons, because shadcn's in-field chips are about 21px, under the 24px AA minimum.
 
