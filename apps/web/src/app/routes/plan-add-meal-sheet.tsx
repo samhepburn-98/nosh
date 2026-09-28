@@ -46,9 +46,9 @@ export default function PlanAddMealSheet({
           <SheetTitle>Add a meal to {dayName(day)}</SheetTitle>
           <SheetDescription>Pick a recipe to add it to your plan.</SheetDescription>
         </SheetHeader>
-        <div className="flex min-h-0 flex-1 flex-col gap-3 px-4 pb-4">
-          <PreferencesSummary />
+        <div className="flex min-h-0 flex-1 flex-col px-4 pb-4">
           <RecipePicker
+            preferences={<PreferencesSummary />}
             disabled={addMeal.isPending}
             onPick={(recipe) => addMeal.mutate({ day, recipeSlug: recipe.slug })}
           />

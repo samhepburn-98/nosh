@@ -1,4 +1,5 @@
 import { SearchX } from 'lucide-react';
+import type { ReactNode } from 'react';
 
 import type { RecipeSummary } from '@nosh/shared/recipes';
 
@@ -22,15 +23,18 @@ import { RecipeCard } from './recipe-card';
 const gridClassName = 'grid gap-4 sm:grid-cols-2 lg:grid-cols-3';
 
 /**
- * Every recipe, filtered by name: those that fit the preferences first, then the rest under their
- * own heading. The search comes from the page, so it can live in the URL.
+ * Every recipe, filtered by name. When the preferences split them, those that fit come first under
+ * their own heading, with `preferences` (which ones, and a way to update them) beneath it. The rest
+ * follow under theirs. The search comes from the page, so it can live in the URL.
  */
 export function RecipeList({
   search,
   onClearSearch,
+  preferences,
 }: {
   search: string;
   onClearSearch: () => void;
+  preferences?: ReactNode;
 }) {
   const { data, isError, refetch } = useRecipes();
 
@@ -98,6 +102,13 @@ export function RecipeList({
         </Empty>
       ) : (
         <>
+          {/* Headings only when the preferences split the recipes, so with none it's one list. */}
+          {data.others.length > 0 && matching.length > 0 && (
+            <div className="flex flex-col gap-2">
+              <h2 className="text-lg">These fit your preferences</h2>
+              {preferences}
+            </div>
+          )}
           {matching.length > 0 && <RecipeGrid recipes={matching} />}
           {/* Recipes that don't fit are never hidden, only listed after the ones that do. */}
           {others.length > 0 && (

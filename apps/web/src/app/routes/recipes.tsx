@@ -27,10 +27,10 @@ export default function RecipesRoute() {
     <>
       <title>Recipes · Nosh</title>
       <h1 className="text-2xl">Recipes</h1>
-      <PreferencesSummary />
       <RecipeSearch ref={searchRef} value={search} onChange={setSearch} />
       <RecipeList
         search={search}
+        preferences={<PreferencesSummary />}
         onClearSearch={() => {
           setSearch('');
           searchRef.current?.focus();
