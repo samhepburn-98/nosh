@@ -1,7 +1,7 @@
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 
-import type { RecipeSummary } from '@nosh/shared/recipes';
+import type { RecipeGroups, RecipeSummary } from '@nosh/shared/recipes';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,10 @@ import { useRecipes } from '../api/get-recipes';
 import { filterByName } from '../utils/search';
 import { RecipeSearch } from './recipe-search';
 
-/** Every recipe as a button, with a search. Used wherever a recipe is chosen, like the plan's sheet. */
+/**
+ * Every recipe as a button, with a search: those that fit the preferences first, then the rest
+ * under their own heading. Used wherever a recipe is chosen, like the plan's sheet.
+ */
 export function RecipePicker({
   onPick,
   disabled = false,
@@ -28,7 +31,12 @@ export function RecipePicker({
     <div className="flex min-h-0 flex-1 flex-col gap-3">
       <RecipeSearch value={search} onChange={setSearch} />
       <RecipeChoices
-        recipes={data && filterByName(data, search)}
+        groups={
+          data && {
+            matching: filterByName(data.matching, search),
+            others: filterByName(data.others, search),
+          }
+        }
         isError={isError}
         onRetry={() => void refetch()}
         onPick={onPick}
@@ -40,21 +48,21 @@ export function RecipePicker({
 }
 
 function RecipeChoices({
-  recipes,
+  groups,
   isError,
   onRetry,
   onPick,
   disabled,
   search,
 }: {
-  recipes: RecipeSummary[] | undefined;
+  groups: RecipeGroups | undefined;
   isError: boolean;
   onRetry: () => void;
   onPick: (recipe: RecipeSummary) => void;
   disabled: boolean;
   search: string;
 }) {
-  if (!recipes && !isError) {
+  if (!groups && !isError) {
     return (
       <div className="flex flex-col gap-2" aria-hidden>
         {Array.from({ length: 5 }, (_, i) => (
@@ -64,7 +72,7 @@ function RecipeChoices({
     );
   }
 
-  if (!recipes) {
+  if (!groups) {
     return (
       <div className="flex flex-col items-start gap-3">
         <Alert variant="destructive">
@@ -78,14 +86,13 @@ function RecipeChoices({
     );
   }
 
-  if (recipes.length === 0) {
+  const { matching, others } = groups;
+  if (matching.length + others.length === 0) {
     return <p className="text-muted-foreground">No recipes match “{search}”.</p>;
   }
 
-  return (
-    // Plain items, no gap: their own padding spaces them. Pulled out by that padding, so the names
-    // line up with the search box.
-    <ul className="-mx-3 flex min-h-0 flex-col overflow-y-auto">
+  const choices = (recipes: RecipeSummary[]) => (
+    <ul className="flex flex-col">
       {recipes.map((recipe) => (
         <li key={recipe.slug}>
           <Item
@@ -104,5 +111,19 @@ function RecipeChoices({
         </li>
       ))}
     </ul>
+  );
+
+  return (
+    // Plain items, no gap: their own padding spaces them. Pulled out by that padding, so the names
+    // line up with the search box.
+    <div className="-mx-3 flex min-h-0 flex-col overflow-y-auto">
+      {choices(matching)}
+      {others.length > 0 && (
+        <>
+          <h3 className="mt-4 px-3 pb-2">These don't quite fit your preferences</h3>
+          {choices(others)}
+        </>
+      )}
+    </div>
   );
 }

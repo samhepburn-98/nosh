@@ -2,24 +2,41 @@ import request from 'supertest';
 import { describe, expect, it } from 'vitest';
 
 import { errorBodySchema } from '@nosh/shared/errors';
-import { recipeSchema, recipeSummarySchema } from '@nosh/shared/recipes';
+import { recipeGroupsSchema, recipeSchema } from '@nosh/shared/recipes';
 
 import { createTestApp } from '../testing/create-test-app.ts';
 
-describe('GET /api/recipes', () => {
-  it('lists all 20 recipes A–Z', async () => {
-    const res = await request(createTestApp()).get('/api/recipes').expect(200);
-    const summaries = recipeSummarySchema.array().parse(res.body);
-    const names = summaries.map((recipe) => recipe.name);
+async function recipeGroupsOf(app: ReturnType<typeof createTestApp>) {
+  const res = await request(app).get('/api/recipes').expect(200);
+  return recipeGroupsSchema.parse(res.body);
+}
 
-    expect(summaries).toHaveLength(20);
+describe('GET /api/recipes', () => {
+  it('lists all 20 recipes A–Z as matching, with no preferences saved', async () => {
+    const { matching, others } = await recipeGroupsOf(createTestApp());
+    const names = matching.map((recipe) => recipe.name);
+
+    expect(matching).toHaveLength(20);
+    expect(others).toEqual([]);
     expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b)));
     expect(names[0]).toBe('Apple Crumble');
   });
 
+  it('splits them by the saved preferences, each group A–Z', async () => {
+    const app = createTestApp();
+    await request(app)
+      .put('/api/preferences')
+      .send({ dietary: ['vegan'] });
+
+    const { matching, others } = await recipeGroupsOf(app);
+
+    expect(matching.map((recipe) => recipe.name)).toEqual(['Lentil Dahl', 'Tomato Soup']);
+    expect(others).toHaveLength(18);
+    expect(others[0]?.name).toBe('Apple Crumble');
+  });
+
   it("includes the client's tags: Porridge is quick", async () => {
-    const res = await request(createTestApp()).get('/api/recipes');
-    const summaries = recipeSummarySchema.array().parse(res.body);
+    const { matching: summaries } = await recipeGroupsOf(createTestApp());
 
     expect(summaries.find((r) => r.slug === 'porridge-with-berries-and-honey')).toEqual({
       slug: 'porridge-with-berries-and-honey',
@@ -32,8 +49,7 @@ describe('GET /api/recipes', () => {
   });
 
   it('lists dietary tags and meal types in display order', async () => {
-    const res = await request(createTestApp()).get('/api/recipes');
-    const summaries = recipeSummarySchema.array().parse(res.body);
+    const { matching: summaries } = await recipeGroupsOf(createTestApp());
 
     expect(summaries.find((r) => r.slug === 'lentil-dahl')?.dietary).toEqual([
       'vegetarian',

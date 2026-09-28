@@ -1,5 +1,7 @@
 import { SearchX } from 'lucide-react';
 
+import type { RecipeSummary } from '@nosh/shared/recipes';
+
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,7 +21,10 @@ import { RecipeCard } from './recipe-card';
 
 const gridClassName = 'grid gap-4 sm:grid-cols-2 lg:grid-cols-3';
 
-/** Every recipe, filtered by name. The search comes from the page, so it can live in the URL. */
+/**
+ * Every recipe, filtered by name: those that fit the preferences first, then the rest under their
+ * own heading. The search comes from the page, so it can live in the URL.
+ */
 export function RecipeList({
   search,
   onClearSearch,
@@ -63,19 +68,18 @@ export function RecipeList({
   }
 
   const term = search.trim();
-  const recipes = filterByName(data, search);
+  const matching = filterByName(data.matching, search);
+  const others = filterByName(data.others, search);
+  const count = matching.length + others.length;
 
   return (
     <>
       {/* Read out as the results change. Visually hidden with no search (so it takes no space) and
           when nothing matches (the empty state says it). */}
-      <p
-        role="status"
-        className={cn('text-muted-foreground', (!term || recipes.length === 0) && 'sr-only')}
-      >
-        {term && matchCount(recipes.length, term)}
+      <p role="status" className={cn('text-muted-foreground', (!term || count === 0) && 'sr-only')}>
+        {term && matchCount(count, term)}
       </p>
-      {recipes.length === 0 ? (
+      {count === 0 ? (
         <Empty>
           <EmptyHeader>
             <EmptyMedia variant="icon">
@@ -93,15 +97,30 @@ export function RecipeList({
           </EmptyContent>
         </Empty>
       ) : (
-        <ul className={gridClassName}>
-          {recipes.map((recipe) => (
-            <li key={recipe.slug}>
-              <RecipeCard recipe={recipe} />
-            </li>
-          ))}
-        </ul>
+        <>
+          {matching.length > 0 && <RecipeGrid recipes={matching} />}
+          {/* Recipes that don't fit are never hidden, only listed after the ones that do. */}
+          {others.length > 0 && (
+            <>
+              <h2 className="mt-4 text-lg">These don't quite fit your preferences</h2>
+              <RecipeGrid recipes={others} />
+            </>
+          )}
+        </>
       )}
     </>
+  );
+}
+
+function RecipeGrid({ recipes }: { recipes: RecipeSummary[] }) {
+  return (
+    <ul className={gridClassName}>
+      {recipes.map((recipe) => (
+        <li key={recipe.slug}>
+          <RecipeCard recipe={recipe} />
+        </li>
+      ))}
+    </ul>
   );
 }
 

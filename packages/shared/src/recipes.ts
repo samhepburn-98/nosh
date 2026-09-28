@@ -16,6 +16,13 @@ export const recipeSummarySchema = z.object({
 });
 export type RecipeSummary = z.infer<typeof recipeSummarySchema>;
 
+/** Every recipe, A–Z, split by the saved preferences. With none saved, `others` is empty. */
+export const recipeGroupsSchema = z.object({
+  matching: z.array(recipeSummarySchema),
+  others: z.array(recipeSummarySchema),
+});
+export type RecipeGroups = z.infer<typeof recipeGroupsSchema>;
+
 /** One ingredient line as the recipe gives it: "2 cloves" "garlic", "crushed". */
 export const recipeIngredientSchema = z.object({
   /** "2 cloves", "500 ml", "4", or null when the recipe gives no amount (salt and pepper). */
