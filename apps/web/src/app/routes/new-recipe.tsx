@@ -1,6 +1,7 @@
 import { ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 
+import { PageHeader } from '@/components/layout/page-header';
 import { buttonVariants } from '@/components/ui/button';
 import { paths } from '@/config/paths';
 import { RecipeForm } from '@/features/recipes/components/recipe-form';
@@ -16,7 +17,10 @@ export default function NewRecipeRoute() {
         <ArrowLeft data-icon="inline-start" />
         Back
       </Link>
-      <h1 className="text-2xl">New recipe</h1>
+      <PageHeader
+        title="New recipe"
+        description="Add a recipe of your own. You can plan it and shop for it like any other."
+      />
       <RecipeForm
         // Replaces the form in the history, so going back from the new recipe skips it.
         onSaved={(recipe) =>

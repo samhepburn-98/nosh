@@ -4,6 +4,7 @@ import { Link, useSearchParams } from 'react-router';
 
 import type { RecipeSummary } from '@nosh/shared/recipes';
 
+import { PageHeader } from '@/components/layout/page-header';
 import { buttonVariants } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { paths } from '@/config/paths';
@@ -49,14 +50,17 @@ export default function RecipesRoute() {
   return (
     <>
       <title>Recipes · Nosh</title>
-      <div className="flex items-center justify-between gap-4">
-        <h1 className="text-2xl">Recipes</h1>
-        {/* Green, as the page's own action. */}
-        <Link to={paths.newRecipe} className={buttonVariants()}>
-          <Plus data-icon="inline-start" />
-          New recipe
-        </Link>
-      </div>
+      <PageHeader
+        title="Recipes"
+        description="Find something to cook, or add a recipe of your own."
+        action={
+          // Green, as the page's own action.
+          <Link to={paths.newRecipe} className={buttonVariants()}>
+            <Plus data-icon="inline-start" />
+            New recipe
+          </Link>
+        }
+      />
       <Tabs
         value={view}
         onValueChange={(value) => setParam('view', value === 'kitchen' ? 'kitchen' : null)}
