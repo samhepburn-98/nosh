@@ -15,8 +15,15 @@ export class ApiError extends Error {
   }
 }
 
-async function request<T>(method: string, path: string): Promise<T> {
-  const res = await fetch(`/api${path}`, { method, headers: { Accept: 'application/json' } });
+async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
+  const res = await fetch(`/api${path}`, {
+    method,
+    headers:
+      body === undefined
+        ? { Accept: 'application/json' }
+        : { Accept: 'application/json', 'Content-Type': 'application/json' },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
   if (!res.ok) {
     const body = errorBodySchema.safeParse(await res.json().catch(() => null));
     if (body.success) {
@@ -25,10 +32,14 @@ async function request<T>(method: string, path: string): Promise<T> {
     }
     throw new ApiError(res.status, 'unknown', 'Something went wrong. Please try again.');
   }
+  // 204 No Content has no body to read.
+  if (res.status === 204) return undefined as T;
   return (await res.json()) as T;
 }
 
 /** A thin wrapper around `fetch` for the API. It throws `ApiError` for any error response. */
 export const api = {
   get: <T>(path: string) => request<T>('GET', path),
+  post: <T>(path: string, body: unknown) => request<T>('POST', path, body),
+  delete: (path: string) => request<void>('DELETE', path),
 };

@@ -1,6 +1,8 @@
 import { Suspense } from 'react';
 import { Outlet } from 'react-router';
 
+import { Toaster } from '@/components/ui/sonner';
+
 import { TabBar } from './tab-bar';
 import { TopBar } from './top-bar';
 
@@ -15,6 +17,8 @@ export function AppShell() {
         </Suspense>
       </main>
       <TabBar />
+      {/* Light, as the app has no dark theme. At the top, clear of the tab bar. */}
+      <Toaster theme="light" position="top-center" />
     </div>
   );
 }
