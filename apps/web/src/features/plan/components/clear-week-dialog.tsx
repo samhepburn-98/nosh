@@ -1,5 +1,3 @@
-import type { RefObject } from 'react';
-
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,7 +19,8 @@ export default function ClearWeekDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onConfirm: () => void;
-  finalFocus: RefObject<HTMLElement | null>;
+  /** Where focus goes when the dialog closes: an element, or `true` for the button that opened it. */
+  finalFocus: () => HTMLElement | null | boolean;
 }) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
