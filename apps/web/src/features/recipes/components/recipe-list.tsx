@@ -14,6 +14,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 
 import { useRecipes } from '../api/get-recipes';
+import { filterByName } from '../utils/search';
 import { RecipeCard } from './recipe-card';
 
 const gridClassName = 'grid gap-4 sm:grid-cols-2 lg:grid-cols-3';
@@ -62,9 +63,7 @@ export function RecipeList({
   }
 
   const term = search.trim();
-  const recipes = term
-    ? data.filter((recipe) => recipe.name.toLowerCase().includes(term.toLowerCase()))
-    : data;
+  const recipes = filterByName(data, search);
 
   return (
     <>
