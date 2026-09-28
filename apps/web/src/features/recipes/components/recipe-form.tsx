@@ -64,6 +64,8 @@ export function RecipeForm({ onSaved }: { onSaved: (recipe: Recipe) => void }) {
           toast.error("We couldn't save your recipe. Please try again.");
           return;
         }
+        // Said as well as marked on the fields, in case one isn't on screen or has nowhere to show.
+        toast.error(error.message);
         Object.entries(error.fields).forEach(([path, message], index) => {
           form.setError(
             toFormPath(path) as FieldPath<RecipeFormValues>,
