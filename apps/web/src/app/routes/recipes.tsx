@@ -1,27 +1,43 @@
 import { Plus } from 'lucide-react';
-import { useRef } from 'react';
+import { lazy, Suspense, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router';
 
-import { buttonVariants } from '@/components/ui/button';
-import { paths } from '@/config/paths';
+import type { RecipeSummary } from '@nosh/shared/recipes';
 
+import { buttonVariants } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { paths } from '@/config/paths';
+import { KitchenMatches } from '@/features/kitchen/components/kitchen-matches';
+import { KitchenPicker } from '@/features/kitchen/components/kitchen-picker';
 import { PreferencesSummary } from '@/features/preferences/components/preferences-summary';
+import { useIngredients } from '@/features/recipes/api/get-ingredients';
 import { RecipeList } from '@/features/recipes/components/recipe-list';
 import { RecipeSearch } from '@/features/recipes/components/recipe-search';
 
+const RecipeAddToPlanSheet = lazy(() => import('./recipe-add-to-plan-sheet'));
+
+type Adding = { recipe: Pick<RecipeSummary, 'slug' | 'name'>; open: boolean; opened: number };
+
+/**
+ * All recipes, or those ranked by what's in your kitchen (F8). Both views are kept in the URL
+ * (`?q=` and `?view=kitchen`), so going back to the page keeps them.
+ */
 export default function RecipesRoute() {
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get('q') ?? '';
+  const view = searchParams.get('view') === 'kitchen' ? 'kitchen' : 'all';
   const searchRef = useRef<HTMLInputElement>(null);
+  const { data: ingredients = [] } = useIngredients();
+  // `opened` counts openings. It's the sheet's key, so each opening starts again from today.
+  const [adding, setAdding] = useState<Adding | null>(null);
 
-  // Kept in the URL (?q=), so going back to the list keeps the search. Replaced, not pushed,
-  // so each keystroke isn't a step in the history.
-  const setSearch = (value: string) =>
+  // Replaced, not pushed, so each keystroke isn't a step in the history.
+  const setParam = (name: string, value: string | null) =>
     setSearchParams(
       (params) => {
         const next = new URLSearchParams(params);
-        if (value) next.set('q', value);
-        else next.delete('q');
+        if (value) next.set(name, value);
+        else next.delete(name);
         return next;
       },
       { replace: true },
@@ -37,15 +53,45 @@ export default function RecipesRoute() {
           New recipe
         </Link>
       </div>
-      <RecipeSearch ref={searchRef} value={search} onChange={setSearch} />
-      <RecipeList
-        search={search}
-        preferences={<PreferencesSummary />}
-        onClearSearch={() => {
-          setSearch('');
-          searchRef.current?.focus();
-        }}
-      />
+      <Tabs
+        value={view}
+        onValueChange={(value) => setParam('view', value === 'kitchen' ? 'kitchen' : null)}
+      >
+        <TabsList>
+          <TabsTrigger value="all">All recipes</TabsTrigger>
+          <TabsTrigger value="kitchen">From your kitchen</TabsTrigger>
+        </TabsList>
+        <TabsContent value="all" className="flex flex-col gap-4 pt-2">
+          <RecipeSearch ref={searchRef} value={search} onChange={(value) => setParam('q', value)} />
+          <RecipeList
+            search={search}
+            preferences={<PreferencesSummary />}
+            onClearSearch={() => {
+              setParam('q', null);
+              searchRef.current?.focus();
+            }}
+          />
+        </TabsContent>
+        <TabsContent value="kitchen" className="flex flex-col gap-4 pt-2">
+          <KitchenPicker ingredients={ingredients} />
+          <KitchenMatches
+            preferences={<PreferencesSummary />}
+            onAddToPlan={(recipe) =>
+              setAdding((previous) => ({ recipe, open: true, opened: (previous?.opened ?? 0) + 1 }))
+            }
+          />
+        </TabsContent>
+      </Tabs>
+      {adding && (
+        <Suspense fallback={null}>
+          <RecipeAddToPlanSheet
+            key={adding.opened}
+            recipe={adding.recipe}
+            open={adding.open}
+            onOpenChange={(open) => setAdding((previous) => previous && { ...previous, open })}
+          />
+        </Suspense>
+      )}
     </>
   );
 }
