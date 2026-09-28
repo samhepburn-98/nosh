@@ -1,3 +1,4 @@
+import { dayName } from '@nosh/shared/days';
 import type { Dietary } from '@nosh/shared/dietary';
 import type { MealType } from '@nosh/shared/meal-types';
 
@@ -18,4 +19,11 @@ export function formatTag(tag: string) {
 /** ["lunch", "dinner"] → "Lunch or dinner". */
 export function formatMealTypes(mealTypes: MealType[]) {
   return capitalise(mealTypes.join(' or '));
+}
+
+const listFormat = new Intl.ListFormat('en-GB', { type: 'conjunction' });
+
+/** [2, 5] → "Tuesday and Friday"; [1, 3, 5] → "Monday, Wednesday and Friday". */
+export function formatDays(days: number[]) {
+  return listFormat.format(days.map(dayName));
 }

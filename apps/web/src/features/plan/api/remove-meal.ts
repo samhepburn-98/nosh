@@ -15,6 +15,8 @@ export const useRemoveMeal = ({
   return useMutation({
     onSuccess: (...args) => {
       void queryClient.invalidateQueries({ queryKey: queryKeys.plan });
+      // Recipe pages say which days they're planned for.
+      void queryClient.invalidateQueries({ queryKey: queryKeys.recipes });
       return onSuccess?.(...args);
     },
     ...restConfig,

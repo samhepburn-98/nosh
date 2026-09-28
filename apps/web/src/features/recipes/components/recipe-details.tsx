@@ -1,3 +1,4 @@
+import { CalendarCheck } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 import type { Recipe } from '@nosh/shared/recipes';
@@ -6,13 +7,24 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ApiError } from '@/lib/api-client';
-import { formatMealTypes } from '@/utils/format';
+import { formatDays, formatMealTypes } from '@/utils/format';
 
 import { useRecipe } from '../api/get-recipe';
 import { RecipeBadges } from './recipe-badges';
 
-/** A recipe's page content. `notFound` is shown for a recipe that doesn't exist. */
-export function RecipeDetails({ slug, notFound }: { slug: string; notFound: ReactNode }) {
+/**
+ * A recipe's page content. `notFound` is shown for a recipe that doesn't exist, and `actions`
+ * (such as the page's "Add to plan") go under the badges.
+ */
+export function RecipeDetails({
+  slug,
+  notFound,
+  actions,
+}: {
+  slug: string;
+  notFound: ReactNode;
+  actions?: (recipe: Recipe) => ReactNode;
+}) {
   const { data: recipe, error, refetch } = useRecipe({ slug });
 
   if (error instanceof ApiError && error.status === 404) return notFound;
@@ -44,10 +56,10 @@ export function RecipeDetails({ slug, notFound }: { slug: string; notFound: Reac
     );
   }
 
-  return <RecipeArticle recipe={recipe} />;
+  return <RecipeArticle recipe={recipe} actions={actions?.(recipe)} />;
 }
 
-function RecipeArticle({ recipe }: { recipe: Recipe }) {
+function RecipeArticle({ recipe, actions }: { recipe: Recipe; actions: ReactNode }) {
   return (
     <article className="flex flex-col gap-6">
       <title>{`${recipe.name} · Nosh`}</title>
@@ -57,6 +69,13 @@ function RecipeArticle({ recipe }: { recipe: Recipe }) {
           {formatMealTypes(recipe.mealTypes)} · Serves {recipe.serves}
         </p>
         <RecipeBadges recipe={recipe} />
+        {recipe.plannedOn.length > 0 && (
+          <p className="flex items-center gap-2">
+            <CalendarCheck aria-hidden className="size-4 shrink-0" />
+            Planned for {formatDays(recipe.plannedOn)}
+          </p>
+        )}
+        {actions}
       </header>
 
       {/* One column on phones. From lg, ingredients take one column and the method two. */}

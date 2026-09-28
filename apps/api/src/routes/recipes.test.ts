@@ -80,6 +80,21 @@ describe('GET /api/recipes/:slug', () => {
     expect(recipe.method[0]).toMatch(/^Heat the oil/);
   });
 
+  it('says which days the recipe is planned for, each once, Monday first', async () => {
+    const app = createTestApp();
+    const plannedOn = async () =>
+      recipeSchema.parse((await request(app).get('/api/recipes/tomato-soup')).body).plannedOn;
+
+    expect(await plannedOn()).toEqual([]);
+
+    for (const day of [5, 2, 2]) {
+      await request(app).post('/api/plan').send({ day, recipeSlug: 'tomato-soup' }).expect(201);
+    }
+    await request(app).post('/api/plan').send({ day: 3, recipeSlug: 'lentil-dahl' }).expect(201);
+
+    expect(await plannedOn()).toEqual([2, 5]);
+  });
+
   it('is a 404 for a recipe that does not exist', async () => {
     const res = await request(createTestApp()).get('/api/recipes/beans-on-toast').expect(404);
 

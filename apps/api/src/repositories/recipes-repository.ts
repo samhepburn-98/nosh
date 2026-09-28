@@ -8,6 +8,7 @@ import type { Unit } from '@nosh/shared/units';
 import type { Db } from '../db/client.ts';
 import {
   ingredients,
+  planEntries,
   recipeDietary,
   recipeIngredients,
   recipeMealTypes,
@@ -28,6 +29,7 @@ export type StoredIngredientLine = {
 export type StoredRecipe = RecipeSummary & {
   ingredients: StoredIngredientLine[];
   method: string[];
+  plannedOn: number[];
 };
 
 const summaryColumns = {
@@ -111,10 +113,18 @@ export function createRecipesRepository(db: Db) {
         .orderBy(asc(recipeSteps.position))
         .all();
 
+      const plannedOn = db
+        .selectDistinct({ day: planEntries.day })
+        .from(planEntries)
+        .where(eq(planEntries.recipeId, row.id))
+        .orderBy(asc(planEntries.day))
+        .all();
+
       return {
         ...labelsFor(row.id)(row),
         ingredients: lines,
         method: steps.map((step) => step.text),
+        plannedOn: plannedOn.map((entry) => entry.day),
       };
     },
   };
