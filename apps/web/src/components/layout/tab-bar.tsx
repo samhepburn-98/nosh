@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router';
 
+import { paths } from '@/config/paths';
 import { cn } from '@/lib/utils';
 
 import { navItems } from './nav-items';
@@ -15,7 +16,8 @@ export function TabBar() {
             <li key={item.href}>
               <NavLink
                 to={item.href}
-                end
+                // Only Plan ("/") matches exactly, so Recipes stays marked on a recipe page.
+                end={item.href === paths.plan}
                 className="flex min-h-16 flex-col items-center justify-center gap-1 py-2 text-sm focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
               >
                 {({ isActive }) => (

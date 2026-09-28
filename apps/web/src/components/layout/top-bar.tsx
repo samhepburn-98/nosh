@@ -43,7 +43,8 @@ function TopBarLink({
   return (
     <NavLink
       to={item.href}
-      end
+      // Only Plan ("/") matches exactly, so Recipes stays marked on a recipe page.
+      end={item.href === paths.plan}
       className={({ isActive }) =>
         cn(
           // The current page is marked by weight and a green bar along the bottom edge, not just colour.
