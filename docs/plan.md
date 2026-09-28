@@ -130,7 +130,7 @@ F4 (delete your own recipe) was cut to keep the app small (§1). The numbering i
 - An empty plan shows "Add some meals to your week and your list will appear here."
 
 ### F8. Cook from what you have (X)
-- On the Recipes page's "From your kitchen" tab, pick what you have from the same autocomplete. Each pick shows as a 44px chip that removes it. "Clear all" empties the list. The list is saved.
+- On the Recipes page's "From your kitchen" tab, pick what you have from the same autocomplete. Each pick shows as a chip button below the field that removes it. "Clear all" empties the list. The list is saved.
 - **Every recipe is ranked:**
   1. fewest ingredients to buy
   2. then most ingredients you already have
@@ -253,7 +253,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 - **Phone first (360px).** Below `md`: a bottom tab bar (Plan · Recipes · Shopping list) and a settings button in the top bar. From `md`: all links, and Preferences, in the top bar. One `nav-items` list feeds both. Why, in §1 "Navigation".
 - **Every page uses the shell's width** (`max-w-5xl`). Wide screens get grid columns, not narrower pages.
 - **Tailwind defaults only.** No arbitrary values; colours only through theme tokens.
-- **44px tap targets, 16px inputs.** shadcn's `Button`, `Input`, `NativeSelect`, `Tabs`, `Switch` and combobox options are raised to match (agreed variant changes). `Button` loses its sizes below 44px (`xs`, `sm`, `icon-xs`, `icon-sm`), so they can't be used by mistake. Otherwise `components/ui` stays as upstream wrote it.
+- **shadcn's defaults, unchanged.** `components/ui` stays exactly as upstream wrote it, so updates stay simple. Its default sizes meet WCAG 2.2 AA's 24px target size (a default button is 32px), and its inputs use 16px text on phones, so they don't zoom. Our own markup (the top bar and tab bar) uses 44px targets. We first raised shadcn's components to 44px, but dropped that in PR 1.1: for a demo, keeping upstream as it is was worth more.
 
 | Screen | Layout | PR |
 |---|---|---|
@@ -268,7 +268,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 
 **Badges:** dietary tags use `secondary` (light green), the client's other tags use `outline`, "Your recipe" uses `leaf`.
 
-**Components:** `Sheet`, not `Drawer` (no extra dependency). `NativeSelect` for units (the phone's own picker). One `IngredientCombobox`, single mode in the form, multiple in the kitchen. Kitchen chips sit below the field as 44px buttons, because shadcn's in-field chips are about 21px.
+**Components:** `Sheet`, not `Drawer` (no extra dependency). `NativeSelect` for units (the phone's own picker). One `IngredientCombobox`, single mode in the form, multiple in the kitchen. Kitchen chips sit below the field as buttons, because shadcn's in-field chips are about 21px, under the 24px AA minimum.
 
 ### Theme (contrast measured)
 
@@ -470,7 +470,7 @@ Eight phases: setup, one for each brief feature, our own feature, and a final pa
   - `GET` and `PUT /api/kitchen`. 400 for an unknown ingredient
   - `GET /api/kitchen/matches`: ranks every recipe and groups by preferences
 - **Web:**
-  - `IngredientCombobox` gains multiple mode: 44px chips below the field, A–Z, and focus moves to the next chip when one is removed
+  - `IngredientCombobox` gains multiple mode: chip buttons below the field, A–Z, and focus moves to the next chip when one is removed
   - `features/kitchen`: the picker, saved as it changes, with "Clear all"
   - the Recipes page gains its two tabs, "All recipes" and "From your kitchen" (`?view=kitchen`), combined in the Recipes route. Check "From your kitchen" fits beside "All recipes" at 360px
   - result cards: "You have 4 of 6 · buy 2 more", what to buy, "Add to plan" (named for its recipe). Nothing picked shows A–Z without counts
