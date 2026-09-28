@@ -78,6 +78,12 @@
   padding-bottom: env(safe-area-inset-bottom);
 }
 
+/* Two columns: the first takes the space left, the second is as wide as its content. For a page's
+   title beside its action. Tailwind has no default for this. */
+@utility grid-cols-fill-fit {
+  grid-template-columns: 1fr auto;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

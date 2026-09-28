@@ -252,7 +252,7 @@ packages/shared  zod schemas, types and constants (DIETARY, MEAL_TYPES, DAYS, UN
 ### Layout
 - **Phone first (360px).** Below `md`: a bottom tab bar (Plan · Recipes · Shopping list) and a settings button in the top bar. From `md`: all links, and Preferences, in the top bar. One `nav-items` list feeds both. Why, in §1 "Navigation".
 - **Every page uses the shell's width** (`max-w-5xl`). Wide screens get grid columns, not narrower pages.
-- **Each page says what it's for** in one short line just under its title (Plan, Recipes, New recipe, Shopping list), or in its section's description (Preferences, From your kitchen). `PageHeader` keeps the title and line together, with the page's action (Clear week, New recipe) to the right, lined up with their bottom. Form fields that need it get one hint. The brief's voice: warm, plain, short words, no guilt about money.
+- **Each page says what it's for** in one short line just under its title (Plan, Recipes, New recipe, Shopping list), or in its section's description (Preferences, From your kitchen). `PageHeader` keeps the title and line together. On phones the page's action (Clear week, New recipe) sits beside the title, with the line full width below; from `sm`, the action is on the right, lined up with the bottom of the title and line. Form fields that need it get one hint. The brief's voice: warm, plain, short words, no guilt about money.
 - **Tailwind defaults only.** No arbitrary values; colours only through theme tokens.
 - **shadcn's defaults, unchanged.** `components/ui` stays exactly as upstream wrote it, so updates stay simple. Its default sizes meet WCAG 2.2 AA's 24px target size (a default button is 32px), and its inputs use 16px text on phones, so they don't zoom. Our own markup (the top bar and tab bar) uses 44px targets. We first raised shadcn's components to 44px, but dropped that in PR 1.1: for a demo, keeping upstream as it is was worth more.
 
@@ -492,4 +492,5 @@ Split in two, as it came to about 900 hand-written lines: **5.1a** is the shared
 - **Demo run-through:** `pnpm db:reset`, then every §2 example in the app.
 
 #### PR 7.2: Fixes from trying it on a phone
+- **Page header on phones:** the action sat beside the middle of a line squeezed to half the width. It now sits beside the title, with the line full width below (§5, Layout).
 - **Light only in dark mode:** shadcn's `dark:` styles followed the phone's dark mode, greying fields and buttons on a light page (§5, Theme).
