@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { daySchema } from './days.ts';
 import { dietarySchema } from './dietary.ts';
 import { mealTypeSchema } from './meal-types.ts';
 
@@ -29,5 +30,7 @@ export type RecipeIngredient = z.infer<typeof recipeIngredientSchema>;
 export const recipeSchema = recipeSummarySchema.extend({
   ingredients: z.array(recipeIngredientSchema),
   method: z.array(z.string()),
+  /** The days this recipe is in the plan, each once, Monday first: [2, 5] for Tuesday and Friday. */
+  plannedOn: z.array(daySchema),
 });
 export type Recipe = z.infer<typeof recipeSchema>;
