@@ -2,7 +2,7 @@ import request from 'supertest';
 import { describe, expect, it } from 'vitest';
 
 import { errorBodySchema } from '@nosh/shared/errors';
-import { recipeSummarySchema } from '@nosh/shared/recipes';
+import { recipeSchema, recipeSummarySchema } from '@nosh/shared/recipes';
 
 import { createTestApp } from '../testing/create-test-app.ts';
 
@@ -52,5 +52,37 @@ describe('an unknown address', () => {
     const res = await request(createTestApp()).get('/api/nothing-here').expect(404);
 
     expect(errorBodySchema.parse(res.body).error.code).toBe('not_found');
+  });
+});
+
+describe('GET /api/recipes/:slug', () => {
+  it('gives Tomato Soup in full: 6 ingredients as written and 4 steps', async () => {
+    const res = await request(createTestApp()).get('/api/recipes/tomato-soup').expect(200);
+    const recipe = recipeSchema.parse(res.body);
+
+    expect(recipe).toMatchObject({
+      slug: 'tomato-soup',
+      name: 'Tomato Soup',
+      serves: 4,
+      mealTypes: ['lunch'],
+      dietary: ['vegetarian', 'vegan', 'gluten-free'],
+      tags: ['batch-cook'],
+    });
+    expect(recipe.ingredients).toEqual([
+      { amount: '2 tins', name: 'chopped tomatoes', prep: null },
+      { amount: '1', name: 'onion', prep: 'chopped' },
+      { amount: '2 cloves', name: 'garlic', prep: 'crushed' },
+      { amount: '500 ml', name: 'vegetable stock', prep: null },
+      { amount: '2 tbsp', name: 'olive oil', prep: null },
+      { amount: null, name: 'salt and pepper', prep: null },
+    ]);
+    expect(recipe.method).toHaveLength(4);
+    expect(recipe.method[0]).toMatch(/^Heat the oil/);
+  });
+
+  it('is a 404 for a recipe that does not exist', async () => {
+    const res = await request(createTestApp()).get('/api/recipes/beans-on-toast').expect(404);
+
+    expect(errorBodySchema.parse(res.body).error.code).toBe('recipe_not_found');
   });
 });

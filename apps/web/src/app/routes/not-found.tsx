@@ -1,7 +1,7 @@
 import { MapPinOff } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import {
   Empty,
   EmptyContent,
@@ -26,9 +26,9 @@ export default function NotFoundRoute() {
         <EmptyDescription>The link may be old, or the address may have a typo.</EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
-        <Button nativeButton={false} render={<Link to={paths.plan} />}>
+        <Link to={paths.plan} className={buttonVariants()}>
           Go to your plan
-        </Button>
+        </Link>
       </EmptyContent>
     </Empty>
   );

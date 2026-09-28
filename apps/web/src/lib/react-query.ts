@@ -1,8 +1,14 @@
 import type { DefaultOptions } from '@tanstack/react-query';
 
+import { ApiError } from './api-client';
+
 export const queryConfig = {
-  // One retry, so a failure shows "Try again" after about a second rather than seven.
-  queries: { retry: 1 },
+  queries: {
+    // One retry for a network or server error, so a failure shows "Try again" after about a
+    // second rather than seven. None for a 4xx: asking again for a missing recipe won't find it.
+    retry: (failureCount, error) =>
+      failureCount < 1 && !(error instanceof ApiError && error.status < 500),
+  },
 } satisfies DefaultOptions;
 
 /** Options a `use…` hook accepts, on top of its own `…QueryOptions`. */
